@@ -1,10 +1,10 @@
 <template>
   <div>
-  <div class='area'>
-  
+  <div class='area' :class="{ 'area--adding': adding }">
+
   </div>
   <div class='controls'>
-    <input class="btn btn-default" type="button" value="Add table">
+    <input class="btn btn-default" type="button" value="Add table" @click="preAdd" :value="dom.addtable.value">
   </div>
 </div>
 </template>
@@ -25,7 +25,25 @@ export default {
   },
   data () {
     return {
+      adding: false, // add table mode
+      dom: {
+        addtable: {
+          values: ['Add table', 'Place table'],
+          value: 'Add table'
+        }
+      },
       webdesigner: 'this is web designer component'
+    }
+  },
+  methods: {
+    preAdd () {
+      if (this.adding) {
+        this.adding = false
+        this.dom.addtable.value = this.dom.addtable.values[0]
+      } else {
+        this.adding = true
+        this.dom.addtable.value = this.dom.addtable.values[1]
+      }
     }
   }
 }
@@ -37,6 +55,10 @@ export default {
     background: transparent url(../assets/back.png);
     width: 3000px;
     height: 3000px;
+  }
+
+  .area--adding {
+    cursor: crosshair;
   }
 
   .controls {
