@@ -1,9 +1,11 @@
 <template>
   <div>
-  <div class='area' :class="{ 'area--adding': adding }">
-
+  <div class="area" :class="{ 'area--adding': adding }" @click="areaClick">
+    <template v-for="table in tables">
+      <db-table :data="table"></db-table>
+    </template>
   </div>
-  <div class='controls'>
+  <div class="controls">
     <input class="btn btn-default" type="button" value="Add table" @click="preAdd" :value="dom.addtable.value">
   </div>
 </div>
@@ -13,6 +15,8 @@
 // import axios from 'axios'
 
 // const API_BASE = 'http://websqldesignerserver'
+
+import Table from '@/components/Table'
 
 export default {
   name: 'webdesigner',
@@ -25,6 +29,7 @@ export default {
   },
   data () {
     return {
+      tables: [], // array of all tables (each table is a vue-component)
       adding: false, // add table mode
       dom: {
         addtable: {
@@ -36,15 +41,37 @@ export default {
     }
   },
   methods: {
+    addTable (name, x, y) {
+      // let max = this.getMaxZ()
+      // create new component
+      console.log('calling addTable')
+      console.log(x)
+      console.log(y)
+      this.tables.push({x: x, y: y, name: name})
+    },
     preAdd () {
+      let addtable = this.dom.addtable
       if (this.adding) {
         this.adding = false
-        this.dom.addtable.value = this.dom.addtable.values[0]
+        addtable.value = addtable.values[0]
       } else {
         this.adding = true
-        this.dom.addtable.value = this.dom.addtable.values[1]
+        addtable.value = addtable.values[1]
+      }
+    },
+    areaClick (e) {
+      let addtable = this.dom.addtable
+      if (this.adding) {
+        this.adding = false
+        addtable.value = addtable.values[0]
+        let x = e.clientX + window.pageXOffset
+        let y = e.clientY + window.pageYOffset
+        this.addTable('newtable', x, y)
       }
     }
+  },
+  components: {
+    'db-table': Table
   }
 }
 </script>
