@@ -1,9 +1,12 @@
 <template>
   <div>
-  <div class="area" :class="{ 'area--adding': adding }" @click="areaClick">
+  <div class="area" :class="{ 'area--adding': adding }" @click="areaClick"
+    @mousedown="startDrag" @mousemove="onDrag"
+    @mouseup="stopDrag" @mouseleave="stopDrag">
     <template v-for="table in tables">
       <db-table v-on:tableclick="select" :data="table"></db-table>
     </template>
+    <rubberband :data="rubberband"></rubberband>
   </div>
   <div class="controls">
     <input class="btn btn-default" type="button" value="Add table" @click="preAdd" :value="dom.addtable.value">
@@ -17,6 +20,7 @@
 // const API_BASE = 'http://websqldesignerserver'
 
 import Table from '@/components/Table'
+import RubberBand from '@/components/RubberBand'
 
 export default {
   name: 'webdesigner',
@@ -38,10 +42,27 @@ export default {
           value: 'Add table'
         }
       },
+      // rubberband info
+      rubberband: {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0
+      },
       webdesigner: 'this is web designer component'
     }
   },
   methods: {
+    // rubberband methods
+    startDrag () {
+      console.log('startDrag')
+    },
+    onDrag () {
+      console.log('onDrag')
+    },
+    stopDrag () {
+      console.log('stopDrag')
+    },
     select (table, multi) {
       // console.log('table')
       // console.log(table)
@@ -118,7 +139,8 @@ export default {
     }
   },
   components: {
-    'db-table': Table
+    'db-table': Table,
+    'rubberband': RubberBand
   }
 }
 </script>
