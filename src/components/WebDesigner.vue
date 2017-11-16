@@ -79,10 +79,9 @@ export default {
     addTable (name, x, y) {
       // let max = this.getMaxZ()
       // create new component
-      console.log('calling addTable')
-      console.log(x)
-      console.log(y)
-      this.tables.push({x: x, y: y, name: name, selected: false}) // превратить в объект Класса TableObject, например
+      let newtable = {x: x, y: y, name: name, selected: false}
+      this.tables.push(newtable) // превратить в объект Класса TableObject, например
+      return newtable
     },
     preAdd () {
       let addtable = this.dom.addtable
@@ -96,12 +95,14 @@ export default {
     },
     areaClick (e) {
       let addtable = this.dom.addtable
+      let newtable = false
       if (this.adding) {
         this.adding = false
         addtable.value = addtable.values[0]
         let x = e.clientX + window.pageXOffset
         let y = e.clientY + window.pageYOffset
-        this.addTable('newtable', x, y)
+        newtable = this.addTable('newtable', x, y)
+
         // setTimeout(() => {
         //   // console.log(this.tables[0])
         //   // this.tables[0].name = 'muahaa'
@@ -113,6 +114,7 @@ export default {
         //   // this.tables.splice(0, 1, newtable)
         // }, 1500)
       }
+      this.select(newtable)
     }
   },
   components: {
