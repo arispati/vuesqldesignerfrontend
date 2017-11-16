@@ -3,7 +3,7 @@
   <table>
     <thead>
       <tr>
-        <td class="table__title" colspan="2">new table</td>
+        <td class="table__title" colspan="2">{{data.name}}</td>
       </tr>
     </thead>
     <tbody>

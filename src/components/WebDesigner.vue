@@ -67,6 +67,16 @@ export default {
         let x = e.clientX + window.pageXOffset
         let y = e.clientY + window.pageYOffset
         this.addTable('newtable', x, y)
+        setTimeout(() => {
+          // console.log(this.tables[0])
+          // this.tables[0].name = 'muahaa'
+          // console.log(this.tables[0].name)
+          // this.tables[0] = {x: 10, y: 10, name: 'azazaz'}
+          // let newtable = {x: 65, y: 5, name: 'azazaz'}
+          // this.tables.$set(0, { childMsg: 'Changed!'})
+          this.$set(this.tables[0], 'name', 'igogo')
+          // this.tables.splice(0, 1, newtable)
+        }, 1500)
       }
     }
   },
