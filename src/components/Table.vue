@@ -1,5 +1,5 @@
 <template>
-<div class="table" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click="tableClick">
+<div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click="tableClick">
   <table>
     <thead>
       <tr>
@@ -56,5 +56,9 @@ export default {
 
   .table table {
 	  border-collapse: collapse;
+  }
+
+  .table--selected {
+    border: 2px solid #000;
   }
 </style>

@@ -30,6 +30,7 @@ export default {
   data () {
     return {
       tables: [], // array of all tables (each table is a vue-component)
+      selection: [],
       adding: false, // add table mode
       dom: {
         addtable: {
@@ -41,8 +42,39 @@ export default {
     }
   },
   methods: {
-    select (table) {
-      console.log(this.tables.indexOf(table))
+    select (table, multi) {
+      // console.log('table')
+      // console.log(table)
+      // console.log('multi')
+      // console.log(multi)
+      // console.log(this.tables.indexOf(table))
+      if (table) {
+        if (multi) {
+
+        } else {
+          // let tIndex = this.tables.indexOf(table)
+          // if (this.selection[0] === tIndex) {
+          //   return
+          // }
+          // this.selection = [tIndex]
+          if (this.selection[0] === table) {
+            return
+          }
+          this.selection = [table]
+        }
+      } else {
+        this.selection = []
+      }
+      this.processSelection()
+    },
+    processSelection () {
+      console.log('process selection')
+      for (let i = 0; i < this.tables.length; i++) {
+        this.$set(this.tables[i], 'selected', false)
+      }
+      for (let i = 0; i < this.selection.length; i++) {
+        this.$set(this.selection[i], 'selected', true)
+      }
     },
     addTable (name, x, y) {
       // let max = this.getMaxZ()
