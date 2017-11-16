@@ -2,7 +2,7 @@
   <div>
   <div class="area" :class="{ 'area--adding': adding }" @click="areaClick">
     <template v-for="table in tables">
-      <db-table :data="table"></db-table>
+      <db-table v-on:tableclick="select" :data="table"></db-table>
     </template>
   </div>
   <div class="controls">
@@ -41,13 +41,16 @@ export default {
     }
   },
   methods: {
+    select (table) {
+      console.log(this.tables.indexOf(table))
+    },
     addTable (name, x, y) {
       // let max = this.getMaxZ()
       // create new component
       console.log('calling addTable')
       console.log(x)
       console.log(y)
-      this.tables.push({x: x, y: y, name: name})
+      this.tables.push({x: x, y: y, name: name, selected: false}) // превратить в объект Класса TableObject, например
     },
     preAdd () {
       let addtable = this.dom.addtable
@@ -67,16 +70,16 @@ export default {
         let x = e.clientX + window.pageXOffset
         let y = e.clientY + window.pageYOffset
         this.addTable('newtable', x, y)
-        setTimeout(() => {
-          // console.log(this.tables[0])
-          // this.tables[0].name = 'muahaa'
-          // console.log(this.tables[0].name)
-          // this.tables[0] = {x: 10, y: 10, name: 'azazaz'}
-          // let newtable = {x: 65, y: 5, name: 'azazaz'}
-          // this.tables.$set(0, { childMsg: 'Changed!'})
-          this.$set(this.tables[0], 'name', 'igogo')
-          // this.tables.splice(0, 1, newtable)
-        }, 1500)
+        // setTimeout(() => {
+        //   // console.log(this.tables[0])
+        //   // this.tables[0].name = 'muahaa'
+        //   // console.log(this.tables[0].name)
+        //   // this.tables[0] = {x: 10, y: 10, name: 'azazaz'}
+        //   // let newtable = {x: 65, y: 5, name: 'azazaz'}
+        //   // this.tables.$set(0, { childMsg: 'Changed!'})
+        //   this.$set(this.tables[0], 'name', 'igogo')
+        //   // this.tables.splice(0, 1, newtable)
+        // }, 1500)
       }
     }
   },

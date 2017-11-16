@@ -1,5 +1,5 @@
 <template>
-<div class="table" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y">
+<div class="table" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click="tableClick">
   <table>
     <thead>
       <tr>
@@ -33,6 +33,12 @@ export default {
     }
   },
   methods: {
+    tableClick () {
+      //
+      this.$emit('tableclick', this.data)
+      console.log('end click table')
+      // at this point parent method called
+    }
   }
 }
 </script>
