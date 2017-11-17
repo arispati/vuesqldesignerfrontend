@@ -1,5 +1,5 @@
 <template>
-<div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click.stop="tableClick">
+<div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click.stop="tableClick" @mousedown.stop="startDrag">
   <table>
     <thead>
       <tr>
@@ -33,10 +33,14 @@ export default {
     }
   },
   methods: {
+    // Drag'n'Drop
+    startDrag () {
+      console.log('table mousedown')
+    },
     tableClick () {
       //
       this.$emit('tableclick', this.data)
-      console.log('end click table')
+      console.log('TABLE CLICK')
       // at this point parent method called
     }
   }

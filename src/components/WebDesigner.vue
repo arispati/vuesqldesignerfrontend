@@ -2,7 +2,7 @@
   <div>
   <div class="area" :class="{ 'area--adding': adding }" @click="areaClick"
     @mousedown="startDrag" @mousemove="onDrag"
-    @mouseup="stopDrag" @mouseleave="stopDrag">
+    @mouseup="stopDrag">
     <template v-for="table in tables">
       <db-table v-on:tableclick="select" :data="table"></db-table>
     </template>
@@ -50,6 +50,8 @@ export default {
         y0: 0,
         width: 0,
         height: 0,
+        dragged: false,
+        downed: false,
         visibility: 'hidden'
       },
       webdesigner: 'this is web designer component'
@@ -58,30 +60,38 @@ export default {
   methods: {
     // rubberband methods
     startDrag (e) {
-      // let x = e.clientX + window.pageXOffset
-      // let y = e.clientY + window.pageYOffset
-      // this.rubberband.x = this.rubberband.x0 = x
-      // this.rubberband.y = this.rubberband.y0 = y
-      // this.rubberband.width = 0
-      // this.rubberband.height = 0
+      let x = e.clientX + window.pageXOffset
+      let y = e.clientY + window.pageYOffset
+      this.rubberband.x = this.rubberband.x0 = x
+      this.rubberband.y = this.rubberband.y0 = y
+      this.rubberband.width = 0
+      this.rubberband.height = 0
       // this.rubberband.visibility = 'visible'
+      this.rubberband.downed = true
       console.log('startDrag')
     },
     onDrag (e) {
+      // if condition is true - mousedown event called
       // if (this.rubberband.visibility === 'visible') {
-      //   let x = e.clientX + window.pageXOffset
-      //   let y = e.clientY + window.pageYOffset
-      //   this.rubberband.width = Math.abs(x - this.rubberband.x0)
-      //   this.rubberband.height = Math.abs(y - this.rubberband.y0)
-      //   if (x < this.rubberband.x0) { this.rubberband.x = x } else { this.rubberband.x = this.rubberband.x0 }
-      //   if (y < this.rubberband.y0) { this.rubberband.y = y } else { this.rubberband.y = this.rubberband.y0 }
-      // }
+      if (this.rubberband.downed) {
+        if (this.rubberband.visibility === 'hidden') {
+          this.rubberband.visibility = 'visible'
+        }
+        this.rubberband.dragged = true
+        let x = e.clientX + window.pageXOffset
+        let y = e.clientY + window.pageYOffset
+        this.rubberband.width = Math.abs(x - this.rubberband.x0)
+        this.rubberband.height = Math.abs(y - this.rubberband.y0)
+        if (x < this.rubberband.x0) { this.rubberband.x = x } else { this.rubberband.x = this.rubberband.x0 }
+        if (y < this.rubberband.y0) { this.rubberband.y = y } else { this.rubberband.y = this.rubberband.y0 }
+      }
       console.log('onDrag')
     },
     stopDrag () {
       // preventEvent?
-      // this.rubberband.visibility = 'hidden'
-      // this.selectRect(this.rubberband.x, this.rubberband.y, this.rubberband.width, this.rubberband.height)
+      this.rubberband.downed = false
+      this.rubberband.visibility = 'hidden'
+      this.selectRect(this.rubberband.x, this.rubberband.y, this.rubberband.width, this.rubberband.height)
       console.log('stopDrag')
     },
     selectRect (x, y, width, height) {
@@ -128,7 +138,8 @@ export default {
       this.processSelection()
     },
     processSelection () {
-      console.log('process selection')
+      // console.log('process selection')
+      // console.log(this.selection)
       for (let i = 0; i < this.tables.length; i++) {
         this.$set(this.tables[i], 'selected', false)
       }
@@ -154,6 +165,12 @@ export default {
       }
     },
     areaClick (e) {
+      console.log('zz')
+      if (this.rubberband.dragged) {
+        this.rubberband.dragged = false
+        return
+      }
+      console.log('AREA CLICK')
       let addtable = this.dom.addtable
       let newtable = false
       if (this.adding) {
