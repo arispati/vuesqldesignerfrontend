@@ -1,5 +1,5 @@
 <template>
-<div class="rubberband" :style="{ left: data.x + 'px', top: data.y + 'px', width: data.width + 'px', height: data.height + 'px'}"></div>
+<div class="rubberband" :style="{ left: data.x + 'px', top: data.y + 'px', width: data.width + 'px', height: data.height + 'px', visibility: data.visibility}"></div>
 </template>
 <script>
 export default {

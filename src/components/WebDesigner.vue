@@ -46,22 +46,61 @@ export default {
       rubberband: {
         x: 0,
         y: 0,
+        x0: 0,
+        y0: 0,
         width: 0,
-        height: 0
+        height: 0,
+        visibility: 'hidden'
       },
       webdesigner: 'this is web designer component'
     }
   },
   methods: {
     // rubberband methods
-    startDrag () {
+    startDrag (e) {
+      // let x = e.clientX + window.pageXOffset
+      // let y = e.clientY + window.pageYOffset
+      // this.rubberband.x = this.rubberband.x0 = x
+      // this.rubberband.y = this.rubberband.y0 = y
+      // this.rubberband.width = 0
+      // this.rubberband.height = 0
+      // this.rubberband.visibility = 'visible'
       console.log('startDrag')
     },
-    onDrag () {
+    onDrag (e) {
+      // if (this.rubberband.visibility === 'visible') {
+      //   let x = e.clientX + window.pageXOffset
+      //   let y = e.clientY + window.pageYOffset
+      //   this.rubberband.width = Math.abs(x - this.rubberband.x0)
+      //   this.rubberband.height = Math.abs(y - this.rubberband.y0)
+      //   if (x < this.rubberband.x0) { this.rubberband.x = x } else { this.rubberband.x = this.rubberband.x0 }
+      //   if (y < this.rubberband.y0) { this.rubberband.y = y } else { this.rubberband.y = this.rubberband.y0 }
+      // }
       console.log('onDrag')
     },
     stopDrag () {
+      // preventEvent?
+      // this.rubberband.visibility = 'hidden'
+      // this.selectRect(this.rubberband.x, this.rubberband.y, this.rubberband.width, this.rubberband.height)
       console.log('stopDrag')
+    },
+    selectRect (x, y, width, height) {
+      this.selection = []
+      let tables = this.tables
+      let x1 = x + width
+      let y1 = y + height
+      for (let i = 0; i < tables.length; i++) {
+        let t = tables[i]
+        let tx = t.x
+        let tx1 = t.x + t.width
+        let ty = t.y
+        let ty1 = t.y + t.height
+        if (((tx >= x && tx < x1) || (tx1 >= x && tx1 < x1) || (tx < x && tx1 > x1)) &&
+         ((ty >= y && ty < y1) || (ty1 >= y && ty1 < y1) || (ty < y && ty1 > y1))) {
+          this.selection.push(t)
+        }
+      }
+      this.processSelection()
     },
     select (table, multi) {
       // console.log('table')
