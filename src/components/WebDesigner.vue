@@ -69,6 +69,7 @@ export default {
       // this.rubberband.visibility = 'visible'
       this.rubberband.downed = true
       console.log('startDrag')
+      console.log(this.$el)
     },
     onDrag (e) {
       // if condition is true - mousedown event called
