@@ -4,7 +4,7 @@
     @mousedown="startDrag" @mousemove="onDrag"
     @mouseup="stopDrag">
     <template v-for="table in tables">
-      <db-table v-on:tableclick="select" :data="table"></db-table>
+      <db-table v-on:tableclick="select" v-on:tablemove="move" :data="table" :selection="selection"></db-table>
     </template>
     <rubberband :data="rubberband"></rubberband>
   </div>
@@ -112,6 +112,14 @@ export default {
         }
       }
       this.processSelection()
+    },
+    move (param) {
+      console.log('move table!')
+      console.log(param)
+      for (let i = 0; i < param.length; i++) {
+        this.selection[i].x = param[i].x
+        this.selection[i].y = param[i].y
+      }
     },
     select (table, multi) {
       // console.log('table')

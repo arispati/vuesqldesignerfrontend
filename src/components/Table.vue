@@ -1,5 +1,6 @@
 <template>
-<div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click.stop="tableClick" @mousedown.stop="startDrag">
+<div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click.stop="tableClick"
+ @mousedown.stop="startDrag" @mousemove.stop="onDrag" @mouseup.stop="stopDrag">
   <table>
     <thead>
       <tr>
@@ -23,19 +24,53 @@
 
 export default {
   name: 'db-table',
-  props: ['data'],
+  props: ['data', 'selection'],
   created () {
     console.log('table component created')
   },
   data () {
     return {
-      addingTable: true
+      addingTable: true,
+      delta: {}
     }
   },
   methods: {
     // Drag'n'Drop
-    startDrag () {
-      console.log('table mousedown')
+    startDrag (e) {
+      console.log(' t startDrag')
+      // console.log(this.selection)
+      let n = this.selection.length
+      this.delta.x = new Array(n)
+      this.delta.y = new Array(n)
+      for (let i = 0; i < n; i++) {
+        // let selection = this.selection[i]
+        // this.selection[i].name = 'lollollollol2'
+        // console.log(selection.name)
+        this.delta.x[i] = this.selection[i].x - e.clientX
+        this.delta.y[i] = this.selection[i].y - e.clientY
+      }
+    },
+    onDrag (e) {
+      // first we detect if mousedown event called
+      if (this.delta.x && this.delta.y) {
+        console.log(' t onDrag')
+        let deltaXandY = []
+        for (let i = 0; i < this.delta.x.length; i++) {
+          let x = this.delta.x[i] + e.clientX
+          let y = this.delta.y[i] + e.clientY
+          x = Math.max(x, 0)
+          y = Math.max(y, 0)
+          deltaXandY.push({ x: x, y: y })
+        }
+        this.$emit('tablemove', deltaXandY)
+      }
+    },
+    stopDrag () {
+      if (this.delta.x && this.delta.y) {
+        delete this.delta.x
+        delete this.delta.y
+      }
+      console.log(' t stopDrag')
     },
     tableClick () {
       //
