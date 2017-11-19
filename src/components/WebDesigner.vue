@@ -1,7 +1,8 @@
 <template>
   <div>
   <div class="area" :class="{ 'area--adding': adding }" @click="areaClick"
-    @mousedown="startDrag">
+    @mousedown="startDrag" @mousemove="onDrag"
+    @mouseup="stopDrag">
     <template v-for="table in tables">
       <db-table v-on:tableclick="select" :data="table"></db-table>
     </template>
@@ -66,35 +67,30 @@ export default {
       this.rubberband.width = 0
       this.rubberband.height = 0
       // this.rubberband.visibility = 'visible'
-      // this.rubberband.downed = true
+      this.rubberband.downed = true
       console.log('startDrag')
       console.log(this.$el)
-      this.$el.addEventListener('mousemove', this.onDrag)
-      this.$el.addEventListener('mouseup', this.stopDrag)
     },
     onDrag (e) {
       // if condition is true - mousedown event called
       // if (this.rubberband.visibility === 'visible') {
-      // if (this.rubberband.downed) {
-      //   if (this.rubberband.visibility === 'hidden') {
-      //     this.rubberband.visibility = 'visible'
-      //   }
-      this.rubberband.visibility = 'visible'
-      this.rubberband.dragged = true
-      let x = e.clientX + window.pageXOffset
-      let y = e.clientY + window.pageYOffset
-      this.rubberband.width = Math.abs(x - this.rubberband.x0)
-      this.rubberband.height = Math.abs(y - this.rubberband.y0)
-      if (x < this.rubberband.x0) { this.rubberband.x = x } else { this.rubberband.x = this.rubberband.x0 }
-      if (y < this.rubberband.y0) { this.rubberband.y = y } else { this.rubberband.y = this.rubberband.y0 }
-      // }
+      if (this.rubberband.downed) {
+        if (this.rubberband.visibility === 'hidden') {
+          this.rubberband.visibility = 'visible'
+        }
+        this.rubberband.dragged = true
+        let x = e.clientX + window.pageXOffset
+        let y = e.clientY + window.pageYOffset
+        this.rubberband.width = Math.abs(x - this.rubberband.x0)
+        this.rubberband.height = Math.abs(y - this.rubberband.y0)
+        if (x < this.rubberband.x0) { this.rubberband.x = x } else { this.rubberband.x = this.rubberband.x0 }
+        if (y < this.rubberband.y0) { this.rubberband.y = y } else { this.rubberband.y = this.rubberband.y0 }
+      }
       console.log('onDrag')
     },
     stopDrag () {
       // preventEvent?
-      this.$el.removeEventListener('mousemove', this.onDrag)
-      this.$el.removeEventListener('mouseup', this.stopDrag)
-      // this.rubberband.downed = false
+      this.rubberband.downed = false
       this.rubberband.visibility = 'hidden'
       this.selectRect(this.rubberband.x, this.rubberband.y, this.rubberband.width, this.rubberband.height)
       console.log('stopDrag')
