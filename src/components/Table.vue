@@ -1,6 +1,6 @@
 <template>
 <div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click.stop="tableClick"
- @mousedown.stop="startDrag" @mousemove.stop="onDrag" @mouseup.stop="stopDrag">
+ @mousedown.stop="startDrag">
   <table>
     <thead>
       <tr>
@@ -49,6 +49,9 @@ export default {
         this.delta.x[i] = this.selection[i].x - e.clientX
         this.delta.y[i] = this.selection[i].y - e.clientY
       }
+      // attach event listeners
+      document.addEventListener('mousemove', this.onDrag)
+      document.addEventListener('mouseup', this.stopDrag)
     },
     onDrag (e) {
       // first we detect if mousedown event called
@@ -70,6 +73,8 @@ export default {
         delete this.delta.x
         delete this.delta.y
       }
+      document.removeEventListener('mousemove', this.onDrag)
+      document.removeEventListener('mouseup', this.stopDrag)
       console.log(' t stopDrag')
     },
     tableClick () {
