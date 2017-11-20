@@ -1,8 +1,7 @@
 <template>
   <div>
   <div class="area" :class="{ 'area--adding': adding }" @click="areaClick"
-    @mousedown="startDrag" @mousemove="onDrag"
-    @mouseup="stopDrag">
+    @mousedown="mousedownArea">
     <template v-for="table in tables">
       <db-table v-on:tableclick="select" v-on:tablemove="move" :data="table" :selection="selection"></db-table>
     </template>
@@ -59,7 +58,7 @@ export default {
   },
   methods: {
     // rubberband methods
-    startDrag (e) {
+    mousedownArea (e) {
       let x = e.clientX + window.pageXOffset
       let y = e.clientY + window.pageYOffset
       this.rubberband.x = this.rubberband.x0 = x
@@ -70,8 +69,10 @@ export default {
       this.rubberband.downed = true
       console.log('mousedown area')
       // console.log(this.$el)
+      this.$el.addEventListener('mousemove', this.mousemoveArea)
+      this.$el.addEventListener('mouseup', this.mouseupArea)
     },
-    onDrag (e) {
+    mousemoveArea (e) {
       // if condition is true - mousedown event called
       // if (this.rubberband.visibility === 'visible') {
       if (this.rubberband.downed) {
@@ -88,12 +89,14 @@ export default {
       }
       console.log('mousemove area')
     },
-    stopDrag () {
+    mouseupArea () {
       // preventEvent?
       this.rubberband.downed = false
       this.rubberband.visibility = 'hidden'
       this.selectRect(this.rubberband.x, this.rubberband.y, this.rubberband.width, this.rubberband.height)
       console.log('mouseup area')
+      this.$el.removeEventListener('mousemove', this.mousemoveArea)
+      this.$el.removeEventListener('mouseup', this.mouseupArea)
     },
     selectRect (x, y, width, height) {
       this.selection = []

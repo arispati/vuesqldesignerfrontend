@@ -1,6 +1,6 @@
 <template>
 <div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click.stop="tableClick"
- @mousedown.stop="startDrag">
+ @mousedown.stop="mousedownTable">
   <table>
     <thead>
       <tr>
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     // Drag'n'Drop
-    startDrag (e) {
+    mousedownTable (e) {
       // this.$emit('tableclick', this.data)
       // console.log(' t startDrag')
       // console.log('this.selection before')
@@ -62,8 +62,8 @@ export default {
           this.delta.y[i] = this.selection[i].y - e.clientY
         }
         // attach event listeners
-        document.addEventListener('mousemove', this.onDrag)
-        document.addEventListener('mouseup', this.stopDrag)
+        document.addEventListener('mousemove', this.mousemoveTable)
+        document.addEventListener('mouseup', this.mouseupTable)
       })
 
       // let n = this.selection.length
@@ -80,7 +80,7 @@ export default {
       // document.addEventListener('mousemove', this.onDrag)
       // document.addEventListener('mouseup', this.stopDrag)
     },
-    onDrag (e) {
+    mousemoveTable (e) {
       // first we detect if mousedown event called
       console.log('mousemove table')
       if (this.delta.x && this.delta.y) {
@@ -96,14 +96,14 @@ export default {
         this.$emit('tablemove', deltaXandY)
       }
     },
-    stopDrag () {
+    mouseupTable () {
       console.log('mouseup table')
       if (this.delta.x && this.delta.y) {
         delete this.delta.x
         delete this.delta.y
       }
-      document.removeEventListener('mousemove', this.onDrag)
-      document.removeEventListener('mouseup', this.stopDrag)
+      document.removeEventListener('mousemove', this.mousemoveTable)
+      document.removeEventListener('mouseup', this.mouseupTable)
       // console.log(' t stopDrag')
     },
     tableClick () {
