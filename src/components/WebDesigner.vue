@@ -122,6 +122,11 @@ export default {
       }
     },
     select (table, multi) {
+      console.log('select table n parent Component!')
+      console.log('table')
+      console.log(table)
+      console.log('multi')
+      console.log(multi)
       // console.log('table')
       // console.log(table)
       // console.log('multi')
@@ -129,7 +134,12 @@ export default {
       // console.log(this.tables.indexOf(table))
       if (table) {
         if (multi) {
-
+          // let i = this.selection.indexOf(table)
+          // if (i < 0) {
+          //   this.selection.push(table)
+          // } else {
+          //   this.selection.splice(i, 1)
+          // }
         } else {
           // let tIndex = this.tables.indexOf(table)
           // if (this.selection[0] === tIndex) {
@@ -147,8 +157,6 @@ export default {
       this.processSelection()
     },
     processSelection () {
-      // console.log('process selection')
-      // console.log(this.selection)
       for (let i = 0; i < this.tables.length; i++) {
         this.$set(this.tables[i], 'selected', false)
       }
@@ -200,7 +208,7 @@ export default {
         //   // this.tables.splice(0, 1, newtable)
         // }, 1500)
       }
-      this.select(newtable)
+      this.select(newtable, false)
     }
   },
   components: {

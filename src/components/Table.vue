@@ -37,26 +37,51 @@ export default {
   methods: {
     // Drag'n'Drop
     startDrag (e) {
-      console.log(' t startDrag')
-      // console.log(this.selection)
-      let n = this.selection.length
-      this.delta.x = new Array(n)
-      this.delta.y = new Array(n)
-      for (let i = 0; i < n; i++) {
-        // let selection = this.selection[i]
-        // this.selection[i].name = 'lollollollol2'
-        // console.log(selection.name)
-        this.delta.x[i] = this.selection[i].x - e.clientX
-        this.delta.y[i] = this.selection[i].y - e.clientY
+      // this.$emit('tableclick', this.data)
+      // console.log(' t startDrag')
+      console.log('this.selection before')
+      console.log(this.selection)
+      if (!this.data.selected) {
+        this.$emit('tableclick', this.data)
       }
-      // attach event listeners
-      document.addEventListener('mousemove', this.onDrag)
-      document.addEventListener('mouseup', this.stopDrag)
+      // this.$emit('tableclick', this.data)
+      console.log('this.selection after')
+      console.log(this.selection)
+
+      this.$nextTick(function () {
+        let n = this.selection.length
+        this.delta.x = new Array(n)
+        this.delta.y = new Array(n)
+        for (let i = 0; i < n; i++) {
+          // let selection = this.selection[i]
+          // this.selection[i].name = 'lollollollol2'
+          // console.log(selection.name)
+          this.delta.x[i] = this.selection[i].x - e.clientX
+          this.delta.y[i] = this.selection[i].y - e.clientY
+        }
+        // attach event listeners
+        document.addEventListener('mousemove', this.onDrag)
+        document.addEventListener('mouseup', this.stopDrag)
+      })
+
+      // let n = this.selection.length
+      // this.delta.x = new Array(n)
+      // this.delta.y = new Array(n)
+      // for (let i = 0; i < n; i++) {
+      //   // let selection = this.selection[i]
+      //   // this.selection[i].name = 'lollollollol2'
+      //   // console.log(selection.name)
+      //   this.delta.x[i] = this.selection[i].x - e.clientX
+      //   this.delta.y[i] = this.selection[i].y - e.clientY
+      // }
+      // // attach event listeners
+      // document.addEventListener('mousemove', this.onDrag)
+      // document.addEventListener('mouseup', this.stopDrag)
     },
     onDrag (e) {
       // first we detect if mousedown event called
       if (this.delta.x && this.delta.y) {
-        console.log(' t onDrag')
+        // console.log(' t onDrag')
         let deltaXandY = []
         for (let i = 0; i < this.delta.x.length; i++) {
           let x = this.delta.x[i] + e.clientX
@@ -75,12 +100,12 @@ export default {
       }
       document.removeEventListener('mousemove', this.onDrag)
       document.removeEventListener('mouseup', this.stopDrag)
-      console.log(' t stopDrag')
+      // console.log(' t stopDrag')
     },
     tableClick () {
       //
       this.$emit('tableclick', this.data)
-      console.log('TABLE CLICK')
+      // console.log('TABLE CLICK')
       // at this point parent method called
     }
   }
