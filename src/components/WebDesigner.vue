@@ -69,8 +69,8 @@ export default {
       this.rubberband.downed = true
       console.log('mousedown area')
       // console.log(this.$el)
-      this.$el.addEventListener('mousemove', this.mousemoveArea)
-      this.$el.addEventListener('mouseup', this.mouseupArea)
+      document.addEventListener('mousemove', this.mousemoveArea)
+      document.addEventListener('mouseup', this.mouseupArea)
     },
     mousemoveArea (e) {
       // if condition is true - mousedown event called
@@ -95,8 +95,8 @@ export default {
       this.rubberband.visibility = 'hidden'
       this.selectRect(this.rubberband.x, this.rubberband.y, this.rubberband.width, this.rubberband.height)
       console.log('mouseup area')
-      this.$el.removeEventListener('mousemove', this.mousemoveArea)
-      this.$el.removeEventListener('mouseup', this.mouseupArea)
+      document.removeEventListener('mousemove', this.mousemoveArea)
+      document.removeEventListener('mouseup', this.mouseupArea)
     },
     selectRect (x, y, width, height) {
       this.selection = []
