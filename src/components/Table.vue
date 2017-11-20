@@ -39,16 +39,18 @@ export default {
     startDrag (e) {
       // this.$emit('tableclick', this.data)
       // console.log(' t startDrag')
-      console.log('this.selection before')
-      console.log(this.selection)
+      // console.log('this.selection before')
+      // console.log(this.selection)
+      console.log('mousedown table')
       if (!this.data.selected) {
         this.$emit('tableclick', this.data)
       }
       // this.$emit('tableclick', this.data)
-      console.log('this.selection after')
-      console.log(this.selection)
+      // console.log('this.selection after')
+      // console.log(this.selection)
 
       this.$nextTick(function () {
+        console.log('mousedown table nextTick')
         let n = this.selection.length
         this.delta.x = new Array(n)
         this.delta.y = new Array(n)
@@ -80,6 +82,7 @@ export default {
     },
     onDrag (e) {
       // first we detect if mousedown event called
+      console.log('mousemove table')
       if (this.delta.x && this.delta.y) {
         // console.log(' t onDrag')
         let deltaXandY = []
@@ -94,6 +97,7 @@ export default {
       }
     },
     stopDrag () {
+      console.log('mouseup table')
       if (this.delta.x && this.delta.y) {
         delete this.delta.x
         delete this.delta.y
@@ -103,9 +107,8 @@ export default {
       // console.log(' t stopDrag')
     },
     tableClick () {
-      //
+      console.log('table click')
       this.$emit('tableclick', this.data)
-      // console.log('TABLE CLICK')
       // at this point parent method called
     }
   }

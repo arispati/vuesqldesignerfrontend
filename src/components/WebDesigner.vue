@@ -68,8 +68,8 @@ export default {
       this.rubberband.height = 0
       // this.rubberband.visibility = 'visible'
       this.rubberband.downed = true
-      console.log('startDrag')
-      console.log(this.$el)
+      console.log('mousedown area')
+      // console.log(this.$el)
     },
     onDrag (e) {
       // if condition is true - mousedown event called
@@ -86,14 +86,14 @@ export default {
         if (x < this.rubberband.x0) { this.rubberband.x = x } else { this.rubberband.x = this.rubberband.x0 }
         if (y < this.rubberband.y0) { this.rubberband.y = y } else { this.rubberband.y = this.rubberband.y0 }
       }
-      console.log('onDrag')
+      console.log('mousemove area')
     },
     stopDrag () {
       // preventEvent?
       this.rubberband.downed = false
       this.rubberband.visibility = 'hidden'
       this.selectRect(this.rubberband.x, this.rubberband.y, this.rubberband.width, this.rubberband.height)
-      console.log('stopDrag')
+      console.log('mouseup area')
     },
     selectRect (x, y, width, height) {
       this.selection = []
@@ -114,7 +114,7 @@ export default {
       this.processSelection()
     },
     move (param) {
-      console.log('move table!')
+      console.log('move table>>>>')
       console.log(param)
       for (let i = 0; i < param.length; i++) {
         this.selection[i].x = param[i].x
@@ -122,11 +122,13 @@ export default {
       }
     },
     select (table, multi) {
-      console.log('select table n parent Component!')
-      console.log('table')
-      console.log(table)
-      console.log('multi')
-      console.log(multi)
+      console.log('selection')
+      console.log(this.selection)
+      // console.log('select table n parent Component!')
+      // console.log('table')
+      // console.log(table)
+      // console.log('multi')
+      // console.log(multi)
       // console.log('table')
       // console.log(table)
       // console.log('multi')
@@ -141,12 +143,8 @@ export default {
           //   this.selection.splice(i, 1)
           // }
         } else {
-          // let tIndex = this.tables.indexOf(table)
-          // if (this.selection[0] === tIndex) {
-          //   return
-          // }
-          // this.selection = [tIndex]
           if (this.selection[0] === table) {
+            console.log('this.selection[0] === table')
             return
           }
           this.selection = [table]
@@ -182,12 +180,11 @@ export default {
       }
     },
     areaClick (e) {
-      console.log('zz')
+      console.log('area click')
       if (this.rubberband.dragged) {
         this.rubberband.dragged = false
         return
       }
-      console.log('AREA CLICK')
       let addtable = this.dom.addtable
       let newtable = false
       if (this.adding) {
@@ -208,7 +205,7 @@ export default {
         //   // this.tables.splice(0, 1, newtable)
         // }, 1500)
       }
-      this.select(newtable, false)
+      this.select(newtable)
     }
   },
   components: {
