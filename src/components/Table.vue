@@ -7,7 +7,10 @@
         <td class="table__title" colspan="2">{{data.name}}</td>
       </tr>
     </thead>
-    <tbody>
+    <template v-for="row in rows">
+      <db-row :data="row"></db-row>
+    </template>
+    <!-- <tbody>
       <tr>
         <td>
           <div class="table__title table__title--primary table__title--key">id</div>
@@ -16,11 +19,12 @@
           <td class="table__typehint"></td>
         </td>
       </tr>
-    </tbody>
+    </tbody> -->
   </table>
 </div>
 </template>
 <script>
+import Row from '@/components/Row'
 
 export default {
   name: 'db-table',
@@ -30,12 +34,16 @@ export default {
   },
   data () {
     return {
+      rows: [], // array of all rows (each row is a vue-component)
       addingTable: true,
       delta: {}
     }
   },
   methods: {
-    // Drag'n'Drop
+    addRow () {
+      console.log('Methos from table add ROW!!!')
+    },
+    // Drag'n'Drop and click event callbacks
     mousedownTable (e) {
       // this.$emit('tableclick', this.data)
       // console.log(' t startDrag')
@@ -111,6 +119,9 @@ export default {
       this.$emit('tableclick', this.data)
       // at this point parent method called
     }
+  },
+  components: {
+    'db-row': Row
   }
 }
 </script>

@@ -8,7 +8,8 @@
     <rubberband :data="rubberband"></rubberband>
   </div>
   <div class="controls">
-    <input class="btn btn-default" type="button" value="Add table" @click="preAdd" :value="dom.addtable.value">
+    <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
+    <input class="btn btn-default" type="button" value="Default value" @click="addRow" :value="dom.addrow.value">
   </div>
 </div>
 </template>
@@ -39,6 +40,9 @@ export default {
         addtable: {
           values: ['Add table', 'Place table'],
           value: 'Add table'
+        },
+        addrow: {
+          value: 'Add field'
         }
       },
       // rubberband info
@@ -172,6 +176,7 @@ export default {
       this.tables.push(newtable) // превратить в объект Класса TableObject, например
       return newtable
     },
+    // Add table button clicked
     preAdd () {
       let addtable = this.dom.addtable
       if (this.adding) {
@@ -181,6 +186,11 @@ export default {
         this.adding = true
         addtable.value = addtable.values[1]
       }
+    },
+    // Add row button clicked
+    addRow () {
+      console.log('AddRow')
+      this.selection[0].addRow('newrow')
     },
     areaClick (e) {
       console.log('area click')
