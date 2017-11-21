@@ -7,7 +7,7 @@
         <td class="table__title" colspan="2">{{data.name}}</td>
       </tr>
     </thead>
-    <template v-for="row in rows">
+    <template v-for="row in data.rows">
       <db-row :data="row"></db-row>
     </template>
     <!-- <tbody>

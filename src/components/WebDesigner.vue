@@ -173,10 +173,11 @@ export default {
     addTable (name, x, y) {
       // let max = this.getMaxZ()
       // create new component
-      console.log('TableModel')
-      console.log(TableModel)
       let newtable = new TableModel({x: x, y: y, name: name, selected: false})
-      this.tables.push(newtable) // превратить в объект Класса TableObject, например
+      let r = newtable.addRow('id', {ai: true})
+      console.log('r')
+      console.log(r)
+      this.tables.push(newtable)
       return newtable
     },
     // Add table button clicked

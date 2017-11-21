@@ -1,3 +1,5 @@
+import RowModel from '@/models/row.js'
+
 export default class Table {
   constructor (data) {
     this.x = data.x
@@ -7,7 +9,14 @@ export default class Table {
 
     this.rows = []
   }
-  addRow () {
-    console.log('addRow table method!')
+  addRow (title, data) {
+    let r = new RowModel(this, title, data)
+    this.rows.push(r)
+    return r
+    // console.log('title')
+    // console.log(title)
+    // console.log('data')
+    // console.log(data)
+    // console.log('addRow table method!')
   }
 }
