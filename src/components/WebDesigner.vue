@@ -18,6 +18,7 @@
 // import axios from 'axios'
 
 // const API_BASE = 'http://websqldesignerserver'
+import TableModel from '@/models/table.js'
 
 import Table from '@/components/Table'
 import RubberBand from '@/components/RubberBand'
@@ -172,7 +173,9 @@ export default {
     addTable (name, x, y) {
       // let max = this.getMaxZ()
       // create new component
-      let newtable = {x: x, y: y, name: name, selected: false}
+      console.log('TableModel')
+      console.log(TableModel)
+      let newtable = new TableModel({x: x, y: y, name: name, selected: false})
       this.tables.push(newtable) // превратить в объект Класса TableObject, например
       return newtable
     },
