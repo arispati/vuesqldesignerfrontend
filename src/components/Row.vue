@@ -1,8 +1,8 @@
 <template>
-  <tbody class="table__row">
+  <tbody class="table__row" @click="rowClick">
       <tr>
-        <td class="table__row-title">
-          <div class="table__row-title--primary table__row-title--key">row text</div>
+        <td :class="{ 'table__row-title--selected': data.selected }" class="table__row-title table__row-title--primary table__row-title--key">
+          <div>row text</div>
         </td>
         <td>
           <td class="table__row-typehint"></td>
@@ -23,7 +23,12 @@ export default {
       title: ''
     }
   },
-  methods: {}
+  methods: {
+    rowClick () {
+      this.$emit('rowclick', this.data)
+      // at this point parent method called
+    }
+  }
 }
 </script>
 
@@ -31,6 +36,27 @@ export default {
   .table__row {
     font-weight: bold;
   }
+  .table__row-title {
+    div {
+      position: relative;
+    }
+    div::before {
+      position: absolute;
+      content: '';
+    }
+    &--selected {
+      div {
+        padding-left: 20px;
+      }
+      div::before {
+        left: 5px;
+        // bottom: 0px;
+        // content: "\00BB";
+        content: "\2714";
+      }
+    }
+  }
+
   // .row--selected {
   // }
 </style>

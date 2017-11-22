@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <template v-for="row in data.rows">
-      <db-row :data="row"></db-row>
+      <db-row @rowclick="rowClick" :data="row"></db-row>
     </template>
     <!-- <tbody>
       <tr>
@@ -118,6 +118,9 @@ export default {
       console.log('table click')
       this.$emit('tableclick', this.data)
       // at this point parent method called
+    },
+    rowClick (row) {
+      this.$emit('rowclick', {row: row, table: this.data})
     }
   },
   components: {

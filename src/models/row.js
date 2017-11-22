@@ -7,4 +7,13 @@ export default class Row {
     this.data.title = title
     // this.keys = []
   }
+  select () {
+    if (this.selected) { return }
+    this.selected = true
+  }
+  deselect () {
+    if (!this.selected) { return }
+    this.selected = false
+    // this.collapse()
+  }
 }

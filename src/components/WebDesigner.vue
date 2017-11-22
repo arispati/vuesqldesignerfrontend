@@ -3,7 +3,7 @@
   <div class="area" :class="{ 'area--adding': adding }" @click="areaClick"
     @mousedown="mousedownArea">
     <template v-for="table in tables">
-      <db-table v-on:tableclick="select" v-on:tablemove="move" :data="table" :selection="selection"></db-table>
+      <db-table @rowclick="selectRow" v-on:tableclick="select" v-on:tablemove="move" :data="table" :selection="selection"></db-table>
     </template>
     <rubberband :data="rubberband"></rubberband>
   </div>
@@ -36,6 +36,7 @@ export default {
     return {
       tables: [], // array of all tables (each table is a vue-component)
       selection: [],
+      selectedRow: false, // selected row
       adding: false, // add table mode
       dom: {
         addtable: {
@@ -129,6 +130,17 @@ export default {
         this.selection[i].y = param[i].y
       }
     },
+    // select row
+    selectRow (data) {
+      let tIndex = this.tables.indexOf(data.table)
+      let rIndex = this.tables[tIndex].rows.indexOf(data.row)
+      let row = this.tables[tIndex].rows[rIndex]
+      if (this.selectedRow === row) { return }
+      if (this.selectedRow) { this.selectedRow.deselect() }
+      this.selectedRow = row
+      if (this.selectedRow) { this.selectedRow.select() }
+    },
+    // select table
     select (table, multi) {
       console.log('selection')
       console.log(this.selection)
@@ -164,10 +176,12 @@ export default {
     },
     processSelection () {
       for (let i = 0; i < this.tables.length; i++) {
-        this.$set(this.tables[i], 'selected', false)
+        this.tables[i].selected = false
+        // this.$set(this.tables[i], 'selected', false)
       }
       for (let i = 0; i < this.selection.length; i++) {
-        this.$set(this.selection[i], 'selected', true)
+        this.selection[i].selected = true
+        // this.$set(this.selection[i], 'selected', true)
       }
     },
     addTable (name, x, y) {
