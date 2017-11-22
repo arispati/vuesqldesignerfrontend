@@ -132,9 +132,12 @@ export default {
     },
     // select row
     selectRow (data) {
-      let tIndex = this.tables.indexOf(data.table)
-      let rIndex = this.tables[tIndex].rows.indexOf(data.row)
-      let row = this.tables[tIndex].rows[rIndex]
+      let row = data
+      if (data) {
+        let tIndex = this.tables.indexOf(data.table)
+        let rIndex = this.tables[tIndex].rows.indexOf(data.row)
+        row = this.tables[tIndex].rows[rIndex]
+      }
       if (this.selectedRow === row) { return }
       if (this.selectedRow) { this.selectedRow.deselect() }
       this.selectedRow = row
@@ -237,6 +240,7 @@ export default {
         // }, 1500)
       }
       this.select(newtable)
+      this.selectRow(false)
     }
   },
   components: {

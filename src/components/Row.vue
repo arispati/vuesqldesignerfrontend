@@ -1,5 +1,5 @@
 <template>
-  <tbody class="table__row" @click="rowClick">
+  <tbody class="table__row" @click="rowClick" @mousedown.stop="mousedownRow">
       <tr>
         <td :class="{ 'table__row-title--selected': data.selected }" class="table__row-title table__row-title--primary table__row-title--key">
           <div>row text</div>
@@ -27,6 +27,9 @@ export default {
     rowClick () {
       this.$emit('rowclick', this.data)
       // at this point parent method called
+    },
+    mousedownRow () {
+
     }
   }
 }

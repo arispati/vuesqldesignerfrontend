@@ -1,8 +1,7 @@
 <template>
-<div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click.stop="tableClick"
- @mousedown.stop="mousedownTable">
+<div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click.stop="tableClick">
   <table>
-    <thead>
+    <thead @mousedown.stop="mousedownTable">
       <tr>
         <td class="table__title" colspan="2">{{data.name}}</td>
       </tr>
@@ -45,6 +44,7 @@ export default {
     },
     // Drag'n'Drop and click event callbacks
     mousedownTable (e) {
+      console.log(e.target)
       // this.$emit('tableclick', this.data)
       // console.log(' t startDrag')
       // console.log('this.selection before')
