@@ -16,7 +16,7 @@ export default {
   name: 'db-row',
   props: ['data'],
   created () {
-    console.log('row component created')
+    // console.log('row component created')
   },
   data () {
     return {
@@ -25,6 +25,7 @@ export default {
   },
   methods: {
     rowClick () {
+      console.log('Row component template -> onclick -> Row component:method->rowClick {emit "rowclick"}')
       this.$emit('rowclick', this.data)
       // at this point parent method called
     },

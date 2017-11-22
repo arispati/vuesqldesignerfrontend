@@ -29,7 +29,7 @@ export default {
   name: 'db-table',
   props: ['data', 'selection'],
   created () {
-    console.log('table component created')
+    //  console.log('table component created')
   },
   data () {
     return {
@@ -40,25 +40,25 @@ export default {
   },
   methods: {
     addRow () {
-      console.log('Methos from table add ROW!!!')
+      // console.log('Methos from table add ROW!!!')
     },
     // Drag'n'Drop and click event callbacks
     mousedownTable (e) {
-      console.log(e.target)
+      // console.log(e.target)
       // this.$emit('tableclick', this.data)
       // console.log(' t startDrag')
       // console.log('this.selection before')
       // console.log(this.selection)
-      console.log('mousedown table')
+      // console.log('mousedown table')
       if (!this.data.selected) {
-        this.$emit('tableclick', this.data)
+        this.$emit('tableclick', this.data, false, true)
       }
       // this.$emit('tableclick', this.data)
       // console.log('this.selection after')
       // console.log(this.selection)
 
       this.$nextTick(function () {
-        console.log('mousedown table nextTick')
+        // console.log('mousedown table nextTick')
         let n = this.selection.length
         this.delta.x = new Array(n)
         this.delta.y = new Array(n)
@@ -90,7 +90,7 @@ export default {
     },
     mousemoveTable (e) {
       // first we detect if mousedown event called
-      console.log('mousemove table')
+      // console.log('mousemove table')
       if (this.delta.x && this.delta.y) {
         // console.log(' t onDrag')
         let deltaXandY = []
@@ -105,7 +105,7 @@ export default {
       }
     },
     mouseupTable () {
-      console.log('mouseup table')
+      // console.log('mouseup table')
       if (this.delta.x && this.delta.y) {
         delete this.delta.x
         delete this.delta.y
@@ -115,11 +115,14 @@ export default {
       // console.log(' t stopDrag')
     },
     tableClick () {
-      console.log('table click')
+      console.log('CLICK PROPAGATION - Table component template "onclick" -> Table component:method->tableClick {emit "tableclick"}')
+      // console.log('table click')
+      // this.$emit('rowclick', false)
       this.$emit('tableclick', this.data)
       // at this point parent method called
     },
     rowClick (row) {
+      console.log('Table component template "onrowclick" -> Table component:method->rowClick {emit "rowclick"}')
       this.$emit('rowclick', {row: row, table: this.data})
     }
   },

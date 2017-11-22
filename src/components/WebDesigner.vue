@@ -3,7 +3,7 @@
   <div class="area" :class="{ 'area--adding': adding }" @click="areaClick"
     @mousedown="mousedownArea">
     <template v-for="table in tables">
-      <db-table @rowclick="selectRow" v-on:tableclick="select" v-on:tablemove="move" :data="table" :selection="selection"></db-table>
+      <db-table @rowclick="selectRow" v-on:tableclick="tableClick" v-on:tablemove="move" :data="table" :selection="selection"></db-table>
     </template>
     <rubberband :data="rubberband"></rubberband>
   </div>
@@ -73,7 +73,7 @@ export default {
       this.rubberband.height = 0
       // this.rubberband.visibility = 'visible'
       this.rubberband.downed = true
-      console.log('mousedown area')
+      // console.log('mousedown area')
       // console.log(this.$el)
       document.addEventListener('mousemove', this.mousemoveArea)
       document.addEventListener('mouseup', this.mouseupArea)
@@ -93,14 +93,14 @@ export default {
         if (x < this.rubberband.x0) { this.rubberband.x = x } else { this.rubberband.x = this.rubberband.x0 }
         if (y < this.rubberband.y0) { this.rubberband.y = y } else { this.rubberband.y = this.rubberband.y0 }
       }
-      console.log('mousemove area')
+      // console.log('mousemove area')
     },
     mouseupArea () {
       // preventEvent?
       this.rubberband.downed = false
       this.rubberband.visibility = 'hidden'
       this.selectRect(this.rubberband.x, this.rubberband.y, this.rubberband.width, this.rubberband.height)
-      console.log('mouseup area')
+      // console.log('mouseup area')
       document.removeEventListener('mousemove', this.mousemoveArea)
       document.removeEventListener('mouseup', this.mouseupArea)
     },
@@ -123,15 +123,24 @@ export default {
       this.processSelection()
     },
     move (param) {
-      console.log('move table>>>>')
-      console.log(param)
       for (let i = 0; i < param.length; i++) {
         this.selection[i].x = param[i].x
         this.selection[i].y = param[i].y
       }
     },
+    tableClick (table, multi, newSelect) {
+      if (newSelect) {
+        this.selectRow(false)
+      }
+      // console.log('Table Click')
+      // this.selectRow(false)
+      console.log('(final) Webdesigner component template "ontableclick" -> Webdesigner component:method->tableClick')
+      this.select(table, multi)
+    },
     // select row
     selectRow (data) {
+      console.log('Webdesigner component template "onrowclick" -> Webdesigner component:method->selectRow')
+      // console.log('rowclick')
       let row = data
       if (data) {
         let tIndex = this.tables.indexOf(data.table)
@@ -145,8 +154,6 @@ export default {
     },
     // select table
     select (table, multi) {
-      console.log('selection')
-      console.log(this.selection)
       // console.log('select table n parent Component!')
       // console.log('table')
       // console.log(table)
@@ -167,7 +174,7 @@ export default {
           // }
         } else {
           if (this.selection[0] === table) {
-            console.log('this.selection[0] === table')
+            // console.log('this.selection[0] === table')
             return
           }
           this.selection = [table]
@@ -192,8 +199,9 @@ export default {
       // create new component
       let newtable = new TableModel({x: x, y: y, name: name, selected: false})
       let r = newtable.addRow('id', {ai: true})
-      console.log('r')
+      // console.log('r')
       console.log(r)
+
       this.tables.push(newtable)
       return newtable
     },
@@ -210,11 +218,11 @@ export default {
     },
     // Add row button clicked
     addRow () {
-      console.log('AddRow')
+      // console.log('AddRow')
       this.selection[0].addRow('newrow')
     },
     areaClick (e) {
-      console.log('area click')
+      // console.log('area click')
       if (this.rubberband.dragged) {
         this.rubberband.dragged = false
         return
