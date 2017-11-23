@@ -1,5 +1,5 @@
 <template>
-<div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click.stop="tableClick">
+<div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click.stop="clickTable">
   <table>
     <thead @mousedown.stop="mousedownTable">
       <tr>
@@ -7,7 +7,7 @@
       </tr>
     </thead>
     <template v-for="row in data.rows">
-      <db-row @rowclick="rowClick" :data="row"></db-row>
+      <db-row @clickrow="clickRow" :data="row"></db-row>
     </template>
     <!-- <tbody>
       <tr>
@@ -51,7 +51,7 @@ export default {
       // console.log(this.selection)
       // console.log('mousedown table')
       if (!this.data.selected) {
-        this.$emit('tableclick', this.data, false, true)
+        this.$emit('clicktable', this.data, false, true)
       }
       // this.$emit('tableclick', this.data)
       // console.log('this.selection after')
@@ -114,16 +114,16 @@ export default {
       document.removeEventListener('mouseup', this.mouseupTable)
       // console.log(' t stopDrag')
     },
-    tableClick () {
-      console.log('CLICK PROPAGATION - Table component template "onclick" -> Table component:method->tableClick {emit "tableclick"}')
+    clickTable () {
+      console.log('CLICK PROPAGATION - Table component template "onclick" -> Table component:method->clickTable {emit "clicktable"}')
       // console.log('table click')
       // this.$emit('rowclick', false)
-      this.$emit('tableclick', this.data)
+      this.$emit('clicktable', this.data)
       // at this point parent method called
     },
-    rowClick (row) {
-      console.log('Table component template "onrowclick" -> Table component:method->rowClick {emit "rowclick"}')
-      this.$emit('rowclick', {row: row, table: this.data})
+    clickRow (row) {
+      console.log('Table component template "onclickrow" -> Table component:method->clickrow {emit "clickrow"}')
+      this.$emit('clickrow', {row: row, table: this.data})
     }
   },
   components: {

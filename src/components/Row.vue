@@ -1,5 +1,5 @@
 <template>
-  <tbody class="table__row" @click="rowClick" @mousedown.stop="mousedownRow">
+  <tbody class="table__row" @click="clickRow" @mousedown.stop="mousedownRow">
       <tr>
         <td :class="{ 'table__row-title--selected': data.selected }" class="table__row-title table__row-title--primary table__row-title--key">
           <div>row text</div>
@@ -24,9 +24,9 @@ export default {
     }
   },
   methods: {
-    rowClick () {
-      console.log('Row component template -> onclick -> Row component:method->rowClick {emit "rowclick"}')
-      this.$emit('rowclick', this.data)
+    clickRow () {
+      console.log('Row component template -> onclick -> Row component:method->clickRow {emit "clickrow"}')
+      this.$emit('clickrow', this.data)
       // at this point parent method called
     },
     mousedownRow () {

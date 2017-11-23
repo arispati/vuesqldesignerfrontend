@@ -1,9 +1,9 @@
 <template>
   <div>
-  <div class="area" :class="{ 'area--adding': adding }" @click="areaClick"
+  <div class="area" :class="{ 'area--adding': adding }" @click="clickArea"
     @mousedown="mousedownArea">
     <template v-for="table in tables">
-      <db-table @rowclick="selectRow" v-on:tableclick="tableClick" v-on:tablemove="move" :data="table" :selection="selection"></db-table>
+      <db-table @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"></db-table>
     </template>
     <rubberband :data="rubberband"></rubberband>
   </div>
@@ -128,18 +128,18 @@ export default {
         this.selection[i].y = param[i].y
       }
     },
-    tableClick (table, multi, newSelect) {
+    clickTable (table, multi, newSelect) {
       if (newSelect) {
         this.selectRow(false)
       }
       // console.log('Table Click')
       // this.selectRow(false)
-      console.log('(final) Webdesigner component template "ontableclick" -> Webdesigner component:method->tableClick')
+      console.log('(final) Webdesigner component template "onclicktable" -> Webdesigner component:method->clickTable')
       this.select(table, multi)
     },
     // select row
     selectRow (data) {
-      console.log('Webdesigner component template "onrowclick" -> Webdesigner component:method->selectRow')
+      console.log('Webdesigner component template "onclickrow" -> Webdesigner component:method->selectRow')
       // console.log('rowclick')
       let row = data
       if (data) {
@@ -221,7 +221,7 @@ export default {
       // console.log('AddRow')
       this.selection[0].addRow('newrow')
     },
-    areaClick (e) {
+    clickArea (e) {
       // console.log('area click')
       if (this.rubberband.dragged) {
         this.rubberband.dragged = false
