@@ -56,7 +56,6 @@ export default {
         width: 0,
         height: 0,
         dragged: false,
-        downed: false,
         visibility: 'hidden'
       },
       webdesigner: 'this is web designer component'
@@ -71,33 +70,26 @@ export default {
       this.rubberband.y = this.rubberband.y0 = y
       this.rubberband.width = 0
       this.rubberband.height = 0
-      // this.rubberband.visibility = 'visible'
-      this.rubberband.downed = true
-      // console.log('mousedown area')
-      // console.log(this.$el)
       document.addEventListener('mousemove', this.mousemoveArea)
       document.addEventListener('mouseup', this.mouseupArea)
     },
     mousemoveArea (e) {
       // if condition is true - mousedown event called
       // if (this.rubberband.visibility === 'visible') {
-      if (this.rubberband.downed) {
-        if (this.rubberband.visibility === 'hidden') {
-          this.rubberband.visibility = 'visible'
-        }
-        this.rubberband.dragged = true
-        let x = e.clientX + window.pageXOffset
-        let y = e.clientY + window.pageYOffset
-        this.rubberband.width = Math.abs(x - this.rubberband.x0)
-        this.rubberband.height = Math.abs(y - this.rubberband.y0)
-        if (x < this.rubberband.x0) { this.rubberband.x = x } else { this.rubberband.x = this.rubberband.x0 }
-        if (y < this.rubberband.y0) { this.rubberband.y = y } else { this.rubberband.y = this.rubberband.y0 }
+      if (this.rubberband.visibility === 'hidden') {
+        this.rubberband.visibility = 'visible'
       }
+      this.rubberband.dragged = true
+      let x = e.clientX + window.pageXOffset
+      let y = e.clientY + window.pageYOffset
+      this.rubberband.width = Math.abs(x - this.rubberband.x0)
+      this.rubberband.height = Math.abs(y - this.rubberband.y0)
+      if (x < this.rubberband.x0) { this.rubberband.x = x } else { this.rubberband.x = this.rubberband.x0 }
+      if (y < this.rubberband.y0) { this.rubberband.y = y } else { this.rubberband.y = this.rubberband.y0 }
       // console.log('mousemove area')
     },
     mouseupArea () {
       // preventEvent?
-      this.rubberband.downed = false
       this.rubberband.visibility = 'hidden'
       this.selectRect(this.rubberband.x, this.rubberband.y, this.rubberband.width, this.rubberband.height)
       // console.log('mouseup area')
@@ -154,16 +146,6 @@ export default {
     },
     // select table
     select (table, multi) {
-      // console.log('select table n parent Component!')
-      // console.log('table')
-      // console.log(table)
-      // console.log('multi')
-      // console.log(multi)
-      // console.log('table')
-      // console.log(table)
-      // console.log('multi')
-      // console.log(multi)
-      // console.log(this.tables.indexOf(table))
       if (table) {
         if (multi) {
           // let i = this.selection.indexOf(table)
