@@ -40,6 +40,12 @@ export default {
     }
   },
   methods: {
+    removeSelection () {
+      let sel = (window.getSelection ? window.getSelection() : document.selection)
+      if (!sel) { return }
+      if (sel.empty) { sel.empty() }
+      if (sel.removeAllRanges) { sel.removeAllRanges() }
+    },
     addRow () {
       // console.log('Methos from table add ROW!!!')
     },
@@ -93,6 +99,7 @@ export default {
       // document.addEventListener('mouseup', this.stopDrag)
     },
     mousemoveTable (e) {
+      this.removeSelection()
       // first we detect if mousedown event called
       // console.log('mousemove table')
       if (this.delta.x && this.delta.y) {
