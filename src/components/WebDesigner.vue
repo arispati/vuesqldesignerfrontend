@@ -159,8 +159,8 @@ export default {
           //   this.selection.splice(i, 1)
           // }
         } else {
-          if (this.selection[0] === table) {
-            // console.log('this.selection[0] === table')
+          if (this.selection.length <= 1 && this.selection[0] === table) {
+            console.log('this.selection[0] === table')
             return
           }
           this.selection = [table]

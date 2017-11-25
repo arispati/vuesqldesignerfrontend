@@ -35,7 +35,8 @@ export default {
     return {
       rows: [], // array of all rows (each row is a vue-component)
       addingTable: true,
-      delta: {}
+      delta: {},
+      tableMoved: false
     }
   },
   methods: {
@@ -95,6 +96,7 @@ export default {
       // first we detect if mousedown event called
       // console.log('mousemove table')
       if (this.delta.x && this.delta.y) {
+        this.tableMoved = true
         // console.log(' t onDrag')
         let deltaXandY = []
         for (let i = 0; i < this.delta.x.length; i++) {
@@ -106,7 +108,7 @@ export default {
         }
         this.$emit('tablemove', deltaXandY)
       }
-      console.log('Table component->mousedownTable {emit "tablemove"}')
+      console.log('Table component->mousemoveTable {emit "tablemove"}')
     },
     mouseupTable () {
       // console.log('mouseup table')
@@ -123,6 +125,10 @@ export default {
       console.log('Table component->clickTable {emit "clicktable"}')
       // console.log('table click')
       // this.$emit('rowclick', false)
+      if (this.tableMoved) {
+        this.tableMoved = false
+        return
+      }
       this.$emit('clicktable', this.data)
       // at this point parent method called
     },
