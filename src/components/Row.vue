@@ -30,7 +30,7 @@ export default {
       // at this point parent method called
     },
     mousedownRow () {
-
+      console.log('Row component template -> onmousedown -> Row component:method->mousedownRow')
     }
   }
 }

@@ -51,7 +51,10 @@ export default {
       // console.log(this.selection)
       // console.log('mousedown table')
       if (!this.data.selected) {
+        console.log('Table component template "onmousedown" -> Table component:method->mousedownTable {emit "clicktable"}')
         this.$emit('clicktable', this.data, false, true)
+      } else {
+        console.log('Table component template "onmousedown" -> Table component:method->mousedownTable {...}')
       }
       // this.$emit('tableclick', this.data)
       // console.log('this.selection after')
@@ -103,6 +106,7 @@ export default {
         }
         this.$emit('tablemove', deltaXandY)
       }
+      console.log('Table component template "onmousemove" -> Table component:method->mousedownTable {emit "tablemove"}')
     },
     mouseupTable () {
       // console.log('mouseup table')
@@ -112,10 +116,11 @@ export default {
       }
       document.removeEventListener('mousemove', this.mousemoveTable)
       document.removeEventListener('mouseup', this.mouseupTable)
+      console.log('Table component template "onmouseup" -> Table component:method->mouseupTable {...}')
       // console.log(' t stopDrag')
     },
     clickTable () {
-      console.log('CLICK PROPAGATION - Table component template "onclick" -> Table component:method->clickTable {emit "clicktable"}')
+      console.log('Table component template "onclick" -> Table component:method->clickTable {emit "clicktable"}')
       // console.log('table click')
       // this.$emit('rowclick', false)
       this.$emit('clicktable', this.data)

@@ -72,6 +72,7 @@ export default {
       this.rubberband.height = 0
       document.addEventListener('mousemove', this.mousemoveArea)
       document.addEventListener('mouseup', this.mouseupArea)
+      console.log('WebDesigner (area) component template -> onmousedown -> WebDesigner component:method->mousedownArea')
     },
     mousemoveArea (e) {
       // if condition is true - mousedown event called
@@ -86,6 +87,7 @@ export default {
       this.rubberband.height = Math.abs(y - this.rubberband.y0)
       if (x < this.rubberband.x0) { this.rubberband.x = x } else { this.rubberband.x = this.rubberband.x0 }
       if (y < this.rubberband.y0) { this.rubberband.y = y } else { this.rubberband.y = this.rubberband.y0 }
+      console.log('WebDesigner (area) component template -> onmousemove -> WebDesigner component:method->mousemoveArea')
       // console.log('mousemove area')
     },
     mouseupArea () {
@@ -95,6 +97,7 @@ export default {
       // console.log('mouseup area')
       document.removeEventListener('mousemove', this.mousemoveArea)
       document.removeEventListener('mouseup', this.mouseupArea)
+      console.log('WebDesigner (area) component template -> onmouseup -> WebDesigner component:method->mouseupArea')
     },
     selectRect (x, y, width, height) {
       this.selection = []
@@ -204,7 +207,7 @@ export default {
       this.selection[0].addRow('newrow')
     },
     clickArea (e) {
-      // console.log('area click')
+      console.log('WebDesigner (area) component template -> onclick -> WebDesigner component:method->clickArea')
       if (this.rubberband.dragged) {
         this.rubberband.dragged = false
         return
