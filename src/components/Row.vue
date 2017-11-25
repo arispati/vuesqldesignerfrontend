@@ -25,12 +25,12 @@ export default {
   },
   methods: {
     clickRow () {
-      console.log('Row component template -> onclick -> Row component:method->clickRow {emit "clickrow"}')
+      console.log('Row component->clickRow {emit "clickrow"}')
       this.$emit('clickrow', this.data)
       // at this point parent method called
     },
     mousedownRow () {
-      console.log('Row component template -> onmousedown -> Row component:method->mousedownRow')
+      console.log('Row component->mousedownRow')
     }
   }
 }

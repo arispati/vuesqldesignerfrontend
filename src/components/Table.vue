@@ -51,10 +51,10 @@ export default {
       // console.log(this.selection)
       // console.log('mousedown table')
       if (!this.data.selected) {
-        console.log('Table component template "onmousedown" -> Table component:method->mousedownTable {emit "clicktable"}')
+        console.log('Table component->mousedownTable {emit "clicktable"}')
         this.$emit('clicktable', this.data, false, true)
       } else {
-        console.log('Table component template "onmousedown" -> Table component:method->mousedownTable {...}')
+        console.log('Table component->mousedownTable {...}')
       }
       // this.$emit('tableclick', this.data)
       // console.log('this.selection after')
@@ -106,7 +106,7 @@ export default {
         }
         this.$emit('tablemove', deltaXandY)
       }
-      console.log('Table component template "onmousemove" -> Table component:method->mousedownTable {emit "tablemove"}')
+      console.log('Table component->mousedownTable {emit "tablemove"}')
     },
     mouseupTable () {
       // console.log('mouseup table')
@@ -116,18 +116,18 @@ export default {
       }
       document.removeEventListener('mousemove', this.mousemoveTable)
       document.removeEventListener('mouseup', this.mouseupTable)
-      console.log('Table component template "onmouseup" -> Table component:method->mouseupTable {...}')
+      console.log('Table component->mouseupTable {...}')
       // console.log(' t stopDrag')
     },
     clickTable () {
-      console.log('Table component template "onclick" -> Table component:method->clickTable {emit "clicktable"}')
+      console.log('Table component->clickTable {emit "clicktable"}')
       // console.log('table click')
       // this.$emit('rowclick', false)
       this.$emit('clicktable', this.data)
       // at this point parent method called
     },
     clickRow (row) {
-      console.log('Table component template "onclickrow" -> Table component:method->clickrow {emit "clickrow"}')
+      console.log('Table component->clickrow {emit "clickrow"}')
       this.$emit('clickrow', {row: row, table: this.data})
     }
   },
