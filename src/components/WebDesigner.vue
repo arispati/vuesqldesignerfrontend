@@ -15,13 +15,15 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 
-// const API_BASE = 'http://websqldesignerserver'
 import TableModel from '@/models/table.js'
 
 import Table from '@/components/Table'
 import RubberBand from '@/components/RubberBand'
+import Fn from '@/functions.js'
+
+const API_BASE = 'http://websqldesignerserver'
 
 export default {
   name: 'webdesigner',
@@ -31,9 +33,14 @@ export default {
   //    console.log('HTTP response!!!')
   //    console.log(response)
   //  })
+    axios({method: 'get', url: `${API_BASE}/corsbridge.php?db=mysql`}).then((xmlDoc) => {
+      let xml = Fn.fromXMLText(xmlDoc.data)
+      this.DATATYPES = xml.documentElement
+    })
   },
   data () {
     return {
+      DATATYPES: false, // datatypes for DB
       tables: [], // array of all tables (each table is a vue-component)
       selection: [],
       selectedRow: false, // selected row
