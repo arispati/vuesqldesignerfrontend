@@ -6,7 +6,7 @@
           Name:
         </td>
         <td>
-          <input type="text"></input>
+          <input v-model="title" type="text"></input>
         </td>
       </tr>
       <tr v-show="data.expanded">
@@ -14,7 +14,7 @@
           Type:
         </td>
         <td>
-          <select>
+          <select v-model="type">
             <optgroup v-for="optgroup in data.owner.owner.selectDataTypes" :label=optgroup.label :style="{'background-color' : optgroup.backgroundColor}">
               <option v-for="option in optgroup.options">{{option.innerHTML}}</option>
             </optgroup>
@@ -39,12 +39,31 @@ export default {
   props: ['data'],
   created () {
     // console.log('row component created')
+    console.log('localData')
+    console.log(this.localData)
   },
   data () {
     return {
       // https://stackoverflow.com/questions/40408096/whats-the-correct-way-to-pass-props-as-initial-data-in-vue-js-2
       // https://stackoverflow.com/questions/728360/how-do-i-correctly-clone-a-javascript-object
-      localData: Object.assign({}, this.data)
+      // localData: this.data // Object.assign({}, this.data)
+      type: this.data.data.type,
+      title: this.data.data.title
+    }
+  },
+  // computed: {
+  //   test: {
+  //     cache: false,
+  //     get () {
+  //       console.log('watcherLocData!!')
+  //       return this.localData.data.title + ' ' + this.localData.data.type
+  //     }
+  //   }
+  // },
+  watch: {
+    type: function (val) {
+      console.log('type new vallue is: ')
+      console.log(val)
     }
   },
   methods: {
