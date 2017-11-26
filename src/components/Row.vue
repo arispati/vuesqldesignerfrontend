@@ -1,9 +1,27 @@
 <template>
   <tbody class="table__row" :class="{ 'table__row--expanded': data.expanded }" @click="clickRow" @mousedown.stop="mousedownRow">
+
       <tr v-show="data.expanded">
-        <td>ZZZ ZZZ ZZZ
+        <td>
+          Name:
+        </td>
+        <td>
+          <input type="text"></input>
         </td>
       </tr>
+      <tr v-show="data.expanded">
+        <td>
+          Type:
+        </td>
+        <td>
+          <select>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+          </select>
+        </td>
+      </tr>
+
       <tr v-show="!data.expanded" @dblclick.stop="dblclickRow">
         <td :class="{ 'table__row-title--selected': data.selected }" class="table__row-title table__row-title--primary table__row-title--key">
           <div>row text</div>
