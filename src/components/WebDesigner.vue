@@ -3,7 +3,7 @@
   <div class="area" :class="{ 'area--adding': adding }" @click="clickArea"
     @mousedown="mousedownArea">
     <template v-for="table in tables">
-      <db-table @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"></db-table>
+      <db-table @dblclickrow="expandRow" @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"></db-table>
     </template>
     <rubberband :data="rubberband"></rubberband>
   </div>
@@ -145,6 +145,13 @@ export default {
       // console.log('Table Click')
       // this.selectRow(false)
       this.select(table, multi)
+    },
+    // expand row
+    expandRow (data) {
+      console.log('Webdesigner component->expandRow')
+      // let row = data.row
+      // let table = row.owner
+      data.row.expand()
     },
     // select row
     selectRow (data) {

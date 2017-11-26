@@ -2,7 +2,7 @@ export default class Row {
   constructor (owner, title, data) {
     this.owner = owner
     this.selected = false
-    this.expanded = true
+    this.expanded = false
     this.data = {}
     this.data.title = title
     this.data.type = 0
@@ -26,7 +26,7 @@ export default class Row {
   deselect () {
     if (!this.selected) { return }
     this.selected = false
-    // this.collapse()
+    this.collapse()
   }
   expand () {
     if (this.expanded) { return }

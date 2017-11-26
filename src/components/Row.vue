@@ -4,7 +4,7 @@
         <td>ZZZ ZZZ ZZZ
         </td>
       </tr>
-      <tr v-show="!data.expanded">
+      <tr v-show="!data.expanded" @dblclick.stop="dblclickRow">
         <td :class="{ 'table__row-title--selected': data.selected }" class="table__row-title table__row-title--primary table__row-title--key">
           <div>row text</div>
         </td>
@@ -24,7 +24,9 @@ export default {
   },
   data () {
     return {
-      title: ''
+      // https://stackoverflow.com/questions/40408096/whats-the-correct-way-to-pass-props-as-initial-data-in-vue-js-2
+      // https://stackoverflow.com/questions/728360/how-do-i-correctly-clone-a-javascript-object
+      localData: Object.assign({}, this.data)
     }
   },
   methods: {
@@ -32,6 +34,10 @@ export default {
       console.log('Row component->clickRow {emit "clickrow"}')
       this.$emit('clickrow', this.data)
       // at this point parent method called
+    },
+    dblclickRow () {
+      console.log('Row component->dblclickRow {emit "dblclickrow"}')
+      this.$emit('dblclickrow', this.data)
     },
     mousedownRow () {
       console.log('Row component->mousedownRow')

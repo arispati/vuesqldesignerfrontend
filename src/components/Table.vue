@@ -7,7 +7,7 @@
       </tr>
     </thead>
     <template v-for="row in data.rows">
-      <db-row @clickrow="clickRow" :data="row"></db-row>
+      <db-row @clickrow="clickRow" @dblclickrow="dblclickRow" :data="row"></db-row>
     </template>
     <!-- <tbody>
       <tr>
@@ -142,6 +142,10 @@ export default {
     clickRow (row) {
       console.log('Table component->clickrow {emit "clickrow"}')
       this.$emit('clickrow', {row: row, table: this.data})
+    },
+    dblclickRow (row) {
+      console.log('Table component->dblclickRow {emit "dblclickrow"}')
+      this.$emit('dblclickrow', {row: row, table: this.data})
     }
   },
   components: {
