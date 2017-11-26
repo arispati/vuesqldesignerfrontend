@@ -62,6 +62,12 @@ export default {
     }
   },
   methods: {
+    removeSelection () {
+      let sel = (window.getSelection ? window.getSelection() : document.selection)
+      if (!sel) { return }
+      if (sel.empty) { sel.empty() }
+      if (sel.removeAllRanges) { sel.removeAllRanges() }
+    },
     // rubberband methods
     mousedownArea (e) {
       let x = e.clientX + window.pageXOffset
@@ -75,6 +81,7 @@ export default {
       console.log('WebDesigner component->mousedownArea')
     },
     mousemoveArea (e) {
+      this.removeSelection()
       // if condition is true - mousedown event called
       // if (this.rubberband.visibility === 'visible') {
       if (this.rubberband.visibility === 'hidden') {
