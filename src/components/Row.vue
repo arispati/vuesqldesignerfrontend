@@ -1,11 +1,10 @@
 <template>
-  <tbody class="table__row table__row--expanded" v-if="data.expanded">
-    <tr>
-      <td>ZZZ</td>
-    </tr>
-  </tbody>
-  <tbody class="table__row" @click="clickRow" @mousedown.stop="mousedownRow" v-else>
-      <tr>
+  <tbody class="table__row" :class="{ 'table__row--expanded': data.expanded }" @click="clickRow" @mousedown.stop="mousedownRow">
+      <tr v-show="data.expanded">
+        <td>ZZZ ZZZ ZZZ
+        </td>
+      </tr>
+      <tr v-show="!data.expanded">
         <td :class="{ 'table__row-title--selected': data.selected }" class="table__row-title table__row-title--primary table__row-title--key">
           <div>row text</div>
         </td>
