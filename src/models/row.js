@@ -2,10 +2,22 @@ export default class Row {
   constructor (owner, title, data) {
     this.owner = owner
     this.selected = false
-    this.expanded = false
+    this.expanded = true
     this.data = {}
     this.data.title = title
+    this.data.type = 0
+    this.data.size = ''
+    this.data.def = null
+    this.data.nll = true
+    this.data.ai = false
+    this.data.comment = ''
     // this.keys = []
+    if (data) { this.update(data) }
+  }
+  update (data) {
+    if (data.nll && data.def && data.def.match(/^null$/i)) { data.def = null }
+    for (var p in data) { this.data[p] = data[p] }
+    if (!this.data.nll && this.data.def === null) { this.data.def = '' }
   }
   select () {
     if (this.selected) { return }
@@ -15,5 +27,13 @@ export default class Row {
     if (!this.selected) { return }
     this.selected = false
     // this.collapse()
+  }
+  expand () {
+    if (this.expanded) { return }
+    this.expanded = true
+  }
+  collapse () {
+    if (!this.expanded) { return }
+    this.expanded = false
   }
 }

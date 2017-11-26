@@ -1,5 +1,10 @@
 <template>
-  <tbody class="table__row" @click="clickRow" @mousedown.stop="mousedownRow">
+  <tbody class="table__row table__row--expanded" v-if="data.expanded">
+    <tr>
+      <td>ZZZ</td>
+    </tr>
+  </tbody>
+  <tbody class="table__row" @click="clickRow" @mousedown.stop="mousedownRow" v-else>
       <tr>
         <td :class="{ 'table__row-title--selected': data.selected }" class="table__row-title table__row-title--primary table__row-title--key">
           <div>row text</div>
