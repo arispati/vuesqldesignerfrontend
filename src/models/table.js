@@ -2,6 +2,7 @@ import RowModel from '@/models/row.js'
 
 export default class Table {
   constructor (data) {
+    this.owner = data.owner
     this.x = data.x
     this.y = data.y
     this.name = data.name

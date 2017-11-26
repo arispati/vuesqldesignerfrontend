@@ -36,10 +36,12 @@ export default {
     axios({method: 'get', url: `${API_BASE}/corsbridge.php?db=mysql`}).then((xmlDoc) => {
       let xml = Fn.fromXMLText(xmlDoc.data)
       this.DATATYPES = xml.documentElement
+      this.buildTypeSelect()
     })
   },
   data () {
     return {
+      selectDataTypes: false,
       DATATYPES: false, // datatypes for DB
       tables: [], // array of all tables (each table is a vue-component)
       selection: [],
@@ -69,6 +71,30 @@ export default {
     }
   },
   methods: {
+    // build typeSelect method located here
+    buildTypeSelect () {
+      let selectDataTypes = []
+      let gs = this.DATATYPES.getElementsByTagName('group')
+      for (let i = 0; i < gs.length; i++) {
+        let og = { options: [] }
+        let g = gs[i]
+        og.backgroundColor = g.getAttribute('color') || '#fff'
+        og.label = g.getAttribute('label')
+        let ts = g.getElementsByTagName('type')
+        for (let j = 0; j < ts.length; j++) {
+          let t = ts[j]
+          let o = {}
+          if (t.getAttribute('color')) { o.backgroundColor = t.getAttribute('color') }
+          if (t.getAttribute('note')) { o.title = t.getAttribute('note') }
+          o.innerHTML = t.getAttribute('label')
+          og.options.push(o)
+        }
+        selectDataTypes.push(og)
+      }
+      this.selectDataTypes = selectDataTypes
+      console.log(gs)
+      console.log(selectDataTypes)
+    },
     removeSelection () {
       let sel = (window.getSelection ? window.getSelection() : document.selection)
       if (!sel) { return }
@@ -204,7 +230,7 @@ export default {
     addTable (name, x, y) {
       // let max = this.getMaxZ()
       // create new component
-      let newtable = new TableModel({x: x, y: y, name: name, selected: false})
+      let newtable = new TableModel({x: x, y: y, name: name, selected: false, owner: this})
       let r = newtable.addRow('id', {ai: true})
       // console.log('r')
       console.log(r)
