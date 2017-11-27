@@ -3,13 +3,14 @@
   <div class="area" :class="{ 'area--adding': adding }" @click="clickArea"
     @mousedown="mousedownArea">
     <template v-for="table in tables">
-      <db-table @dblclickrow="expandRow" @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"></db-table>
+      <db-table @dblclickrow="expandRow" @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"  @updaterowdata="updateRowData"></db-table>
     </template>
     <rubberband :data="rubberband"></rubberband>
   </div>
   <div class="controls">
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
     <input class="btn btn-default" type="button" value="Default value" @click="addRow" :value="dom.addrow.value">
+    <input class="btn btn-default" type="button" value="Show Component Data" @click="showComponentData"></input>
   </div>
 </div>
 </template>
@@ -71,6 +72,10 @@ export default {
     }
   },
   methods: {
+    showComponentData () {
+      console.log('showComponentData')
+      console.log(this.tables)
+    },
     // build typeSelect method located here
     buildTypeSelect () {
       let selectDataTypes = []
@@ -178,6 +183,20 @@ export default {
       // let row = data.row
       // let table = row.owner
       data.row.expand()
+    },
+    updateRowData (rowdata) {
+      console.log('=========rowdata updated!========')
+      console.log(rowdata)
+      console.log('======================')
+      // find row
+      let tIndex = this.tables.indexOf(rowdata.row.owner)
+      let rIndex = this.tables[tIndex].rows.indexOf(rowdata.row)
+      let row = this.tables[tIndex].rows[rIndex]
+      this.setNewDataToRow(row, rowdata.newrowdata)
+    },
+    setNewDataToRow (row, newdata) {
+      row.data.title = newdata.title
+      row.data.type = newdata.type
     },
     // select row
     selectRow (data) {

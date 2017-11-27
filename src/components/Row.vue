@@ -24,7 +24,7 @@
 
       <tr v-show="!data.expanded" @dblclick.stop="dblclickRow">
         <td :class="{ 'table__row-title--selected': data.selected }" class="table__row-title table__row-title--primary table__row-title--key">
-          <div>row text</div>
+          <div>{{data.data.title}}</div>
         </td>
         <td>
           <td class="table__row-typehint"></td>
@@ -62,11 +62,26 @@ export default {
   // },
   watch: {
     type: function (val) {
-      console.log('type new vallue is: ')
-      console.log(val)
+      this.updateData()
+    },
+    title: function (val) {
+      this.updateData()
     }
   },
   methods: {
+    extractActualData () {
+      let actualData = {}
+      actualData.title = this.title
+      actualData.type = this.type
+      return actualData
+    },
+    updateData () {
+      // console.log('updateData')
+      // console.log('row data: ')
+      // console.log(this.data)
+      let actualData = this.extractActualData()
+      this.$emit('updaterowdata', {newrowdata: actualData, row: this.data})
+    },
     clickRow () {
       console.log('Row component->clickRow {emit "clickrow"}')
       this.$emit('clickrow', this.data)
