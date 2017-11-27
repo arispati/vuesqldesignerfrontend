@@ -7,7 +7,7 @@ export default class Table {
     this.y = data.y
     this.name = data.name
     this.selected = data.selected
-
+    this.keys = []
     this.rows = []
   }
   addRow (title, data) {

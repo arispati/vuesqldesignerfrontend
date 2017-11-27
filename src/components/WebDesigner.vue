@@ -6,11 +6,14 @@
       <db-table @dblclickrow="expandRow" @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"  @updaterowdata="updateRowData"></db-table>
     </template>
     <rubberband :data="rubberband"></rubberband>
+    <modal-keys-manager @closeModalKeysManager=closeModalKeysManager :visible="modalKeysManager.visible"></modal-keys-manager>
   </div>
   <div class="controls">
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
     <input class="btn btn-default" type="button" value="Default value" @click="addRow" :value="dom.addrow.value">
     <input class="btn btn-default" type="button" value="Show Component Data" @click="showComponentData"></input>
+    <hr>
+    <input class="btn btn-default" type="button" value="Keys" @click="keys"></input>
   </div>
 </div>
 </template>
@@ -22,6 +25,7 @@ import TableModel from '@/models/table.js'
 
 import Table from '@/components/Table'
 import RubberBand from '@/components/RubberBand'
+import ModalKeysManager from '@/components/ModalKeysManager'
 import Fn from '@/functions.js'
 
 const API_BASE = 'http://websqldesignerserver'
@@ -42,6 +46,10 @@ export default {
   },
   data () {
     return {
+      modalKeysManager: {
+        visible: false,
+        table: new TableModel({x: 0, y: 0, name: '', selected: false, owner: this})
+      },
       selectDataTypes: false,
       DATATYPES: false, // datatypes for DB
       tables: [], // array of all tables (each table is a vue-component)
@@ -72,6 +80,14 @@ export default {
     }
   },
   methods: {
+    closeModalKeysManager () {
+      this.modalKeysManager.visible = false
+    },
+    keys () {
+      console.log('keys')
+      // open modal dialog for keys modalKeysManager
+      this.modalKeysManager.visible = true
+    },
     showComponentData () {
       console.log('showComponentData')
       console.log(this.tables)
@@ -305,7 +321,8 @@ export default {
   },
   components: {
     'db-table': Table,
-    'rubberband': RubberBand
+    'rubberband': RubberBand,
+    'modal-keys-manager': ModalKeysManager
   }
 }
 </script>
