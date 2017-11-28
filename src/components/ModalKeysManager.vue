@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-window" v-show="visible">
+  <div class="modal-window" v-show="visible" @click.stop="emptyHandler">
     <div class="modal-window__inner">
     </div>
     <div class="modal-window__wrapper">
@@ -9,10 +9,10 @@
       <div class="modal-window__content">
         <fieldset>
           <legend>Keys in table ...</legend>
-          <select :disabled="!keyExists">
+          <select :disabled="false">
             <option>1: PRIMARY</option>
           </select>
-          <input type="button" value="Add key"></input>
+          <input type="button" value="Add key" @click="add"></input>
           <input type="button" value="Remove key" :disabled="!keyExists"></input>
         </fieldset>
         <fieldset></fieldset>
@@ -30,9 +30,17 @@ export default {
   created () {
   },
   updated () {
-    console.log('updated method run, now we can copy params to local data')
-    console.log(this.table.rows)
+    // console.log('updated method run, now we can copy params to local data')
+    // console.log(this.table.rows)
+    // console.log('localKeys: ')
+    // console.log(this.localKeys)
+    console.log('before erase')
+    // console.log(this.localKeys)
+    // this.erase()
+    console.log('after erase')
+    // console.log(this.localKeys)
     for (let i = 0; i < this.table.keys; i++) {
+      console.log('ITERATION')
       let key = this.table.keys[i]
       let localKey = {}
       localKey.key = key // reference value
@@ -55,13 +63,26 @@ export default {
   },
   computed: {
     keyExists: function () {
-      if (this.localKeys.length === 1) {
+      console.log('run computed')
+      if (this.localKeys.length) {
         return true
       }
       return false
     }
   },
   methods: {
+    emptyHandler () {},
+    erase () {
+      this.localKeys = []
+      this.localRows = []
+    },
+    add () {
+      let type = (this.localKeys.length ? 'INDEX' : 'PRIMARY')
+      let localKey = {}
+      localKey.type = localKey.name = type
+      localKey.localRows = []
+      this.localKeys.push(localKey)
+    },
     cancel () {
       this.$emit('closeModalKeysManager')
     }
