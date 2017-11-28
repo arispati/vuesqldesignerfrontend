@@ -17,7 +17,7 @@
           </select>
           <span>Выбрано: {{ selectedKey }}</span>
           <input type="button" value="Add key" @click="add"></input>
-          <input type="button" value="Remove key" :disabled="!keyExists"></input>
+          <input type="button" value="Remove key" :disabled="!keyExists" @click="remove"></input>
         </fieldset>
         <fieldset>
           <select v-model="selectedKey.type">
@@ -126,6 +126,17 @@ export default {
       localKey.type = type
       localKey.localRows = []
       this.localKeys.push(localKey)
+    },
+    remove () {
+      // console.log(this.selectedKey)
+      let index = this.localKeys.indexOf(this.selectedKey)
+      console.log(index)
+      this.localKeys.splice(index, 1)
+      // НЕ ЗАБЫТЬ ПОЧИСТИТЬ ССЫЛКИ НА КЛЮЧ ВО ВСЕХ СТРОКАХ !!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!!!!!
     },
     cancel () {
       this.$emit('closeModalKeysManager')
