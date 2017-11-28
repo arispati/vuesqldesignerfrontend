@@ -28,6 +28,10 @@
           </select>
           <input type="text" v-model="selectedKey.name"></input>
         </fieldset>
+        <div>
+          <p>{{this.localKeys}}</p>
+          <p>{{this.localRows}}</p>
+        </div>
         <input type="submit" value="Войти">
         <input type="submit" value="Отмена" @click="cancel">
       </div>
@@ -126,12 +130,18 @@ export default {
       localKey.type = type
       localKey.localRows = []
       this.localKeys.push(localKey)
+      this.selectedKey = localKey
     },
     remove () {
       // console.log(this.selectedKey)
       let index = this.localKeys.indexOf(this.selectedKey)
       console.log(index)
       this.localKeys.splice(index, 1)
+      if (this.localKeys.length) {
+        this.selectedKey = this.localKeys[this.localKeys.length - 1]
+      } else {
+        this.selectedKey = false
+      }
       // НЕ ЗАБЫТЬ ПОЧИСТИТЬ ССЫЛКИ НА КЛЮЧ ВО ВСЕХ СТРОКАХ !!!!!!!!!!!!!!
       // !!!!!!!!!!!!!!!!!!!!!!!!!
       // !!!!!!!!!!!!!!!!!!!!!!!!!
