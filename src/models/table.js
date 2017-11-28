@@ -1,4 +1,5 @@
 import RowModel from '@/models/row.js'
+import KeyModel from '@/models/key.js'
 
 export default class Table {
   constructor (data) {
@@ -19,5 +20,24 @@ export default class Table {
     // console.log('data')
     // console.log(data)
     // console.log('addRow table method!')
+  }
+  copy (table) {
+    this.x = table.x
+    this.y = table.y
+    this.name = table.name
+    this.rows = []
+    this.keys = []
+    for (let i = 0; i < table.rows.length; i++) {
+      let row = table.rows[i]
+      let copyrow = new RowModel(this, '', false)
+      copyrow.copy(row)
+      this.rows.push(copyrow)
+    }
+    for (let i = 0; i < table.keys.length; i++) {
+      let key = table.keys[i]
+      let copykey = new KeyModel(this, '', '')
+      copykey.copy(key)
+      this.keys.push(copykey)
+    }
   }
 }
