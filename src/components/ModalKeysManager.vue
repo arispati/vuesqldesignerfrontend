@@ -2,39 +2,31 @@
   <div class="modal-window" v-show="visible">
     <div class="modal-window__inner">
     </div>
-    <div class="modal-window__content">
-      <form>
-        Добро пожаловать!
-        <table>
-          <tr>
-            <td>Логин</td>
-            <td>
-              <input>
-            </td>
-          </tr>
-          <tr>
-            <td>Пароль</td>
-            <td>
-              <input>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <input type="submit" value="Войти">
-              <input type="submit" value="Отмена" @click="cancel">
-            </td>
-          </tr>
-        </table>
-
-      </form>
-  </div>
+    <div class="modal-window__wrapper">
+      <div class="modal-window__title">
+        <p>Keys</p>
+      </div>
+      <div class="modal-window__content">
+        <fieldset>
+          <legend>Keys in table ...</legend>
+          <select>
+            <option>1: PRIMARY</option>
+          </select>
+          <input type="button" value="Add key"></input>
+          <input type="button" value="Remove key"></input>
+        </fieldset>
+        <fieldset></fieldset>
+        <input type="submit" value="Войти">
+        <input type="submit" value="Отмена" @click="cancel">
+      </div>
+    </div>
   </div>
 </template>
 <script>
 
 export default {
   name: 'db-row',
-  props: ['visible'],
+  props: ['visible', 'table'],
   created () {
   },
   data () {
@@ -44,6 +36,8 @@ export default {
   methods: {
     cancel () {
       console.log('cancel')
+      console.log('selected table is')
+      console.log(this.table)
       this.$emit('closeModalKeysManager')
     }
   }
@@ -68,7 +62,7 @@ export default {
       opacity: 0.3;
       filter: alpha(opacity=30);
     }
-    &__content {
+    &__wrapper {
       position: absolute;
       top: 0;
       bottom: 0;
@@ -80,7 +74,7 @@ export default {
       /* центрирование */
 
       height: 120px;
-      width: 300px;
+      width: 360px;
       border: 1px solid black;
       padding: 5px 5px 5px 55px;
       // background: url(https://js.cx/clipart/key.png) 3px 5px white no-repeat;

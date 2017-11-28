@@ -6,14 +6,14 @@
       <db-table @dblclickrow="expandRow" @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"  @updaterowdata="updateRowData"></db-table>
     </template>
     <rubberband :data="rubberband"></rubberband>
-    <modal-keys-manager @closeModalKeysManager=closeModalKeysManager :visible="modalKeysManager.visible"></modal-keys-manager>
+    <modal-keys-manager @closeModalKeysManager=closeModalKeysManager :visible="modalKeysManager.visible" :table="oneTableSelected"></modal-keys-manager>
   </div>
   <div class="controls">
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
     <input class="btn btn-default" type="button" value="Default value" @click="addRow" :value="dom.addrow.value">
     <input class="btn btn-default" type="button" value="Show Component Data" @click="showComponentData"></input>
     <hr>
-    <input class="btn btn-default" type="button" value="Keys" @click="keys"></input>
+    <input class="btn btn-default" type="button" value="Keys" @click="keys" :disabled="!oneTableSelected"></input>
   </div>
 </div>
 </template>
@@ -77,6 +77,14 @@ export default {
         visibility: 'hidden'
       },
       webdesigner: 'this is web designer component'
+    }
+  },
+  computed: {
+    oneTableSelected: function () {
+      if (this.selection.length === 1) {
+        return this.selection[0]
+      }
+      return false
     }
   },
   methods: {
