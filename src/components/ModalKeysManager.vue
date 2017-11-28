@@ -9,13 +9,25 @@
       <div class="modal-window__content">
         <fieldset>
           <legend>Keys in table ...</legend>
-          <select :disabled="!keyExists">
-            <option>1: PRIMARY</option>
+          <select :disabled="!keyExists" v-model="selectedKey">
+            <!-- <option>1: PRIMARY</option> -->
+            <option v-for="localKey in localKeys" v-bind:value="localKey">
+              {{returnKeyName(localKey)}}
+            </option>
           </select>
+          <span>Выбрано: {{ selectedKey }}</span>
           <input type="button" value="Add key" @click="add"></input>
           <input type="button" value="Remove key" :disabled="!keyExists"></input>
         </fieldset>
-        <fieldset></fieldset>
+        <fieldset>
+          <select v-model="selectedKey.type">
+            <!-- <option>1: PRIMARY</option> -->
+            <option v-for="type in types" v-bind:value="type">
+              {{type}}
+            </option>
+          </select>
+          <input type="text" v-model="selectedKey.name"></input>
+        </fieldset>
         <input type="submit" value="Войти">
         <input type="submit" value="Отмена" @click="cancel">
       </div>
@@ -56,11 +68,17 @@ export default {
   // },
   data () {
     return {
+      types: ['PRIMARY', 'INDEX', 'UNIQUE', 'FULLTEXT'],
+      selectedKey: false,
       localKeys: [], // [{key: keys[i], localRows: [row,row,row], type: type, name: name}, {...}, ...]
       localRows: [] // [{row: rows[i], localKeys: [key,key,key]}, {...}, ...]
     }
   },
   watch: {
+    selectedKey: function (val) {
+      console.log('selectedKey')
+      console.log(val)
+    },
     visible: function () {
       if (this.visible) {
         // console.log('this.localKeys')
@@ -94,6 +112,9 @@ export default {
   },
   methods: {
     emptyHandler () {},
+    returnKeyName (key) {
+      return key.name || key.type
+    },
     erase () {
       this.localKeys = []
       this.localRows = []
@@ -101,7 +122,8 @@ export default {
     add () {
       let type = (this.localKeys.length ? 'INDEX' : 'PRIMARY')
       let localKey = {}
-      localKey.type = localKey.name = type
+      localKey.name = ''
+      localKey.type = type
       localKey.localRows = []
       this.localKeys.push(localKey)
     },
