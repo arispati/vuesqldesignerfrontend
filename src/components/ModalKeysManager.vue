@@ -9,7 +9,7 @@
       <div class="modal-window__content">
         <fieldset>
           <legend>Keys in table ...</legend>
-          <select :disabled="false">
+          <select :disabled="!keyExists">
             <option>1: PRIMARY</option>
           </select>
           <input type="button" value="Add key" @click="add"></input>
@@ -29,36 +29,58 @@ export default {
   props: ['visible', 'table'],
   created () {
   },
-  updated () {
-    // console.log('updated method run, now we can copy params to local data')
-    // console.log(this.table.rows)
-    // console.log('localKeys: ')
-    // console.log(this.localKeys)
-    console.log('before erase')
-    // console.log(this.localKeys)
-    // this.erase()
-    console.log('after erase')
-    // console.log(this.localKeys)
-    for (let i = 0; i < this.table.keys; i++) {
-      console.log('ITERATION')
-      let key = this.table.keys[i]
-      let localKey = {}
-      localKey.key = key // reference value
-      localKey.type = key.getType() // scalar value
-      localKey.name = key.getName() // scalar value
-      // rows
-      localKey.localRows = []
-      for (let i = 0; i < key.rows.length; i++) {
-        let row = key.rows[i] // reference value
-        localKey.localRows.push(row)
-      }
-      this.localKeys.push(localKey)
-    }
-  },
+  // updated () {
+  //   // console.log('updated method run, now we can copy params to local data')
+  //   // console.log(this.table.rows)
+  //   // console.log('localKeys: ')
+  //   // console.log(this.localKeys)
+  //   console.log('before erase')
+  //   // console.log(this.localKeys)
+  //   // this.erase()
+  //   console.log('after erase')
+  //   // console.log(this.localKeys)
+  //   for (let i = 0; i < this.table.keys; i++) {
+  //     let key = this.table.keys[i]
+  //     let localKey = {}
+  //     localKey.key = key // reference value
+  //     localKey.type = key.getType() // scalar value
+  //     localKey.name = key.getName() // scalar value
+  //     // rows
+  //     localKey.localRows = []
+  //     for (let i = 0; i < key.rows.length; i++) {
+  //       let row = key.rows[i] // reference value
+  //       localKey.localRows.push(row)
+  //     }
+  //     this.localKeys.push(localKey)
+  //   }
+  // },
   data () {
     return {
       localKeys: [], // [{key: keys[i], localRows: [row,row,row], type: type, name: name}, {...}, ...]
       localRows: [] // [{row: rows[i], localKeys: [key,key,key]}, {...}, ...]
+    }
+  },
+  watch: {
+    visible: function () {
+      if (this.visible) {
+        // console.log('this.localKeys')
+        // console.log(this.localKeys)
+        this.erase()
+        for (let i = 0; i < this.table.keys; i++) {
+          let key = this.table.keys[i]
+          let localKey = {}
+          localKey.key = key // reference value
+          localKey.type = key.getType() // scalar value
+          localKey.name = key.getName() // scalar value
+          // rows
+          localKey.localRows = []
+          for (let i = 0; i < key.rows.length; i++) {
+            let row = key.rows[i] // reference value
+            localKey.localRows.push(row)
+          }
+          this.localKeys.push(localKey)
+        }
+      }
     }
   },
   computed: {
