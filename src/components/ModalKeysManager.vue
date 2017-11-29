@@ -66,7 +66,7 @@
   </div>
 </template>
 <script>
-
+import KeyModel from '@/models/key.js'
 export default {
   name: 'db-row',
   props: ['visible', 'table'],
@@ -207,7 +207,9 @@ export default {
     add () {
       let type = (this.localKeys.length ? 'INDEX' : 'PRIMARY')
       let localKey = {}
+      let key = new KeyModel(this.table, type, '')
       localKey.name = ''
+      localKey.key = key
       localKey.type = type
       localKey.rows = []
       this.localKeys.push(localKey)
@@ -259,10 +261,12 @@ export default {
           // console.log()
           let localRow = this.getLocalRowByRow(row)
           let keyIndex = localRow.keys.indexOf(this.selectedKey.key)
-          console.log('localRow')
-          console.log(localRow)
-          console.log('keyIndex')
-          console.log(keyIndex)
+          if (keyIndex !== -1) {
+            localRow.keys.splice(keyIndex, 1)
+          }
+          // delete row from selected key
+          let keyRow = this.selectedKey.rows.indexOf(row)
+          this.selectedKey.rows.splice(keyRow, 1)
         }
         console.log('selectedRowFromKey')
         console.log(this.selectedRowsInKey)
