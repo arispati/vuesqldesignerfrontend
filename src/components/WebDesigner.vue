@@ -46,7 +46,6 @@ export default {
   },
   data () {
     return {
-      uniqRowId: 0, // Quick & dirty hack. https://stackoverflow.com/questions/47557233/vue-multiple-select-strange-behaivour
       modalKeysManager: {
         visible: false,
         table: new TableModel({x: 0, y: 0, name: '', selected: false, owner: this})

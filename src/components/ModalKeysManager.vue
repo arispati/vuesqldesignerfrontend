@@ -45,8 +45,8 @@
                 <td>
                  <select multiple v-model="selectedRows">
                    <!-- availableFields -->
-                   <option v-for="row in availableFields" :on-change="valueCallback" v-bind:value="row">
-                     {{ (row.data.title) }}
+                   <option v-for="localRow in availableFields" v-bind:value="localRow">
+                     {{ (localRow.row.data.title) }}
                    </option>
                   </select>
                 </td>
@@ -129,7 +129,7 @@ export default {
       return false
     },
     availableFields: function () {
-      console.log('computred RUN RUN URNUNRUNRURUNRUNRNUURR')
+      // console.log('AVAILABLE FIELDS')
       // если выбран ключ
       let retVal = []
       if (this.selectedKey) {
@@ -138,18 +138,28 @@ export default {
           let row = this.localRows[i].row
           // если ключика нет в массиве полей выбранного ключа
           if (this.selectedKey.rows.indexOf(row) === -1) {
-            retVal.push(row)
+            retVal.push(this.localRows[i])
           }
         }
       }
       return retVal
     }
+    // selectedRows () {
+    //   // console.log('SELECTED_ROWS')
+    //   // console.log('selected indexes!!!!!')
+    //   // console.log(this.selectedIndexes)
+    //   // return this.selectedIndexes.map((i) => this.availableFields[i])
+    //
+    //   // let rows = []
+    //   // for (let i = 0; i < this.selectedIndexes[i].length; i++) {
+    //   //   if (this.availableFields[this.selectedIndexes[i]]) {
+    //   //     rows.push(this.availableFields[this.selectedIndexes[i]])
+    //   //   }
+    //   // }
+    //   // return rows
+    // }
   },
   methods: {
-    valueCallback (val) {
-      console.log('VALUE MULTIPLE SELECT CALLBACK!!!')
-      console.log(val)
-    },
     emptyHandler () {},
     returnKeyName (key) {
       return key.name || key.type
@@ -220,13 +230,18 @@ export default {
     },
     // Link Row and Key
     addRowToKey () {
+      console.log('addRowToKey RUN')
       if (this.selectedKey) {
-        console.log('add row to key')
-        console.log(this.selectedRows)
-        // add row to key
-        // this.selectedKey.rows.push(this.table.rows[0])
-        // and then add key to row
+        // console.log('addRowToKey RUN 2')
+        for (var i = 0; i < this.selectedRows.length; i++) {
+          console.log('RUN ITERATION')
+          this.selectedKey.rows.push(this.selectedRows[i].row)
+          // // and then add key to row
+          this.selectedRows[i].keys.push(this.selectedKey.key)
+          // console.log('AFTER ADDING KEY TO ROW')
+        }
       }
+      this.selectedRows = []
     },
     cancel () {
       this.$emit('closeModalKeysManager')
