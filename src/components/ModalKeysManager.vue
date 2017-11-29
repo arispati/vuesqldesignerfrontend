@@ -31,8 +31,8 @@
             <tbody>
               <tr>
                 <td>
-                  <select multiple>
-                    <option v-for="row in selectedKey.rows">
+                  <select multiple v-model="selectedRowsInKey">
+                    <option v-for="row in selectedKey.rows" v-bind:value="row">
                       {{ row.data.title }}
                     </option>
                   </select>
@@ -40,7 +40,7 @@
                 <td>
                   <input value="<<" type="button" @click="addRowToKey">
                   <br>
-                  <input value=">>" type="button">
+                  <input value=">>" type="button"  @click="removeRowFromKey">
                 </td>
                 <td>
                  <select multiple v-model="selectedRows">
@@ -60,6 +60,7 @@
         </div>
         <input type="submit" value="Войти">
         <input type="submit" value="Отмена" @click="cancel">
+        <input type="submit" value="data" @click="showData">
       </div>
     </div>
   </div>
@@ -100,6 +101,7 @@ export default {
     return {
       types: ['PRIMARY', 'INDEX', 'UNIQUE', 'FULLTEXT'],
       selectedKey: false,
+      selectedRowsInKey: [],
       selectedRows: [], // selected rows (fields), which we want add to selectedKey
       localKeys: [], // [{key: keys[i], localRows: [row,row,row], type: type, name: name}, {...}, ...]
       localRows: [] // [{row: rows[i], localKeys: [key,key,key]}, {...}, ...]
@@ -230,18 +232,51 @@ export default {
     },
     // Link Row and Key
     addRowToKey () {
-      console.log('addRowToKey RUN')
       if (this.selectedKey) {
-        // console.log('addRowToKey RUN 2')
-        for (var i = 0; i < this.selectedRows.length; i++) {
-          console.log('RUN ITERATION')
+        for (let i = 0; i < this.selectedRows.length; i++) {
           this.selectedKey.rows.push(this.selectedRows[i].row)
           // // and then add key to row
           this.selectedRows[i].keys.push(this.selectedKey.key)
           // console.log('AFTER ADDING KEY TO ROW')
         }
       }
+      // dont forget erase selection
       this.selectedRows = []
+      console.log('this.selectedKey!!!')
+      console.log(this.selectedKey)
+    },
+    showData () {
+      console.log('localRows: ')
+      console.log(this.localRows)
+      console.log('localKeys: ')
+      console.log(this.localKeys)
+    },
+    removeRowFromKey () {
+      if (this.selectedKey) {
+        for (let i = 0; i < this.selectedRowsInKey.length; i++) {
+          let row = this.selectedRowsInKey[i]
+          // find and delete selected key from current local row
+          // console.log()
+          let localRow = this.getLocalRowByRow(row)
+          let keyIndex = localRow.keys.indexOf(this.selectedKey.key)
+          console.log('localRow')
+          console.log(localRow)
+          console.log('keyIndex')
+          console.log(keyIndex)
+        }
+        console.log('selectedRowFromKey')
+        console.log(this.selectedRowsInKey)
+      }
+    },
+    getLocalRowByRow (row) {
+      let localRow = false
+      localRow = this.localRows.filter((locRow) => locRow.row === row)
+      if (localRow.length) {
+        localRow = localRow[0]
+      } else {
+        localRow = false
+      }
+      return localRow
     },
     cancel () {
       this.$emit('closeModalKeysManager')
