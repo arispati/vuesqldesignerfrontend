@@ -13,6 +13,7 @@ export default class Row {
     this.data.comment = ''
     this.keys = []
     if (data) { this.update(data) }
+    this.id = Math.random()
   }
   update (data) {
     if (data.nll && data.def && data.def.match(/^null$/i)) { data.def = null }

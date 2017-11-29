@@ -43,8 +43,12 @@
                   <input value=">>" type="button">
                 </td>
                 <td>
-                 <select multiple>
-                    </select>
+                 <select multiple v-model="selectedRows">
+                   <!-- availableFields -->
+                   <option v-for="row in availableFields" :on-change="valueCallback" v-bind:value="row">
+                     {{ (row.data.title) }}
+                   </option>
+                  </select>
                 </td>
               </tr>
             </tbody>
@@ -96,6 +100,7 @@ export default {
     return {
       types: ['PRIMARY', 'INDEX', 'UNIQUE', 'FULLTEXT'],
       selectedKey: false,
+      selectedRows: [], // selected rows (fields), which we want add to selectedKey
       localKeys: [], // [{key: keys[i], localRows: [row,row,row], type: type, name: name}, {...}, ...]
       localRows: [] // [{row: rows[i], localKeys: [key,key,key]}, {...}, ...]
     }
@@ -122,9 +127,29 @@ export default {
         return true
       }
       return false
+    },
+    availableFields: function () {
+      console.log('computred RUN RUN URNUNRUNRURUNRUNRNUURR')
+      // если выбран ключ
+      let retVal = []
+      if (this.selectedKey) {
+        // идем по доступным полям
+        for (let i = 0; i < this.localRows.length; i++) {
+          let row = this.localRows[i].row
+          // если ключика нет в массиве полей выбранного ключа
+          if (this.selectedKey.rows.indexOf(row) === -1) {
+            retVal.push(row)
+          }
+        }
+      }
+      return retVal
     }
   },
   methods: {
+    valueCallback (val) {
+      console.log('VALUE MULTIPLE SELECT CALLBACK!!!')
+      console.log(val)
+    },
     emptyHandler () {},
     returnKeyName (key) {
       return key.name || key.type
@@ -143,12 +168,10 @@ export default {
         localKey.name = key.getName() // scalar value
         // rows
         localKey.rows = []
-        console.log('WTF1')
         for (let j = 0; j < key.rows.length; j++) {
           let row = key.rows[j] // reference value
           localKey.rows.push(row)
         }
-        console.log('WTF2')
         this.localKeys.push(localKey)
       }
     },
@@ -197,12 +220,12 @@ export default {
     },
     // Link Row and Key
     addRowToKey () {
-      console.log('link row and key')
       if (this.selectedKey) {
-        console.log('<><><<><><><><><><><><><><><><><')
-        console.log(this.table)
-        console.log('<><><<><><><><><><><><><><><><><')
-        this.selectedKey.rows.push(this.table.rows[0])
+        console.log('add row to key')
+        console.log(this.selectedRows)
+        // add row to key
+        // this.selectedKey.rows.push(this.table.rows[0])
+        // and then add key to row
       }
     },
     cancel () {
