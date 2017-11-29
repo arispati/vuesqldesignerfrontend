@@ -30,7 +30,7 @@
         </fieldset>
         <div>
           <p>{{this.localKeys}}</p>
-          <p>{{this.localRows}}</p>
+          <!-- <p>{{this.localRows}}</p> -->
         </div>
         <input type="submit" value="Войти">
         <input type="submit" value="Отмена" @click="cancel">
@@ -88,20 +88,8 @@ export default {
         // console.log('this.localKeys')
         // console.log(this.localKeys)
         this.erase()
-        for (let i = 0; i < this.table.keys; i++) {
-          let key = this.table.keys[i]
-          let localKey = {}
-          localKey.key = key // reference value
-          localKey.type = key.getType() // scalar value
-          localKey.name = key.getName() // scalar value
-          // rows
-          localKey.localRows = []
-          for (let i = 0; i < key.rows.length; i++) {
-            let row = key.rows[i] // reference value
-            localKey.localRows.push(row)
-          }
-          this.localKeys.push(localKey)
-        }
+        this.copyKeys()
+        this.copyRows()
       }
     }
   },
@@ -122,6 +110,36 @@ export default {
     erase () {
       this.localKeys = []
       this.localRows = []
+    },
+    copyKeys () {
+      // [{key: keys[i], localRows: [row,row,row], type: type, name: name}, {...}, ...]
+      for (let i = 0; i < this.table.keys.length; i++) {
+        let key = this.table.keys[i]
+        let localKey = {}
+        localKey.key = key // reference value
+        localKey.type = key.getType() // scalar value
+        localKey.name = key.getName() // scalar value
+        // rows
+        localKey.localRows = []
+        for (let i = 0; i < key.rows.length; i++) {
+          let row = key.rows[i] // reference value
+          localKey.localRows.push(row)
+        }
+        this.localKeys.push(localKey)
+      }
+    },
+    copyRows () {
+      // [{row: rows[i], localKeys: [key,key,key]}, {...}, ...]
+      for (let i = 0; i < this.table.rows.length; i++) {
+        let row = this.table.rows[i]
+        let localRow = {}
+        // console.log(row)
+        localRow.row = row // reference value
+        localRow.localKeys = []
+        this.localRows.push(localRow)
+      }
+      console.log('ROOOOOOOOOOOOOOOOOOWWWWWWWWWWWWSSSSSSSSSSS')
+      console.log(this.localRows)
     },
     add () {
       let type = (this.localKeys.length ? 'INDEX' : 'PRIMARY')
