@@ -11,7 +11,7 @@ export default class Row {
     this.data.nll = true
     this.data.ai = false
     this.data.comment = ''
-    // this.keys = []
+    this.keys = []
     if (data) { this.update(data) }
   }
   update (data) {

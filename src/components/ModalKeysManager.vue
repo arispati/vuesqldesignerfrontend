@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-window" v-show="visible" @click.stop="emptyHandler">
+  <div class="modal-window" v-show="visible" @click.stop="emptyHandler" @mousedown.stop="emptyHandler" @mouseup.stop="emptyHandler">
     <div class="modal-window__inner">
     </div>
     <div class="modal-window__wrapper">
@@ -15,7 +15,7 @@
               {{returnKeyName(localKey)}}
             </option>
           </select>
-          <span>Выбрано: {{ selectedKey }}</span>
+          <!-- <span>Выбрано: {{ selectedKey }}</span> -->
           <input type="button" value="Add key" @click="add"></input>
           <input type="button" value="Remove key" :disabled="!keyExists" @click="remove"></input>
         </fieldset>
@@ -32,10 +32,13 @@
               <tr>
                 <td>
                   <select multiple>
+                    <option v-for="row in selectedKey.rows">
+                      {{ row.data.title }}
+                    </option>
                   </select>
                 </td>
                 <td>
-                  <input value="<<" type="button">
+                  <input value="<<" type="button" @click="addRowToKey">
                   <br>
                   <input value=">>" type="button">
                 </td>
@@ -131,7 +134,7 @@ export default {
       this.localRows = []
     },
     copyKeys () {
-      // [{key: keys[i], localRows: [row,row,row], type: type, name: name}, {...}, ...]
+      // [{key: keys[i], rows: [row,row,row], type: type, name: name}, {...}, ...]
       for (let i = 0; i < this.table.keys.length; i++) {
         let key = this.table.keys[i]
         let localKey = {}
@@ -139,25 +142,27 @@ export default {
         localKey.type = key.getType() // scalar value
         localKey.name = key.getName() // scalar value
         // rows
-        localKey.localRows = []
+        localKey.rows = []
+        console.log('WTF1')
         for (let j = 0; j < key.rows.length; j++) {
           let row = key.rows[j] // reference value
-          localKey.localRows.push(row)
+          localKey.rows.push(row)
         }
+        console.log('WTF2')
         this.localKeys.push(localKey)
       }
     },
     copyRows () {
-      // [{row: rows[i], localKeys: [key,key,key]}, {...}, ...]
+      // [{row: rows[i], keys: [key,key,key]}, {...}, ...]
       for (let i = 0; i < this.table.rows.length; i++) {
         let row = this.table.rows[i]
         let localRow = {}
         // console.log(row)
         localRow.row = row // reference value
-        localRow.localKeys = []
+        localRow.keys = []
         for (let j = 0; j < row.keys.length; j++) {
           let key = row.keys[j]
-          localRow.localKeys.push(key)
+          localRow.keys.push(key)
         }
         this.localRows.push(localRow)
       }
@@ -169,7 +174,7 @@ export default {
       let localKey = {}
       localKey.name = ''
       localKey.type = type
-      localKey.localRows = []
+      localKey.rows = []
       this.localKeys.push(localKey)
       this.selectedKey = localKey
     },
@@ -181,6 +186,7 @@ export default {
       if (this.localKeys.length) {
         this.selectedKey = this.localKeys[this.localKeys.length - 1]
       } else {
+        console.log('selectedKey is empty!!! !!!! !!!!')
         this.selectedKey = false
       }
       // НЕ ЗАБЫТЬ ПОЧИСТИТЬ ССЫЛКИ НА КЛЮЧ ВО ВСЕХ СТРОКАХ !!!!!!!!!!!!!!
@@ -188,6 +194,16 @@ export default {
       // !!!!!!!!!!!!!!!!!!!!!!!!!
       // !!!!!!!!!!!!!!!!!!!!!!!!!
       // !!!!!!!!!!!!!!!!!!!!!!!!!
+    },
+    // Link Row and Key
+    addRowToKey () {
+      console.log('link row and key')
+      if (this.selectedKey) {
+        console.log('<><><<><><><><><><><><><><><><><')
+        console.log(this.table)
+        console.log('<><><<><><><><><><><><><><><><><')
+        this.selectedKey.rows.push(this.table.rows[0])
+      }
     },
     cancel () {
       this.$emit('closeModalKeysManager')
