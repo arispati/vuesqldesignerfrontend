@@ -27,9 +27,28 @@
             </option>
           </select>
           <input type="text" v-model="selectedKey.name"></input>
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <select multiple>
+                  </select>
+                </td>
+                <td>
+                  <input value="<<" type="button">
+                  <br>
+                  <input value=">>" type="button">
+                </td>
+                <td>
+                 <select multiple>
+                    </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </fieldset>
         <div>
-          <p>{{this.localKeys}}</p>
+          <!-- <p>{{this.localKeys}}</p> -->
           <!-- <p>{{this.localRows}}</p> -->
         </div>
         <input type="submit" value="Войти">
@@ -121,8 +140,8 @@ export default {
         localKey.name = key.getName() // scalar value
         // rows
         localKey.localRows = []
-        for (let i = 0; i < key.rows.length; i++) {
-          let row = key.rows[i] // reference value
+        for (let j = 0; j < key.rows.length; j++) {
+          let row = key.rows[j] // reference value
           localKey.localRows.push(row)
         }
         this.localKeys.push(localKey)
@@ -136,6 +155,10 @@ export default {
         // console.log(row)
         localRow.row = row // reference value
         localRow.localKeys = []
+        for (let j = 0; j < row.keys.length; j++) {
+          let key = row.keys[j]
+          localRow.localKeys.push(key)
+        }
         this.localRows.push(localRow)
       }
       console.log('ROOOOOOOOOOOOOOOOOOWWWWWWWWWWWWSSSSSSSSSSS')
