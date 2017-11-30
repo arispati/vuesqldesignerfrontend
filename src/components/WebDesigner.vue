@@ -92,8 +92,39 @@ export default {
       this.modalKeysManager.visible = false
     },
     saveDataFromModalKeysManager (data) {
-      console.log('CATCH DATA HERE!!!')
+      // сначала просто грохаем все записи, касающиеся ключей для текущей таблицы
+      console.log('=====================')
       console.log(data)
+      console.log('=====================')
+      let selectedTable = data.table
+      // erase all previous keys from table
+      // удаляем все ключи из таблицы , это действие необязательно приведет к полному удалению объекта ключа,
+      // вполне возможно, что ссылка на ключ сохранится в массивах компонента ModalKeysManager (имеются ввиду массивы localKeys и localRows)
+      // кстати ссылка на эти массивы так же передается параметром, поэтому часть ключей, ссылки на которые удалены из таблицы, НО при этом
+      // ссылки на эти ключи опять приходят из параметра data - будут добавлены снова.
+      // те ключи, сслыки на объекты которых будут удалены и из таблицы и из массивов компонента ModalKeysManager - будут удалены навсегда
+      console.log(selectedTable)
+      // просто грохаем ВСЕ ссылки на ключи таблицы
+      selectedTable.keys = []
+      // затем чистим ключи из всех строк таблиц
+      for (let i = 0; i < selectedTable.rows.length; i++) {
+        let row = selectedTable.rows[i]
+        row.keys = []
+      }
+      // а теперь копируем информацию о ключах из пришедшего параметра
+      // сначала идем по ключам
+      for (let i = 0; i < data.keys.length; i++) {
+        let currentKey = data.keys[i]
+        let key = data.keys[i].key
+        key.rows = currentKey.rows
+        key.type = currentKey.type
+        key.name = currentKey.name
+        // ссылка на row ВСЕГДА указывают на реальные строки, поэтому можно просто сделать вот так
+        for (let j = 0; j < currentKey.rows.length; j++) {
+          currentKey.rows[j].keys.push(key)
+        }
+        selectedTable.keys.push(key)
+      }
     },
     keys () {
       console.log('keys')
