@@ -6,7 +6,7 @@
       <db-table @dblclickrow="expandRow" @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"  @updaterowdata="updateRowData"></db-table>
     </template>
     <rubberband :data="rubberband"></rubberband>
-    <modal-keys-manager @closeModalKeysManager=closeModalKeysManager :visible="modalKeysManager.visible" :table="oneTableSelected"></modal-keys-manager>
+    <modal-keys-manager @saveDataFromModalKeysManager=saveDataFromModalKeysManager @closeModalKeysManager=closeModalKeysManager :visible="modalKeysManager.visible" :table="oneTableSelected"></modal-keys-manager>
   </div>
   <div class="controls">
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
@@ -90,6 +90,10 @@ export default {
   methods: {
     closeModalKeysManager () {
       this.modalKeysManager.visible = false
+    },
+    saveDataFromModalKeysManager (data) {
+      console.log('CATCH DATA HERE!!!')
+      console.log(data)
     },
     keys () {
       console.log('keys')

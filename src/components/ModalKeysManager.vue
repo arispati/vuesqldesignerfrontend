@@ -58,7 +58,7 @@
           <!-- <p>{{this.localKeys}}</p> -->
           <!-- <p>{{this.localRows}}</p> -->
         </div>
-        <input type="submit" value="Войти">
+        <input type="submit" value="ok" @click="ok">
         <input type="submit" value="Отмена" @click="cancel">
         <input type="submit" value="data" @click="showData">
       </div>
@@ -117,6 +117,7 @@ export default {
         // console.log('this.localKeys')
         // console.log(this.localKeys)
         this.erase()
+        this.selectedKey = false
         this.copyKeys()
         this.copyRows()
       }
@@ -281,6 +282,10 @@ export default {
         localRow = false
       }
       return localRow
+    },
+    ok () {
+      this.$emit('saveDataFromModalKeysManager', {rows: this.localRows, keys: this.localKeys, table: this.table})
+      this.$emit('closeModalKeysManager')
     },
     cancel () {
       this.$emit('closeModalKeysManager')
