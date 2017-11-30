@@ -120,6 +120,9 @@ export default {
         this.selectedKey = false
         this.copyKeys()
         this.copyRows()
+        if (this.localKeys.length) {
+          this.selectedKey = this.localKeys[this.localKeys.length - 1]
+        }
       }
     }
   },
