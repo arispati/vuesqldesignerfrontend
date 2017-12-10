@@ -21,7 +21,38 @@
           </select>
         </td>
       </tr>
-
+      <tr v-show="data.expanded">
+        <td>
+          Size:
+        </td>
+        <td>
+          <input v-model="size" type="text"></input>
+        </td>
+      </tr>
+      <tr v-show="data.expanded">
+        <td>
+          Default:
+        </td>
+        <td>
+          <input v-model="def" type="text"></input>
+        </td>
+      </tr>
+      <tr v-show="data.expanded">
+        <td>
+          Autoincrement:
+        </td>
+        <td>
+          <input type="checkbox" v-model="ai">
+        </td>
+      </tr>
+      <tr v-show="data.expanded">
+        <td>
+          NULL:
+        </td>
+        <td>
+          <input type="checkbox" v-model="nll">
+        </td>
+      </tr>
       <tr v-show="!data.expanded" @dblclick.stop="dblclickRow">
         <td :class="{ 'table__row-title--selected': data.selected }" class="table__row-title table__row-title--primary table__row-title--key">
           <div>{{data.data.title}}</div>
@@ -48,7 +79,11 @@ export default {
       // https://stackoverflow.com/questions/728360/how-do-i-correctly-clone-a-javascript-object
       // localData: this.data // Object.assign({}, this.data)
       type: this.data.data.type,
-      title: this.data.data.title
+      title: this.data.data.title,
+      size: this.data.data.size,
+      def: this.data.data.def,
+      nll: this.data.data.nll,
+      ai: this.data.data.ai
     }
   },
   // computed: {
@@ -73,6 +108,10 @@ export default {
       let actualData = {}
       actualData.title = this.title
       actualData.type = this.type
+      actualData.size = this.size
+      actualData.def = this.def
+      actualData.nll = this.nll
+      actualData.ai = this.ai
       return actualData
     },
     updateData () {
@@ -100,7 +139,7 @@ export default {
 
 <style lang="less">
   .table__row {
-    font-weight: bold;
+    // font-weight: bold;
   }
   .table__row-title {
     div {

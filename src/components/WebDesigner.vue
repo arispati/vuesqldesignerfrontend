@@ -256,6 +256,10 @@ export default {
     setNewDataToRow (row, newdata) {
       row.data.title = newdata.title
       row.data.type = newdata.type
+      row.data.size = newdata.size
+      row.data.def = newdata.def
+      row.data.nll = newdata.nll
+      row.data.ai = newdata.ai
     },
     // select row
     selectRow (data) {
