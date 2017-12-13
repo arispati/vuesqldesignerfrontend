@@ -3,10 +3,11 @@
   <div class="area" :class="{ 'area--adding': adding }" @click="clickArea"
     @mousedown="mousedownArea">
     <template v-for="table in tables">
-      <db-table @dblclickrow="expandRow" @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"  @updaterowdata="updateRowData"></db-table>
+      <db-table @dblclickrow="expandRow" @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"  @updaterowdata="updateRowData" @openModalDialog="openModalDialog"></db-table>
     </template>
     <rubberband :data="rubberband"></rubberband>
     <modal-keys-manager @saveDataFromModalKeysManager=saveDataFromModalKeysManager @closeModalKeysManager=closeModalKeysManager :visible="modalKeysManager.visible" :table="oneTableSelected"></modal-keys-manager>
+    <modal-dialog :visible="modalDialog.visible" :data="modalDialog.data" @closeModalDialog="closeModalDialog" @saveDataFromModalDialog=updateRowData></modal-dialog>
   </div>
   <div class="controls">
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
@@ -26,6 +27,7 @@ import TableModel from '@/models/table.js'
 import Table from '@/components/Table'
 import RubberBand from '@/components/RubberBand'
 import ModalKeysManager from '@/components/ModalKeysManager'
+import ModalDialog from '@/components/ModalDialog'
 import Fn from '@/functions.js'
 
 const API_BASE = 'http://websqldesignerserver'
@@ -46,6 +48,10 @@ export default {
   },
   data () {
     return {
+      modalDialog: {
+        visible: false,
+        data: {newrowdata: false}
+      },
       modalKeysManager: {
         visible: false,
         table: new TableModel({x: 0, y: 0, name: '', selected: false, owner: this})
@@ -125,6 +131,15 @@ export default {
         }
         selectedTable.keys.push(key)
       }
+    },
+    openModalDialog (rowdata) {
+      this.modalDialog.data = rowdata
+      this.modalDialog.visible = true
+      // rowdata == {newrowdata: actualData, row: this.data, mode: 'row'}
+      console.log('openModalDialog')
+    },
+    closeModalDialog () {
+      this.modalDialog.visible = false
     },
     keys () {
       console.log('keys')
@@ -260,6 +275,9 @@ export default {
       row.data.def = newdata.def
       row.data.nll = newdata.nll
       row.data.ai = newdata.ai
+      row.data.comment = newdata.comment
+      // console.log('NEW COMMENT IS: ')
+      // console.log(row.data.comment)
     },
     // select row
     selectRow (data) {
@@ -369,7 +387,8 @@ export default {
   components: {
     'db-table': Table,
     'rubberband': RubberBand,
-    'modal-keys-manager': ModalKeysManager
+    'modal-keys-manager': ModalKeysManager,
+    'modal-dialog': ModalDialog
   }
 }
 </script>

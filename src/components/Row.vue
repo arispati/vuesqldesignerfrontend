@@ -1,5 +1,5 @@
 <template>
-  <tbody class="table__row" :class="{ 'table__row--expanded': data.expanded }" @click="clickRow" @mousedown.stop="mousedownRow">
+  <tbody class="table__row" :class="{ 'table__row--expanded': data.expanded }" @click="clickRow" @mousedown.stop="mousedownRow" >
 
       <tr v-show="data.expanded">
         <td>
@@ -53,6 +53,14 @@
           <input type="checkbox" v-model="nll">
         </td>
       </tr>
+      <tr v-show="data.expanded">
+        <td>
+          {{data.data.comment}}
+        </td>
+        <td>
+          <button @click.stop="editComment">Edit comment</button>
+        </td>
+      </tr>
       <tr v-show="!data.expanded" @dblclick.stop="dblclickRow">
         <td :class="{ 'table__row-title--selected': data.selected }" class="table__row-title table__row-title--primary table__row-title--key">
           <div>{{data.data.title}}</div>
@@ -67,7 +75,7 @@
 
 export default {
   name: 'db-row',
-  props: ['data'],
+  props: ['data', 'expanded'],
   created () {
     // console.log('row component created')
     console.log('localData')
@@ -83,7 +91,8 @@ export default {
       size: this.data.data.size,
       def: this.data.data.def,
       nll: this.data.data.nll,
-      ai: this.data.data.ai
+      ai: this.data.data.ai,
+      comment: this.data.data.comment
     }
   },
   // computed: {
@@ -96,10 +105,33 @@ export default {
   //   }
   // },
   watch: {
+    expanded: function () {
+      if (this.expanded) {
+        this.title = this.data.data.title
+        this.size = this.data.data.size
+        this.type = this.data.data.type
+        this.def = this.data.data.def
+        this.nll = this.data.data.nll
+        this.ai = this.data.data.ai
+        this.comment = this.data.data.comment
+      }
+    },
     type: function (val) {
       this.updateData()
     },
     title: function (val) {
+      this.updateData()
+    },
+    size: function (val) {
+      this.updateData()
+    },
+    def: function (val) {
+      this.updateData()
+    },
+    nll: function (val) {
+      this.updateData()
+    },
+    ai: function (val) {
       this.updateData()
     }
   },
@@ -112,6 +144,7 @@ export default {
       actualData.def = this.def
       actualData.nll = this.nll
       actualData.ai = this.ai
+      actualData.comment = this.comment
       return actualData
     },
     updateData () {
@@ -132,6 +165,10 @@ export default {
     },
     mousedownRow () {
       console.log('Row component->mousedownRow')
+    },
+    editComment () {
+      let actualData = this.extractActualData()
+      this.$emit('openModalDialog', {newrowdata: actualData, row: this.data, mode: 'row'})
     }
   }
 }

@@ -7,7 +7,7 @@
       </tr>
     </thead>
     <template v-for="row in data.rows">
-      <db-row @clickrow="clickRow" @dblclickrow="dblclickRow" :data="row" @updaterowdata="updateRowData"></db-row>
+      <db-row @clickrow="clickRow" @dblclickrow="dblclickRow" :data="row" :expanded="row.expanded" @updaterowdata="updateRowData" @openModalDialog="openModalDialog"></db-row>
     </template>
     <!-- <tbody>
       <tr>
@@ -149,6 +149,12 @@ export default {
     },
     updateRowData (rowdata) {
       this.$emit('updaterowdata', rowdata)
+    },
+    openModalDialog (rowdata) {
+      console.log('DATA ISSSSSSSS')
+      console.log(rowdata)
+      console.log('=============')
+      this.$emit('openModalDialog', rowdata)
     }
   },
   components: {
