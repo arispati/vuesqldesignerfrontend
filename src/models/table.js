@@ -6,7 +6,10 @@ export default class Table {
     this.owner = data.owner
     this.x = data.x
     this.y = data.y
-    this.name = data.name
+    this.data = {}
+    this.data.title = data.name
+    this.data.comment = ''
+    // this.name = data.name
     this.selected = data.selected
     this.keys = []
     this.rows = []

@@ -7,7 +7,7 @@
     </template>
     <rubberband :data="rubberband"></rubberband>
     <modal-keys-manager @saveDataFromModalKeysManager=saveDataFromModalKeysManager @closeModalKeysManager=closeModalKeysManager :visible="modalKeysManager.visible" :table="oneTableSelected"></modal-keys-manager>
-    <modal-dialog :visible="modalDialog.visible" :data="modalDialog.data" @closeModalDialog="closeModalDialog" @saveDataFromModalDialog=updateRowData></modal-dialog>
+    <modal-dialog :visible="modalDialog.visible" :data="modalDialog.data" @closeModalDialog="closeModalDialog" @saveDataFromModalDialog=saveDataFromModalDialog></modal-dialog>
   </div>
   <div class="controls">
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
@@ -132,8 +132,8 @@ export default {
         selectedTable.keys.push(key)
       }
     },
-    openModalDialog (rowdata) {
-      this.modalDialog.data = rowdata
+    openModalDialog (data) {
+      this.modalDialog.data = data
       this.modalDialog.visible = true
       // rowdata == {newrowdata: actualData, row: this.data, mode: 'row'}
       console.log('openModalDialog')
@@ -257,6 +257,14 @@ export default {
       // let row = data.row
       // let table = row.owner
       data.row.expand()
+    },
+    saveDataFromModalDialog (data) {
+      if (data.mode && data.mode === 'row') {
+        this.updateRowData(data)
+      } else {
+        data.table.data.title = data.newtabledata.title
+        data.table.data.comment = data.newtabledata.comment
+      }
     },
     updateRowData (rowdata) {
       console.log('=========rowdata updated!========')

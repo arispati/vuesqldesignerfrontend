@@ -1,9 +1,9 @@
 <template>
 <div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click.stop="clickTable">
   <table>
-    <thead @mousedown.stop="mousedownTable">
+    <thead @mousedown.stop="mousedownTable" @dblclick="openTableModalDialog">
       <tr>
-        <td class="table__title" colspan="2">{{data.name}}</td>
+        <td class="table__title" colspan="2">{{data.data.title}}</td>
       </tr>
     </thead>
     <template v-for="row in data.rows">
@@ -150,11 +150,17 @@ export default {
     updateRowData (rowdata) {
       this.$emit('updaterowdata', rowdata)
     },
-    openModalDialog (rowdata) {
+    openTableModalDialog () {
+      let newtabledata = {title: this.data.data.title, comment: this.data.data.comment}
+      console.log('table iss??????>>>>>>>>>>>.')
+      console.log(this.data)
+      this.$emit('openModalDialog', {newtabledata: newtabledata, table: this.data, mode: 'table'})
+    },
+    openModalDialog (data) {
       console.log('DATA ISSSSSSSS')
-      console.log(rowdata)
+      console.log(data)
       console.log('=============')
-      this.$emit('openModalDialog', rowdata)
+      this.$emit('openModalDialog', data)
     }
   },
   components: {

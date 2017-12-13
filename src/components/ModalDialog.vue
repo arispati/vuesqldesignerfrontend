@@ -7,7 +7,8 @@
         <p>Comment</p>
       </div>
       <div class="modal-window__content">
-        <textarea v-model="rowcomment"></textarea>
+        <input type="text" v-model="title" v-show="data.mode === 'table'"></input>
+        <textarea v-model="comment"></textarea>
         <input type="submit" value="ok" @click="ok">
         <input type="submit" value="Отмена" @click="cancel">
       </div>
@@ -27,13 +28,21 @@ export default {
     // console.log('===============')
     return {
       // dialogdata: this.data,
-      rowcomment: this.data.newrowdata.comment
+      title: '',
+      comment: ''// this.data.newrowdata.comment
     }
   },
   watch: {
     visible: function () {
       if (this.visible) {
-        this.rowcomment = this.data.newrowdata.comment
+        if (this.data.mode === 'row') {
+          this.comment = this.data.newrowdata.comment
+        } else {
+          console.log('go here?')
+          console.log(this.data)
+          this.comment = this.data.newtabledata.comment
+          this.title = this.data.newtabledata.title
+        }
       }
     }
   },
@@ -41,7 +50,12 @@ export default {
     emptyHandler () {},
     ok () {
       // Какой-то метод сохранения либо строки, либо столбца this.$emit('saveDataFromModalKeysManager', {rows: this.localRows, keys: this.localKeys, table: this.table})
-      this.data.newrowdata.comment = this.rowcomment
+      if (this.data.mode === 'row') {
+        this.data.newrowdata.comment = this.comment // ???????????????????????????? is it OK?
+      } else {
+        this.data.newtabledata.comment = this.comment
+        this.data.newtabledata.title = this.title
+      }
       // this.data.newrowdata.title = 'vzhuh'
       this.$emit('saveDataFromModalDialog', this.data)
       this.$emit('closeModalDialog')
