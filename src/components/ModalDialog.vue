@@ -38,8 +38,6 @@ export default {
         if (this.data.mode === 'row') {
           this.comment = this.data.newrowdata.comment
         } else {
-          console.log('go here?')
-          console.log(this.data)
           this.comment = this.data.newtabledata.comment
           this.title = this.data.newtabledata.title
         }
