@@ -39,7 +39,7 @@
       </tr>
       <tr v-show="data.expanded">
         <td>
-          Autoincrement 2:
+          Autoincrement:
         </td>
         <td>
           <input type="checkbox" v-model="ai">
