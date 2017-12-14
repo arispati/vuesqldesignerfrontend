@@ -13,6 +13,10 @@
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
     <input class="btn btn-default" type="button" value="Default value" @click="addRow" :value="dom.addrow.value">
     <input class="btn btn-default" type="button" value="Edit field" :disabled="!selectedRow" @click="expandSelectedRow"></input>
+
+    <input class="btn btn-default" type="button" value="up" :disabled="upDisabled" @click="up"></input>
+    <input class="btn btn-default" type="button" value="down" :disabled="downDisabled" @click="down"></input>
+
     <input class="btn btn-default" type="button" value="Delete field" :disabled="!selectedRow" @click="deleteSelectedRow"></input>
 
     <input class="btn btn-default" type="button" value="Show Component Data" @click="showComponentData"></input>
@@ -96,6 +100,22 @@ export default {
         return this.selection[0]
       }
       return false
+    },
+    upDisabled: function () {
+      if (!this.selectedRow) {
+        return true
+      }
+      let table = this.selectedRow.owner
+      let index = table.rows.indexOf(this.selectedRow)
+      return index === 0
+    },
+    downDisabled: function () {
+      if (!this.selectedRow) {
+        return true
+      }
+      let table = this.selectedRow.owner
+      let index = table.rows.indexOf(this.selectedRow)
+      return index === (table.rows.length - 1)
     }
   },
   methods: {
@@ -255,6 +275,18 @@ export default {
       // console.log('Table Click')
       // this.selectRow(false)
       this.select(table, multi)
+    },
+    up () {
+      let table = this.selectedRow.owner
+      let index = table.rows.indexOf(this.selectedRow)
+      table.rows.splice(index, 1)
+      table.rows.splice(index - 1, 0, this.selectedRow)
+    },
+    down () {
+      let table = this.selectedRow.owner
+      let index = table.rows.indexOf(this.selectedRow)
+      table.rows.splice(index, 1)
+      table.rows.splice(index + 1, 0, this.selectedRow)
     },
     // expand row
     expandRow (data) {
