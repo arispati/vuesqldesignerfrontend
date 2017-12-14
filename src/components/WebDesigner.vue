@@ -11,7 +11,9 @@
   </div>
   <div class="controls">
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
+    <input class="btn btn-default" type="button" value="remove table"  @click="removeTables" :disabled="!tablesSelected">
     <input class="btn btn-default" type="button" value="Default value" @click="addRow" :value="dom.addrow.value">
+
     <input class="btn btn-default" type="button" value="Edit field" :disabled="!selectedRow" @click="expandSelectedRow"></input>
 
     <input class="btn btn-default" type="button" value="up" :disabled="upDisabled" @click="up"></input>
@@ -95,6 +97,12 @@ export default {
     }
   },
   computed: {
+    tablesSelected: function () {
+      if (this.selection.length >= 1) {
+        return true
+      }
+      return false
+    },
     oneTableSelected: function () {
       if (this.selection.length === 1) {
         return this.selection[0]
@@ -275,6 +283,13 @@ export default {
       // console.log('Table Click')
       // this.selectRow(false)
       this.select(table, multi)
+    },
+    removeTables () {
+      for (let i = 0; i < this.selection.length; i++) {
+        let index = this.tables.indexOf(this.selection[i])
+        this.tables.splice(index, 1)
+      }
+      this.selection = []
     },
     up () {
       let table = this.selectedRow.owner
