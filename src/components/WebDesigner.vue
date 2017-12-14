@@ -12,6 +12,7 @@
   <div class="controls">
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
     <input class="btn btn-default" type="button" value="remove table"  @click="removeTables" :disabled="!tablesSelected">
+    <input class="btn btn-default" type="button" value="clear tables"  @click="clearTables">
     <input class="btn btn-default" type="button" value="Default value" @click="addRow" :value="dom.addrow.value">
 
     <input class="btn btn-default" type="button" value="Edit field" :disabled="!selectedRow" @click="expandSelectedRow"></input>
@@ -24,6 +25,9 @@
     <input class="btn btn-default" type="button" value="Show Component Data" @click="showComponentData"></input>
     <hr>
     <input class="btn btn-default" type="button" value="Keys" @click="keys" :disabled="!oneTableSelected"></input>
+    <input class="btn btn-default" type="button" value="Edit table" @click="openTableModalDialogByButton" :disabled="!oneTableSelected"></input>
+
+
 
 
   </div>
@@ -171,6 +175,11 @@ export default {
       // rowdata == {newrowdata: actualData, row: this.data, mode: 'row'}
       console.log('openModalDialog')
     },
+    openTableModalDialogByButton () {
+      console.log('openTableModalDialogByButton')
+      let newtabledata = {title: this.selection[0].data.title, comment: this.selection[0].data.comment}
+      this.openModalDialog({newtabledata: newtabledata, table: this.selection[0], mode: 'table'})
+    },
     closeModalDialog () {
       this.modalDialog.visible = false
     },
@@ -290,6 +299,10 @@ export default {
         this.tables.splice(index, 1)
       }
       this.selection = []
+    },
+    clearTables () {
+      this.selection = []
+      this.tables = []
     },
     up () {
       let table = this.selectedRow.owner
