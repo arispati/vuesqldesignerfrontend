@@ -12,9 +12,14 @@
   <div class="controls">
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
     <input class="btn btn-default" type="button" value="Default value" @click="addRow" :value="dom.addrow.value">
+    <input class="btn btn-default" type="button" value="Edit field" :disabled="!selectedRow" @click="expandSelectedRow"></input>
+    <input class="btn btn-default" type="button" value="Delete field" :disabled="!selectedRow" @click="deleteSelectedRow"></input>
+
     <input class="btn btn-default" type="button" value="Show Component Data" @click="showComponentData"></input>
     <hr>
     <input class="btn btn-default" type="button" value="Keys" @click="keys" :disabled="!oneTableSelected"></input>
+
+
   </div>
 </div>
 </template>
@@ -257,6 +262,16 @@ export default {
       // let row = data.row
       // let table = row.owner
       data.row.expand()
+    },
+    expandSelectedRow () {
+      this.selectedRow.expand()
+    },
+    deleteSelectedRow () {
+      let table = this.selectedRow.owner
+      let index = table.rows.indexOf(this.selectedRow)
+      table.rows.splice(index, 1)
+      this.selectedRow = false
+      // console.log(table.rows.indexOf(this.selectedRow))
     },
     saveDataFromModalDialog (data) {
       if (data.mode && data.mode === 'row') {
