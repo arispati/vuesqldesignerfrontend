@@ -3,7 +3,7 @@
   <div class="area" :class="{ 'area--adding': adding }" @click="clickArea"
     @mousedown="mousedownArea">
     <svg width="3000" height="3000">
-      <path stroke="#000" stroke-width="2" fill="none" d="M 562 104 C 586 104 586 232 610 232"></path>
+      <!-- <path stroke="#000" stroke-width="2" fill="none" d="M 562 104 C 586 104 586 232 610 232"></path> -->
     </svg>
     <template v-for="table in tables">
       <db-table @dblclickrow="expandRow" @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"  @updaterowdata="updateRowData" @openModalDialog="openModalDialog"></db-table>
@@ -30,8 +30,7 @@
     <input class="btn btn-default" type="button" value="Keys" @click="keys" :disabled="!oneTableSelected"></input>
     <input class="btn btn-default" type="button" value="Edit table" @click="openTableModalDialogByButton" :disabled="!oneTableSelected"></input>
 
-
-
+    <input class="btn btn-default" type="button" :value="dom.foreignconnect.value"  @click="foreignconnect" :disabled="!isUniqueRowSelected"></input>
 
   </div>
 </div>
@@ -41,11 +40,13 @@
 import axios from 'axios'
 
 import TableModel from '@/models/table.js'
+import RelationModel from '@/models/relation.js'
 
 import Table from '@/components/Table'
 import RubberBand from '@/components/RubberBand'
 import ModalKeysManager from '@/components/ModalKeysManager'
 import ModalDialog from '@/components/ModalDialog'
+// import Relation from '@/components/Relation'
 import Fn from '@/functions.js'
 
 const API_BASE = 'http://websqldesignerserver'
@@ -66,6 +67,8 @@ export default {
   },
   data () {
     return {
+      creating: false,
+      connecting: false,
       modalDialog: {
         visible: false,
         data: {newrowdata: false}
@@ -77,6 +80,7 @@ export default {
       selectDataTypes: false,
       DATATYPES: false, // datatypes for DB
       tables: [], // array of all tables (each table is a vue-component)
+      relations: [],
       selection: [],
       selectedRow: false, // selected row
       adding: false, // add table mode
@@ -87,6 +91,10 @@ export default {
         },
         addrow: {
           value: 'Add field'
+        },
+        foreignconnect: {
+          values: ['Connect foreign key', 'Click target row'],
+          value: 'Connect foreign key'
         }
       },
       // rubberband info
@@ -104,6 +112,12 @@ export default {
     }
   },
   computed: {
+    isUniqueRowSelected: function () {
+      if (this.selectedRow && this.selectedRow.isUnique()) {
+        return true
+      }
+      return false
+    },
     tablesSelected: function () {
       if (this.selection.length >= 1) {
         return true
@@ -134,6 +148,36 @@ export default {
     }
   },
   methods: {
+    foreignconnect () {
+      console.log('foreignconnect')
+      if (this.connecting) {
+        this.endConnect()
+        console.log('this.connecting = false')
+        // console.log('this.connecting is?')
+        // console.log(this.connecting)
+      } else {
+        console.log('this.connecting = true')
+        // console.log('this.connecting is?')
+        // console.log(this.connecting)
+        this.connecting = true
+        this.dom.foreignconnect.value = this.dom.foreignconnect.values[1]
+      }
+    },
+    endConnect () {
+      this.connecting = false
+      this.dom.foreignconnect.value = this.dom.foreignconnect.values[0]
+    },
+    addRelation (row1, row2) {
+      let r = new RelationModel(row1, row2)
+      this.relations.push(r)
+      return r
+    },
+    removeRelation (r) {
+      let idx = this.relations.indexOf(r)
+      if (idx === -1) { return }
+      r.destroy()
+      this.relations.splice(idx, 1)
+    },
     closeModalKeysManager () {
       this.modalKeysManager.visible = false
     },

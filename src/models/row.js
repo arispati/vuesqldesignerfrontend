@@ -62,4 +62,22 @@ export default class Row {
       this.keys[i].removeRow(this)
     }
   }
+  isPrimary () {
+    for (let i = 0; i < this.keys.length; i++) {
+      let k = this.keys[i]
+      if (k.getType() === 'PRIMARY') { return true }
+    }
+    return false
+  }
+  isUnique () {
+    for (let i = 0; i < this.keys.length; i++) {
+      let k = this.keys[i]
+      let t = k.getType()
+      if (t === 'PRIMARY' || t === 'UNIQUE') { return true }
+    }
+    return false
+  }
+  isKey () {
+    return this.keys.length > 0
+  }
 }
