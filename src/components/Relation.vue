@@ -9,7 +9,7 @@ export default {
   data () {
     return {
       args: this.data,
-      curve: "M 562 104 C 586 104 586 232 610 232"
+      curve: 'M 562 104 C 586 104 586 232 610 232'
     }
   },
   methods: {

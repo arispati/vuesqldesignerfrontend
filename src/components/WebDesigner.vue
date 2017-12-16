@@ -3,6 +3,9 @@
   <div class="area" :class="{ 'area--adding': adding }" @click="clickArea"
     @mousedown="mousedownArea">
     <svg width="3000" height="3000">
+      <template v-for="relation in relations">
+        <relation></relation>
+      </template>
       <!-- <path stroke="#000" stroke-width="2" fill="none" d="M 562 104 C 586 104 586 232 610 232"></path> -->
     </svg>
     <template v-for="table in tables">
@@ -46,7 +49,7 @@ import Table from '@/components/Table'
 import RubberBand from '@/components/RubberBand'
 import ModalKeysManager from '@/components/ModalKeysManager'
 import ModalDialog from '@/components/ModalDialog'
-// import Relation from '@/components/Relation'
+import Relation from '@/components/Relation'
 import Fn from '@/functions.js'
 
 const API_BASE = 'http://websqldesignerserver'
@@ -411,14 +414,28 @@ export default {
       // console.log(row.data.comment)
     },
     // select row
+    // data - {row: row, table: this.data}
     selectRow (data) {
       console.log('Webdesigner component->selectRow')
+      // relation connecting
+      // if (this.connecting) {
+      //   let r1 = this.selectedRow
+      // }
       // console.log('rowclick')
+      // find target row
       let row = data
       if (data) {
         let tIndex = this.tables.indexOf(data.table)
         let rIndex = this.tables[tIndex].rows.indexOf(data.row)
         row = this.tables[tIndex].rows[rIndex]
+      }
+      // relation connecting
+      if (this.connecting) {
+        let r1 = this.selectedRow
+        let r2 = row
+        if (r1 !== r2) {
+          this.addRelation(r1, r2)
+        }
       }
       if (this.selectedRow === row) { return }
       if (this.selectedRow) { this.selectedRow.deselect() }
@@ -519,7 +536,8 @@ export default {
     'db-table': Table,
     'rubberband': RubberBand,
     'modal-keys-manager': ModalKeysManager,
-    'modal-dialog': ModalDialog
+    'modal-dialog': ModalDialog,
+    'relation': Relation
   }
 }
 </script>
