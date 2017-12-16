@@ -27,6 +27,12 @@ export default class Table {
     // console.log(data)
     // console.log('addRow table method!')
   }
+  removeRow (r) {
+    let idx = this.rows.indexOf(r)
+    if (idx === -1) { return }
+    r.destroy()
+    this.rows.splice(idx, 1)
+  }
   copy (table) {
     this.x = table.x
     this.y = table.y

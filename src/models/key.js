@@ -22,12 +22,12 @@ export default class Key {
   addRow (r) {
     if (r.owner !== this.owner) { return }
     this.rows.push(r)
-    // r.addKey(this)
+    r.addKey(this)
   }
   removeRow (r) {
     let idx = this.rows.indexOf(r)
     if (idx === -1) { return }
-    // r.removeKey(this)
+    r.removeKey(this)
     this.rows.splice(idx, 1)
   }
   destroy () {

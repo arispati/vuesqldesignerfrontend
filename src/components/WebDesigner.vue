@@ -2,6 +2,9 @@
   <div>
   <div class="area" :class="{ 'area--adding': adding }" @click="clickArea"
     @mousedown="mousedownArea">
+    <svg width="3000" height="3000">
+      <path stroke="#000" stroke-width="2" fill="none" d="M 562 104 C 586 104 586 232 610 232"></path>
+    </svg>
     <template v-for="table in tables">
       <db-table @dblclickrow="expandRow" @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"  @updaterowdata="updateRowData" @openModalDialog="openModalDialog"></db-table>
     </template>
@@ -328,8 +331,9 @@ export default {
     },
     deleteSelectedRow () {
       let table = this.selectedRow.owner
-      let index = table.rows.indexOf(this.selectedRow)
-      table.rows.splice(index, 1)
+      table.removeRow(this.selectedRow)
+      // let index = table.rows.indexOf(this.selectedRow)
+      // table.rows.splice(index, 1)
       this.selectedRow = false
       // console.log(table.rows.indexOf(this.selectedRow))
     },
