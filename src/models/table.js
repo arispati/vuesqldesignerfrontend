@@ -13,6 +13,9 @@ export default class Table {
     this.selected = data.selected
     this.keys = []
     this.rows = []
+    this.dom = {
+      container: ''
+    }
   }
   addRow (title, data) {
     let r = new RowModel(this, title, data)

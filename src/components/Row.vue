@@ -81,6 +81,9 @@ export default {
     console.log('localData')
     console.log(this.localData)
   },
+  mounted: function () {
+    this.data.dom.container = this.$el
+  },
   data () {
     return {
       // https://stackoverflow.com/questions/40408096/whats-the-correct-way-to-pass-props-as-initial-data-in-vue-js-2

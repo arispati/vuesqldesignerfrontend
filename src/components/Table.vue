@@ -31,6 +31,9 @@ export default {
   created () {
     //  console.log('table component created')
   },
+  mounted: function () {
+    this.data.dom.container = this.$el
+  },
   data () {
     return {
       rows: [], // array of all rows (each row is a vue-component)
@@ -118,6 +121,8 @@ export default {
       console.log('Table component->mousemoveTable {emit "tablemove"}')
     },
     mouseupTable () {
+      console.log('mouseUp-> element is: ')
+      console.log(this.$el)
       // console.log('mouseup table')
       if (this.delta.x && this.delta.y) {
         delete this.delta.x

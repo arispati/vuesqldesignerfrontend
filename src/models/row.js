@@ -12,6 +12,9 @@ export default class Row {
     this.data.ai = false
     this.data.comment = ''
     this.keys = []
+    this.dom = {
+      container: ''
+    }
     if (data) { this.update(data) }
     this.id = Math.random()
   }
