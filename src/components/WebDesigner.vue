@@ -4,7 +4,7 @@
     @mousedown="mousedownArea">
     <svg width="3000" height="3000">
       <template v-for="relation in relations">
-        <relation></relation>
+        <relation :data="relation"></relation>
       </template>
       <!-- <path stroke="#000" stroke-width="2" fill="none" d="M 562 104 C 586 104 586 232 610 232"></path> -->
     </svg>
@@ -435,6 +435,7 @@ export default {
         let r2 = row
         if (r1 !== r2) {
           this.addRelation(r1, r2)
+          this.endConnect()
         }
       }
       if (this.selectedRow === row) { return }
