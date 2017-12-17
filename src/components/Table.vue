@@ -1,5 +1,5 @@
 <template>
-<div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px'}" :x="data.x" :y="data.y"  @click.stop="clickTable">
+<div class="table" :class="{ 'table--selected': data.selected }" :style="{ left: data.x + 'px', top: data.y + 'px', 'z-index': data.zIndex}" :x="data.x" :y="data.y"  @click.stop="clickTable">
   <table>
     <thead @mousedown.stop="mousedownTable" @dblclick="openTableModalDialog">
       <tr>

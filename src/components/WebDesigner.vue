@@ -151,6 +151,24 @@ export default {
     }
   },
   methods: {
+    raise (table) {
+      let old = table.getZ()
+      let max = this.getMaxZ()
+      table.setZ(max)
+      for (let i = 0; i < this.tables.length; i++) {
+        let t = this.tables[i]
+        if (t === table) { continue }
+        if (t.getZ() > old) { t.setZ(t.getZ() - 1) }
+      }
+    },
+    getMaxZ () {
+      let max = 0
+      for (let i = 0; i < this.tables.length; i++) {
+        let z = this.tables[i].getZ()
+        if (z > max) { max = z }
+      }
+      return max
+    },
     foreignconnect () {
       console.log('foreignconnect')
       if (this.connecting) {
@@ -473,13 +491,16 @@ export default {
       }
       for (let i = 0; i < this.selection.length; i++) {
         this.selection[i].selected = true
+        this.raise(this.selection[i])
         // this.$set(this.selection[i], 'selected', true)
       }
     },
     addTable (name, x, y) {
       // let max = this.getMaxZ()
       // create new component
-      let newtable = new TableModel({x: x, y: y, name: name, selected: false, owner: this})
+      let max = this.getMaxZ()
+      console.log('Z IS:' + max)
+      let newtable = new TableModel({x: x, y: y, name: name, selected: false, owner: this, z: max + 1})
       let r = newtable.addRow('id', {ai: true})
       // console.log('r')
       console.log(r)

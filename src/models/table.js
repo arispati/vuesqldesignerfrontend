@@ -4,6 +4,7 @@ import KeyModel from '@/models/key.js'
 export default class Table {
   constructor (data) {
     this.owner = data.owner
+    this.zIndex = 0
     this.x = data.x
     this.y = data.y
     this.data = {}
@@ -13,9 +14,16 @@ export default class Table {
     this.selected = data.selected
     this.keys = []
     this.rows = []
+    this.setZ(data.z)
     this.dom = {
       container: ''
     }
+  }
+  setZ (z) {
+    this.zIndex = z
+  }
+  getZ () {
+    return this.zIndex
   }
   addRow (title, data) {
     let r = new RowModel(this, title, data)
