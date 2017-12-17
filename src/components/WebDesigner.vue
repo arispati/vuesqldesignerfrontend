@@ -14,8 +14,10 @@
     <rubberband :data="rubberband"></rubberband>
     <modal-keys-manager @saveDataFromModalKeysManager=saveDataFromModalKeysManager @closeModalKeysManager=closeModalKeysManager :visible="modalKeysManager.visible" :table="oneTableSelected"></modal-keys-manager>
     <modal-dialog :visible="modalDialog.visible" :data="modalDialog.data" @closeModalDialog="closeModalDialog" @saveDataFromModalDialog=saveDataFromModalDialog></modal-dialog>
+    <modal-controls-dialog :visible="modalControlsDialog.visible" :data="modalControlsDialog.data" @closeModalControlsDialog="closeModalControlsDialog"></modal-controls-dialog>
   </div>
   <div class="controls">
+    <input class="btn btn-default" type="button" value="Save/Load" @click="openModalControlsDialog">
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
     <input class="btn btn-default" type="button" value="remove table"  @click="removeTables" :disabled="!tablesSelected">
     <input class="btn btn-default" type="button" value="clear tables"  @click="clearTables">
@@ -49,6 +51,7 @@ import Table from '@/components/Table'
 import RubberBand from '@/components/RubberBand'
 import ModalKeysManager from '@/components/ModalKeysManager'
 import ModalDialog from '@/components/ModalDialog'
+import ModalControlsDialog from '@/components/ModalControlsDialog'
 import Relation from '@/components/Relation'
 import Fn from '@/functions.js'
 
@@ -72,6 +75,10 @@ export default {
     return {
       creating: false,
       connecting: false,
+      modalControlsDialog: {
+        visible: false,
+        data: this
+      },
       modalDialog: {
         visible: false,
         data: {newrowdata: false}
@@ -250,6 +257,12 @@ export default {
     },
     closeModalDialog () {
       this.modalDialog.visible = false
+    },
+    closeModalControlsDialog () {
+      this.modalControlsDialog.visible = false
+    },
+    openModalControlsDialog () {
+      this.modalControlsDialog.visible = true
     },
     keys () {
       console.log('keys')
@@ -559,6 +572,7 @@ export default {
     'rubberband': RubberBand,
     'modal-keys-manager': ModalKeysManager,
     'modal-dialog': ModalDialog,
+    'modal-controls-dialog': ModalControlsDialog,
     'relation': Relation
   }
 }
