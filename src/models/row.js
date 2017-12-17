@@ -21,8 +21,14 @@ export default class Row {
     if (data) { this.update(data) }
     this.id = Math.random() // DONT FORGET TO FIX THIS!!!
   }
+  // move to visual parent class!!
   getTitle () {
     return this.data.title
+  }
+  // move to visual parent class!!
+  setTitle (text) {
+    if (!text) { return }
+    this.data.title = text
   }
   update (data) {
     if (data.nll && data.def && data.def.match(/^null$/i)) { data.def = null }
@@ -127,5 +133,41 @@ export default class Row {
     }
     xml += '</row>\n'
     return xml
+  }
+  fromXML (node) {
+    let name = node.getAttribute('name')
+    console.log(name)
+    let obj = { type: 0, size: '' }
+    obj.nll = (node.getAttribute('null') === '1')
+    obj.ai = (node.getAttribute('autoincrement') === '1')
+    let cs = node.getElementsByTagName('comment')
+    if (cs.length && cs[0].firstChild) { obj.comment = cs[0].firstChild.nodeValue }
+    let d = node.getElementsByTagName('datatype')
+    if (d.length && d[0].firstChild) {
+      let s = d[0].firstChild.nodeValue
+      let r = s.match(/^([^\(]+)(\((.*)\))?.*$/)
+      let type = r[1]
+      if (r[3]) { obj.size = r[3] }
+      let types = this.owner.owner.DATATYPES.getElementsByTagName('type')
+      for (let i = 0; i < types.length; i++) {
+        let sql = types[i].getAttribute('sql')
+        let re = types[i].getAttribute('re')
+        if (sql === type || (re && new RegExp(re).exec(type))) { obj.type = i }
+      }
+    }
+    let elm = this.owner.owner.DATATYPES.getElementsByTagName('type')[obj.type]
+    let d2 = node.getElementsByTagName('default')
+    if (d2.length && d2[0].firstChild) {
+      let def = d2[0].firstChild.nodeValue
+      obj.def = def
+      let q = elm.getAttribute('quote')
+      if (q) {
+        let re = new RegExp('^' + q + '(.*)' + q + '$')
+        let r = def.match(re)
+        if (r) { obj.def = r[1] }
+      }
+    }
+    this.update(obj)
+    this.setTitle(name)
   }
 }

@@ -158,6 +158,11 @@ export default {
     }
   },
   methods: {
+    findNamedTable (name) {
+      for (let i = 0; i < this.tables.length; i++) {
+        if (this.tables[i].getTitle() === name) { return this.tables[i] }
+      }
+    },
     loadXML (xml) {
       console.log('---loadXML---')
       if (!xml) {
@@ -184,6 +189,36 @@ export default {
     fromXML (node) {
       console.log('native fromXML started!!!')
       console.log(node)
+      this.clearTables()
+      let types = node.getElementsByTagName('datatypes')
+      if (types.length) { this.DATATYPES = types[0] }
+      let tables = node.getElementsByTagName('table')
+      for (let i = 0; i < tables.length; i++) {
+        let t = this.addTable('', 0, 0)
+        t.fromXML(tables[i])
+      }
+      for (let i = 0; i < this.tables.length; i++) { /* ff one-pixel shift hack */
+        this.tables[i].select()
+        this.tables[i].deselect()
+      }
+      /* relations */
+      let rs = node.getElementsByTagName('relation')
+      for (let i = 0; i < rs.length; i++) {
+        let rel = rs[i]
+        var tname = rel.getAttribute('table')
+        var rname = rel.getAttribute('row')
+        let t1 = this.findNamedTable(tname)
+        if (!t1) { continue }
+        let r1 = t1.findNamedRow(rname)
+        if (!r1) { continue }
+        tname = rel.parentNode.parentNode.getAttribute('name')
+        rname = rel.parentNode.getAttribute('name')
+        let t2 = this.findNamedTable(tname)
+        if (!t2) { continue }
+        let r2 = t2.findNamedRow(rname)
+        if (!r2) { continue }
+        this.addRelation(r1, r2)
+      }
     },
     toXML () {
       let xml = '<?xml version="1.0" encoding="utf-8" ?>\n'
@@ -557,12 +592,9 @@ export default {
       // let max = this.getMaxZ()
       // create new component
       let max = this.getMaxZ()
-      console.log('Z IS:' + max)
       let newtable = new TableModel({x: x, y: y, name: name, selected: false, owner: this, z: max + 1})
-      let r = newtable.addRow('id', {ai: true})
+      // let r = newtable.addRow('id', {ai: true})
       // console.log('r')
-      console.log(r)
-
       this.tables.push(newtable)
       return newtable
     },
@@ -596,7 +628,9 @@ export default {
         let x = e.clientX + window.pageXOffset
         let y = e.clientY + window.pageYOffset
         newtable = this.addTable('newtable', x, y)
-
+        let r = newtable.addRow('id', {ai: true})
+        let k = newtable.addKey('PRIMARY', '')
+        k.addRow(r)
         // setTimeout(() => {
         //   // console.log(this.tables[0])
         //   // this.tables[0].name = 'muahaa'

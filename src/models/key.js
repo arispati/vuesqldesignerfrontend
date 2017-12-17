@@ -31,9 +31,9 @@ export default class Key {
     this.rows.splice(idx, 1)
   }
   destroy () {
-  //  for (let i = 0; i < this.rows.length; i++) {
-  //    this.rows[i].removeKey(this)
-  //  }
+    for (let i = 0; i < this.rows.length; i++) {
+      this.rows[i].removeKey(this)
+    }
   }
   getLabel () {
     return this.name || this.type
@@ -49,7 +49,15 @@ export default class Key {
     return xml
     // console.log('toXML')
   }
-  fromXML () {
+  fromXML (node) {
+    this.setType(node.getAttribute('type'))
+    this.setName(node.getAttribute('name'))
+    let parts = node.getElementsByTagName('part')
+    for (let i = 0; i < parts.length; i++) {
+      let name = parts[i].firstChild.nodeValue
+      let row = this.owner.findNamedRow(name)
+      this.addRow(row)
+    }
     // console.log('fromXML')
   }
 }

@@ -20,9 +20,32 @@ export default class Table {
       container: ''
     }
   }
+  select () {
+    if (this.selected) { return }
+    this.selected = true
+  }
+  deselect () {
+    if (!this.selected) { return }
+    this.selected = false
+  }
+  moveTo (x, y) {
+    this.x = x
+    this.y = y
+  }
+  findNamedRow (n) {
+    for (let i = 0; i < this.rows.length; i++) {
+      if (this.rows[i].getTitle() === n) { return this.rows[i] }
+    }
+    return false
+  }
   // move to visual parent class!!
   getTitle () {
     return this.data.title
+  }
+  // move to visual parent class!!
+  setTitle (text) {
+    if (!text) { return }
+    this.data.title = text
   }
   setZ (z) {
     this.zIndex = z
@@ -51,6 +74,17 @@ export default class Table {
     if (idx === -1) { return }
     r.destroy()
     this.rows.splice(idx, 1)
+  }
+  addKey (name) {
+    let k = new KeyModel(this, name)
+    this.keys.push(k)
+    return k
+  }
+  removeKey (k) {
+    let idx = this.keys.indexOf(k)
+    if (idx === -1) { return }
+    // k.destroy()
+    this.keys.splice(idx, 1)
   }
   copy (table) {
     this.x = table.x
@@ -87,5 +121,30 @@ export default class Table {
     }
     xml += '</table>\n'
     return xml
+  }
+  fromXML (node) {
+    let name = node.getAttribute('name')
+    this.setTitle(name)
+    let x = parseInt(node.getAttribute('x')) || 0
+    let y = parseInt(node.getAttribute('y')) || 0
+    this.moveTo(x, y)
+    let rows = node.getElementsByTagName('row')
+    for (let i = 0; i < rows.length; i++) {
+      let row = rows[i]
+      let r = this.addRow('')
+      r.fromXML(row)
+    }
+    let keys = node.getElementsByTagName('key')
+    for (let i = 0; i < keys.length; i++) {
+      let key = keys[i]
+      let k = this.addKey()
+      k.fromXML(key)
+    }
+    for (let i = 0; i < node.childNodes.length; i++) {
+      let ch = node.childNodes[i]
+      if (ch.tagName && ch.tagName.toLowerCase() === 'comment' && ch.firstChild) {
+        this.setComment(ch.firstChild.nodeValue)
+      }
+    }
   }
 }
