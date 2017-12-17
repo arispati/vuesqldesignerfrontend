@@ -18,5 +18,8 @@ export default {
       return
     }
     return xmlDoc
+  },
+  escape (str) {
+    return str.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;')
   }
 }

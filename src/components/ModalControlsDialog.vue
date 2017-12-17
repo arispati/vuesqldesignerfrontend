@@ -8,6 +8,8 @@
       </div>
       <div class="modal-window__content">
         <div class="modal-controls">
+          <input class="btn btn-default" type="button" value="Save XML" @click="saveXML">
+          <input class="btn btn-default" type="button" value="Load XML">
           <textarea v-model="io"></textarea>
           <input type="submit" value="ok" @click="ok">
           <input type="submit" value="Отмена" @click="cancel">
@@ -31,6 +33,7 @@ export default {
   watch: {
     visible: function () {
       if (this.visible) {
+        this.io = ''
         console.log('modal controls dialog is visible')
       }
     }
@@ -38,10 +41,16 @@ export default {
   methods: {
     emptyHandler () {},
     ok () {
+      console.log(this.data)
       this.$emit('closeModalControlsDialog')
     },
     cancel () {
       this.$emit('closeModalControlsDialog')
+    },
+    saveXML () {
+      let webdesigner = this.data
+      let xml = webdesigner.toXML()
+      this.io = xml
     }
   }
 }

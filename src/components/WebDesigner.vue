@@ -158,6 +158,24 @@ export default {
     }
   },
   methods: {
+    toXML () {
+      let xml = '<?xml version="1.0" encoding="utf-8" ?>\n'
+      xml += '<!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->\n'
+      xml += '<!-- Active URL: ' + location.href + ' -->\n'
+      xml += '<sql>\n'
+      /* serialize datatypes */
+      if (window.XMLSerializer) {
+        let s = new XMLSerializer()
+        xml += s.serializeToString(this.DATATYPES)
+      } else if (this.DATATYPES.xml) {
+        xml += this.DATATYPES.xml
+      }
+      for (let i = 0; i < this.tables.length; i++) {
+        xml += this.tables[i].toXML()
+      }
+      xml += '</sql>\n'
+      return xml
+    },
     raise (table) {
       let old = table.getZ()
       let max = this.getMaxZ()

@@ -1,3 +1,5 @@
+import Fn from '@/functions.js'
+
 export default class Row {
   constructor (owner, title, data) {
     this.owner = owner
@@ -18,6 +20,9 @@ export default class Row {
     }
     if (data) { this.update(data) }
     this.id = Math.random() // DONT FORGET TO FIX THIS!!!
+  }
+  getTitle () {
+    return this.data.title
   }
   update (data) {
     if (data.nll && data.def && data.def.match(/^null$/i)) { data.def = null }
@@ -79,5 +84,48 @@ export default class Row {
   }
   isKey () {
     return this.keys.length > 0
+  }
+  getDataType () {
+    let type = this.data.type
+    console.log('TYPE IS')
+    console.log(type)
+    let elm = this.owner.owner.DATATYPES.getElementsByTagName('type')[type]
+    console.log('DATATYPES')
+    console.log(this.owner.owner.DATATYPES)
+    return elm
+  }
+  toXML () {
+    let xml = ''
+    let title = this.getTitle().replace(/"/g, '&quot;')
+    let nn = (this.data.nll ? '1' : '0')
+    let ai = (this.data.ai ? '1' : '0')
+    xml += '<row name="' + title + '" null="' + nn + '" autoincrement="' + ai + '">\n'
+    let elm = this.getDataType()
+    console.log('=====ELM IS: =====')
+    console.log(elm)
+    console.log('=====ELM IS: =====')
+    let t = elm.getAttribute('sql')
+    if (this.data.size.length) { t += '(' + this.data.size + ')' }
+    xml += '<datatype>' + t + '</datatype>\n'
+    if (this.data.def || this.data.def === null) {
+      var q = elm.getAttribute('quote')
+      let d = this.data.def
+      if (d === null) {
+        d = 'NULL'
+      } else if (d !== 'CURRENT_TIMESTAMP') {
+        d = q + d + q
+      }
+      xml += '<default>' + Fn.escape(d) + '</default>'
+    }
+    for (let i = 0; i < this.relations.length; i++) {
+      let r = this.relations[i]
+      if (r.row2 !== this) { continue }
+      xml += '<relation table="' + r.row1.owner.getTitle() + '" row="' + r.row1.getTitle() + '" />\n'
+    }
+    if (this.data.comment) {
+      xml += '<comment>' + Fn.escape(this.data.comment) + '</comment>\n'
+    }
+    xml += '</row>\n'
+    return xml
   }
 }

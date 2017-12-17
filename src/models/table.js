@@ -1,5 +1,6 @@
 import RowModel from '@/models/row.js'
 import KeyModel from '@/models/key.js'
+import Fn from '@/functions.js'
 
 export default class Table {
   constructor (data) {
@@ -19,11 +20,21 @@ export default class Table {
       container: ''
     }
   }
+  // move to visual parent class!!
+  getTitle () {
+    return this.data.title
+  }
   setZ (z) {
     this.zIndex = z
   }
   getZ () {
     return this.zIndex
+  }
+  getComment () {
+    return this.data.comment
+  }
+  setComment (c) {
+    this.data.comment = c
   }
   addRow (title, data) {
     let r = new RowModel(this, title, data)
@@ -59,5 +70,22 @@ export default class Table {
       copykey.copy(key)
       this.keys.push(copykey)
     }
+  }
+  toXML () {
+    let t = this.getTitle().replace(/"/g, '&quot;')
+    let xml = ''
+    xml += '<table x="' + this.x + '" y="' + this.y + '" name="' + t + '">\n'
+    for (let i = 0; i < this.rows.length; i++) {
+      xml += this.rows[i].toXML()
+    }
+    for (let i = 0; i < this.keys.length; i++) {
+      xml += this.keys[i].toXML()
+    }
+    let c = this.getComment()
+    if (c) {
+      xml += '<comment>' + Fn.escape(c) + '</comment>\n'
+    }
+    xml += '</table>\n'
+    return xml
   }
 }

@@ -16,7 +16,7 @@
         <td>
           <select v-model="type">
             <optgroup v-for="optgroup in data.owner.owner.selectDataTypes" :label=optgroup.label :style="{'background-color' : optgroup.backgroundColor}">
-              <option v-for="option in optgroup.options">{{option.innerHTML}}</option>
+              <option v-for="(option, index) in optgroup.options" :value="index">{{option.innerHTML}}</option>
             </optgroup>
           </select>
         </td>

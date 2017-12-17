@@ -39,6 +39,14 @@ export default class Key {
     return this.name || this.type
   }
   toXML () {
+    let xml = ''
+    xml += '<key type="' + this.getType() + '" name="' + this.getName() + '">\n'
+    for (let i = 0; i < this.rows.length; i++) {
+      let r = this.rows[i]
+      xml += '<part>' + r.getTitle() + '</part>\n'
+    }
+    xml += '</key>\n'
+    return xml
     // console.log('toXML')
   }
   fromXML () {
