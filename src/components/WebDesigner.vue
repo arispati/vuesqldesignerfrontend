@@ -14,7 +14,7 @@
     <rubberband :data="rubberband"></rubberband>
     <modal-keys-manager @saveDataFromModalKeysManager=saveDataFromModalKeysManager @closeModalKeysManager=closeModalKeysManager :visible="modalKeysManager.visible" :table="oneTableSelected"></modal-keys-manager>
     <modal-dialog :visible="modalDialog.visible" :data="modalDialog.data" @closeModalDialog="closeModalDialog" @saveDataFromModalDialog=saveDataFromModalDialog></modal-dialog>
-    <modal-controls-dialog :visible="modalControlsDialog.visible" :data="modalControlsDialog.data" @closeModalControlsDialog="closeModalControlsDialog"></modal-controls-dialog>
+    <modal-controls-dialog :visible="modalControlsDialog.visible" :data="modalControlsDialog.data" @loadXML="loadXML" @closeModalControlsDialog="closeModalControlsDialog"></modal-controls-dialog>
   </div>
   <div class="controls">
     <input class="btn btn-default" type="button" value="Save/Load" @click="openModalControlsDialog">
@@ -158,6 +158,33 @@ export default {
     }
   },
   methods: {
+    loadXML (xml) {
+      console.log('---loadXML---')
+      if (!xml) {
+        alert('data is empty')
+        return
+      }
+      this.fromXMLText(xml)
+    },
+    fromXMLText (xml) {
+      console.log('---fromXMLText---')
+      console.log(xml)
+      let xmlDoc = Fn.fromXMLText(xml)
+      if (xmlDoc === -1) {
+        return
+      }
+      if (!xmlDoc || !xmlDoc.documentElement) {
+        alert('Null document')
+        return
+      }
+      console.log('---fromXMLText res---')
+      console.log(xmlDoc)
+      this.fromXML(xmlDoc.documentElement)
+    },
+    fromXML (node) {
+      console.log('native fromXML started!!!')
+      console.log(node)
+    },
     toXML () {
       let xml = '<?xml version="1.0" encoding="utf-8" ?>\n'
       xml += '<!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->\n'

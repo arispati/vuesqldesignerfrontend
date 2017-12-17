@@ -15,7 +15,7 @@ export default {
       }
     } catch (e) {
       alert('XML PARSE ERROR: ' + e.message)
-      return
+      return -1
     }
     return xmlDoc
   },

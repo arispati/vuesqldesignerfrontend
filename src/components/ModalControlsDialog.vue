@@ -9,7 +9,7 @@
       <div class="modal-window__content">
         <div class="modal-controls">
           <input class="btn btn-default" type="button" value="Save XML" @click="saveXML">
-          <input class="btn btn-default" type="button" value="Load XML">
+          <input class="btn btn-default" type="button" value="Load XML" @click="loadXML">
           <textarea v-model="io"></textarea>
           <input type="submit" value="ok" @click="ok">
           <input type="submit" value="Отмена" @click="cancel">
@@ -45,6 +45,10 @@ export default {
       this.$emit('closeModalControlsDialog')
     },
     cancel () {
+      this.$emit('closeModalControlsDialog')
+    },
+    loadXML () {
+      this.$emit('loadXML', this.io)
       this.$emit('closeModalControlsDialog')
     },
     saveXML () {
