@@ -62,7 +62,7 @@
         </td>
       </tr>
       <tr v-show="!data.expanded" @dblclick.stop="dblclickRow">
-        <td :class="{ 'table__row-title--selected': data.selected }" class="table__row-title table__row-title--primary table__row-title--key">
+        <td :class="{ 'table__row-title--selected': data.selected, 'table__row-title--key' : isKey, 'table__row-title--primary' : isPrimary }" class="table__row-title">
           <div>{{data.data.title}}</div>
         </td>
         <td>
@@ -96,6 +96,20 @@ export default {
       nll: this.data.data.nll,
       ai: this.data.data.ai,
       comment: this.data.data.comment
+    }
+  },
+  computed: {
+    isKey () {
+      if (this.data.isKey() && !this.data.isPrimary()) {
+        return true
+      }
+      return false
+    },
+    isPrimary () {
+      if (this.data.isPrimary()) {
+        return true
+      }
+      return false
     }
   },
   // computed: {
@@ -199,6 +213,12 @@ export default {
         // content: "\00BB";
         content: "\2714";
       }
+    }
+    &--primary {
+      font-weight: 700
+    }
+    &--key {
+      font-style: italic
     }
   }
 
