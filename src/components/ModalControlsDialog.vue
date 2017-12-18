@@ -10,6 +10,8 @@
         <div class="modal-controls">
           <input class="btn btn-default" type="button" value="Save XML" @click="saveXML">
           <input class="btn btn-default" type="button" value="Load XML" @click="loadXML">
+          <input class="btn btn-default" type="button" value="Generate SQL" @click="clientsql">
+
           <textarea v-model="io"></textarea>
           <input type="submit" value="ok" @click="ok">
           <input type="submit" value="Отмена" @click="cancel">
@@ -19,6 +21,10 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
+import Fn from '@/functions.js'
+const API_BASE = 'http://websqldesignerserver'
+
 export default {
   name: 'modal-controls-dialog',
   props: ['data', 'visible'], // row || table mode AND data == {newrowdata: actualData, row: this.data, mode: 'row'}
@@ -55,6 +61,38 @@ export default {
       let webdesigner = this.data
       let xml = webdesigner.toXML()
       this.io = xml
+    },
+    clientsql () {
+      console.log('clientsql')
+      axios({method: 'get', url: `${API_BASE}/corsbridge.php?db=mysql&sql=true`}).then((xsl) => {
+        let xslDoc = Fn.fromXMLText(xsl.data)
+        console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||')
+        console.log('xslDoc')
+        console.log(xslDoc)
+        console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||')
+        let xml = this.data.toXML()
+        let sql = ''
+        try {
+          if (window.XSLTProcessor && window.DOMParser) {
+            let parser = new DOMParser()
+            let xmlDoc = parser.parseFromString(xml, 'text/xml')
+            let xsl = new XSLTProcessor()
+            xsl.importStylesheet(xslDoc)
+            let result = xsl.transformToDocument(xmlDoc)
+            sql = result.documentElement.textContent
+          } else if (window.ActiveXObject || 'ActiveXObject' in window) {
+            let xmlDoc = new window.ActiveXObject('Microsoft.XMLDOM')
+            xmlDoc.loadXML(xml)
+            sql = xmlDoc.transformNode(xslDoc)
+          } else {
+            throw new Error('No XSLT processor available')
+          }
+        } catch (e) {
+          alert('xmlerror: ' + e.message)
+          return
+        }
+        this.io = sql.trim()
+      })
     }
   }
 }
