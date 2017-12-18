@@ -158,6 +158,29 @@ export default {
     }
   },
   methods: {
+    getTypeIndex (label) {
+      if (!this.typeIndex) {
+        this.typeIndex = {}
+        let types = this.DATATYPES.getElementsByTagName('type')
+        for (let i = 0; i < types.length; i++) {
+          let l = types[i].getAttribute('label')
+          if (l) { this.typeIndex[l] = i }
+        }
+      }
+      return this.typeIndex[label]
+    },
+    getFKTypeFor (typeIndex) {
+      if (!this.fkTypeFor) {
+        this.fkTypeFor = {}
+        let types = this.DATATYPES.getElementsByTagName('type')
+        for (let i = 0; i < types.length; i++) {
+          this.fkTypeFor[i] = i
+          let fk = types[i].getAttribute('fk')
+          if (fk) { this.fkTypeFor[i] = this.getTypeIndex(fk) }
+        }
+      }
+      return this.fkTypeFor[typeIndex]
+    },
     findNamedTable (name) {
       for (let i = 0; i < this.tables.length; i++) {
         if (this.tables[i].getTitle() === name) { return this.tables[i] }
@@ -514,15 +537,15 @@ export default {
       this.setNewDataToRow(row, rowdata.newrowdata)
     },
     setNewDataToRow (row, newdata) {
-      row.data.title = newdata.title
-      row.data.type = newdata.type
-      row.data.size = newdata.size
-      row.data.def = newdata.def
-      row.data.nll = newdata.nll
-      row.data.ai = newdata.ai
-      row.data.comment = newdata.comment
-      // console.log('NEW COMMENT IS: ')
-      // console.log(row.data.comment)
+      // old variant
+      // row.data.title = newdata.title
+      // row.data.type = newdata.type
+      // row.data.size = newdata.size
+      // row.data.def = newdata.def
+      // row.data.nll = newdata.nll
+      // row.data.ai = newdata.ai
+      // row.data.comment = newdata.comment
+      row.update(newdata)
     },
     // select row
     // data - {row: row, table: this.data}

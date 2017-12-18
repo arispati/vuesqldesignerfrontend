@@ -32,8 +32,13 @@ export default class Row {
   }
   update (data) {
     if (data.nll && data.def && data.def.match(/^null$/i)) { data.def = null }
-    for (var p in data) { this.data[p] = data[p] }
+    for (let p in data) { this.data[p] = data[p] }
     if (!this.data.nll && this.data.def === null) { this.data.def = '' }
+    for (let i = 0; i < this.relations.length; i++) {
+      console.log('GO HERE!!!')
+      let r = this.relations[i]
+      if (r.row1 === this) { r.row2.update({type: this.owner.owner.getFKTypeFor(this.data.type), size: this.data.size}) }
+    }
   }
   select () {
     if (this.selected) { return }
