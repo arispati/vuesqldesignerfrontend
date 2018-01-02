@@ -6,7 +6,7 @@
           Name:
         </td>
         <td>
-          <input v-model="title" type="text"></input>
+          <input class="form-control" v-model="title" type="text"></input>
         </td>
       </tr>
       <tr v-show="data.expanded">
@@ -14,7 +14,7 @@
           Type:
         </td>
         <td>
-          <select v-model="type">
+          <select v-model="type" class="form-control">
             <optgroup v-for="optgroup in data.owner.owner.selectDataTypes" :label=optgroup.label :style="{'background-color' : optgroup.backgroundColor}">
               <option v-for="(option, index) in optgroup.options" :value="index">{{option.innerHTML}}</option>
             </optgroup>
@@ -26,7 +26,7 @@
           Size:
         </td>
         <td>
-          <input v-model="size" type="text"></input>
+          <input v-model="size" class="form-control" type="text"></input>
         </td>
       </tr>
       <tr v-show="data.expanded">
@@ -34,7 +34,7 @@
           Default:
         </td>
         <td>
-          <input v-model="def" type="text"></input>
+          <input class="form-control" v-model="def" type="text"></input>
         </td>
       </tr>
       <tr v-show="data.expanded">
