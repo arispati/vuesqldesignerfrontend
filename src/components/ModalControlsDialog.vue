@@ -49,6 +49,7 @@
           </select>
           <input class="btn btn-default" type="button" value="List items" @click="serverlist">
           <input class="btn btn-default" type="button" value="Load" @click="openConfirmInServerLoadMode">
+          <input class="btn btn-default" type="button" value="Save" @click="openConfirmInServerSaveMode">
           <textarea v-model="io"></textarea>
           <input type="submit" value="ok" @click="ok">
           <input type="submit" value="Отмена" @click="cancel">
@@ -143,7 +144,7 @@ export default {
       let key = this.confirmText
       if (!key) { return }
       this.throbber = true
-      axios({method: 'post', url: `${API_BASE}/corsbridge.php?backend=${this.backendSelectVal}&action=save&keyword=${encodeURIComponent(key)}`}).then(this.loadresponse).catch(error => {
+      axios({method: 'post', data: xml, url: `${API_BASE}/corsbridge.php?backend=${this.backendSelectVal}&action=save&keyword=${encodeURIComponent(key)}`}).then(this.loadresponse).catch(error => {
         this.throbber = false
         this.io = 'http: ' + error.response.status + ' ' + error.response.statusText
       })
