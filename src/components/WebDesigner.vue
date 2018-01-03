@@ -17,26 +17,26 @@
     <modal-controls-dialog :localeOptions="localeOptions" :currentLocale="currentLocale" :locale="locale" :visible="modalControlsDialog.visible" :mode="modalControlsDialog.mode" :data="modalControlsDialog.data" @loadXML="loadXML" @setNewLocale="setNewLocale" @closeModalControlsDialog="closeModalControlsDialog"></modal-controls-dialog>
   </div>
   <div class="controls">
-    <input class="btn btn-default" type="button" value="Save/Load" @click="openModalControlsDialog">
+    <input class="btn btn-default" type="button" :value="locale['saveload']" @click="openModalControlsDialog">
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
-    <input class="btn btn-default" type="button" value="remove table"  @click="removeTables" :disabled="!tablesSelected">
-    <input class="btn btn-default" type="button" value="clear tables"  @click="clearTables">
+        <input class="btn btn-default" type="button" :value="locale['edittable']" @click="openTableModalDialogByButton" :disabled="!oneTableSelected"></input>
+    <input class="btn btn-default" type="button" :value="locale['removetable']"  @click="removeTables" :disabled="!tablesSelected">
+    <input class="btn btn-default" type="button" :value="locale['cleartables']"  @click="clearTables">
     <input class="btn btn-default" type="button" value="Default value" @click="addRow" :value="dom.addrow.value">
 
-    <input class="btn btn-default" type="button" value="Edit field" :disabled="!selectedRow" @click="expandSelectedRow"></input>
+    <input class="btn btn-default" type="button" :value="locale['editrow']" :disabled="!selectedRow" @click="expandSelectedRow"></input>
 
-    <input class="btn btn-default" type="button" value="up" :disabled="upDisabled" @click="up"></input>
-    <input class="btn btn-default" type="button" value="down" :disabled="downDisabled" @click="down"></input>
+    <input class="btn btn-default" type="button" :value="locale['uprow']" :disabled="upDisabled" @click="up"></input>
+    <input class="btn btn-default" type="button" :value="locale['downrow']" :disabled="downDisabled" @click="down"></input>
 
-    <input class="btn btn-default" type="button" value="Delete field" :disabled="!selectedRow" @click="deleteSelectedRow"></input>
+    <input class="btn btn-default" type="button" :value="locale['removerow']" :disabled="!selectedRow" @click="deleteSelectedRow"></input>
 
     <input class="btn btn-default" type="button" value="Show Component Data" @click="showComponentData"></input>
     <hr>
-    <input class="btn btn-default" type="button" value="Keys" @click="keys" :disabled="!oneTableSelected"></input>
-    <input class="btn btn-default" type="button" value="Edit table" @click="openTableModalDialogByButton" :disabled="!oneTableSelected"></input>
+    <input class="btn btn-default" type="button" value="Keys" @click="keys" :value="locale['tablekeys']" :disabled="!oneTableSelected"></input>
 
     <input class="btn btn-default" type="button" :value="dom.foreignconnect.value"  @click="foreignconnect" :disabled="!isUniqueRowSelected"></input>
-    <input class="btn btn-default" type="button" value="Options" @click="openModalOptionsDialog">
+    <input class="btn btn-default" type="button" :value="locale['options']" value="Options" @click="openModalOptionsDialog">
   </div>
 </div>
 </template>
@@ -181,6 +181,17 @@ export default {
             let v = strings[i].firstChild.nodeValue
             this.locale[n] = v
           }
+        }
+        this.dom.addtable = {
+          values: [this.locale['addtable'], this.locale['addpending']],
+          value: this.locale['addtable']
+        }
+        this.dom.addrow = {
+          value: this.locale['addrow']
+        }
+        this.dom.foreignconnect = {
+          values: [this.locale['foreignconnect'], this.locale['foreignconnectpending']],
+          value: this.locale['foreignconnect']
         }
         // let xml = Fn.fromXMLText(xmlDoc.data)
         // this.DATATYPES = xml.documentElement
