@@ -18,7 +18,7 @@
 <script>
 export default {
   name: 'modal-dialog',
-  props: ['data', 'visible'], // row || table mode AND data == {newrowdata: actualData, row: this.data, mode: 'row'}
+  props: ['data', 'visible', 'locale'], // row || table mode AND data == {newrowdata: actualData, row: this.data, mode: 'row'}
   created () {
   },
   data () {

@@ -21,5 +21,11 @@ export default {
   },
   escape (str) {
     return str.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;')
+  },
+  _ (str, locale) {
+    if (!(str in locale)) {
+      return str
+    }
+    return locale[str]
   }
 }

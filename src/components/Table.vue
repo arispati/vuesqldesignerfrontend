@@ -7,7 +7,7 @@
       </tr>
     </thead>
     <template v-for="row in data.rows">
-      <db-row @clickrow="clickRow" @dblclickrow="dblclickRow" :data="row" :expanded="row.expanded" @updaterowdata="updateRowData" @openModalDialog="openModalDialog"></db-row>
+      <db-row :locale="locale" @clickrow="clickRow" @dblclickrow="dblclickRow" :data="row" :expanded="row.expanded" @updaterowdata="updateRowData" @openModalDialog="openModalDialog"></db-row>
     </template>
     <!-- <tbody>
       <tr>
@@ -27,7 +27,7 @@ import Row from '@/components/Row'
 
 export default {
   name: 'db-table',
-  props: ['data', 'selection'],
+  props: ['data', 'selection', 'locale'],
   created () {
     //  console.log('table component created')
   },

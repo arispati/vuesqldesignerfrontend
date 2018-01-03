@@ -3,7 +3,7 @@
 
       <tr v-show="data.expanded">
         <td>
-          Name:
+          {{locale['name']}}:
         </td>
         <td>
           <input class="form-control" v-model="title" type="text"></input>
@@ -11,7 +11,7 @@
       </tr>
       <tr v-show="data.expanded">
         <td>
-          Type:
+          {{locale['type']}}:
         </td>
         <td>
           <select v-model="type" class="form-control">
@@ -23,7 +23,7 @@
       </tr>
       <tr v-show="data.expanded">
         <td>
-          Size:
+          {{locale['size']}}:
         </td>
         <td>
           <input v-model="size" class="form-control" type="text"></input>
@@ -31,7 +31,7 @@
       </tr>
       <tr v-show="data.expanded">
         <td>
-          Default:
+          {{locale['def']}}:
         </td>
         <td>
           <input class="form-control" v-model="def" type="text"></input>
@@ -39,7 +39,7 @@
       </tr>
       <tr v-show="data.expanded">
         <td>
-          Autoincrement:
+          {{locale['ai']}}:
         </td>
         <td>
           <input type="checkbox" v-model="ai">
@@ -47,7 +47,7 @@
       </tr>
       <tr v-show="data.expanded">
         <td>
-          NULL:
+          {{locale['null']}}:
         </td>
         <td>
           <input type="checkbox" v-model="nll">
@@ -58,7 +58,7 @@
           {{data.data.comment}}
         </td>
         <td>
-          <button @click.stop="editComment">Edit comment</button>
+          <button @click.stop="editComment">{{locale['comment']}}</button>
         </td>
       </tr>
       <tr v-show="!data.expanded" @dblclick.stop="dblclickRow">
@@ -72,10 +72,11 @@
   </tbody>
 </template>
 <script>
+// import Fn from '@/functions.js'
 
 export default {
   name: 'db-row',
-  props: ['data', 'expanded'],
+  props: ['data', 'expanded', 'locale'],
   created () {
     // console.log('row component created')
     console.log('localData')

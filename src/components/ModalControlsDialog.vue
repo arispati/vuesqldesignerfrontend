@@ -35,24 +35,33 @@
       </div>
       <div class="modal-window__content">
         <div class="modal-controls">
-          <input class="btn btn-default" type="button" value="Save XML" @click="saveXML">
-          <input class="btn btn-default" type="button" value="Load XML" @click="loadXML">
-          <input class="btn btn-default" type="button" value="Generate SQL" @click="clientsql">
-          <!-- local storage -->
-          <input class="btn btn-default" type="button" value="Save in Browser" @click="openConfirmInLocalSaveMode">
-          <input class="btn btn-default" type="button" value="Load from Browser" @click="openConfirmInLocalLoadMode">
-          <input class="btn btn-default" type="button" value="List from Browser" @click="clientlocallist">
-          <!-- server -->
-          <label>Server backend</label>
-          <select v-model="backendSelectVal" class="form-control">
-            <option v-for="option in backendSelect" :value="option">{{option}}</option>
-          </select>
-          <input class="btn btn-default" type="button" value="List items" @click="serverlist">
-          <input class="btn btn-default" type="button" value="Load" @click="openConfirmInServerLoadMode">
-          <input class="btn btn-default" type="button" value="Save" @click="openConfirmInServerSaveMode">
-          <textarea v-model="io"></textarea>
+          <div v-show="mode=='controls'">
+            <input class="btn btn-default" type="button" value="Save XML" @click="saveXML">
+            <input class="btn btn-default" type="button" value="Load XML" @click="loadXML">
+            <input class="btn btn-default" type="button" value="Generate SQL" @click="clientsql">
+            <!-- local storage -->
+            <input class="btn btn-default" type="button" value="Save in Browser" @click="openConfirmInLocalSaveMode">
+            <input class="btn btn-default" type="button" value="Load from Browser" @click="openConfirmInLocalLoadMode">
+            <input class="btn btn-default" type="button" value="List from Browser" @click="clientlocallist">
+            <!-- server -->
+            <label>Server backend</label>
+            <select v-model="backendSelectVal" class="form-control">
+              <option v-for="option in backendSelect" :value="option">{{option}}</option>
+            </select>
+            <input class="btn btn-default" type="button" value="List items" @click="serverlist">
+            <input class="btn btn-default" type="button" value="Load" @click="openConfirmInServerLoadMode">
+            <input class="btn btn-default" type="button" value="Save" @click="openConfirmInServerSaveMode">
+            <textarea v-model="io"></textarea>
+          </div>
+          <div v-show="mode=='options'">
+            <label>Locale</label>
+            <select v-model="localeVal" class="form-control">
+              <option v-for="option in localeOptions" :value="option">{{option}}</option>
+            </select>
+          </div>
           <input type="submit" value="ok" @click="ok">
           <input type="submit" value="Отмена" @click="cancel">
+
         </div>
       </div>
     </div>
@@ -66,7 +75,7 @@ const API_BASE = 'http://websqldesignerserver'
 
 export default {
   name: 'modal-controls-dialog',
-  props: ['data', 'visible'], // row || table mode AND data == {newrowdata: actualData, row: this.data, mode: 'row'}
+  props: ['data', 'visible', 'mode', 'locale', 'currentLocale', 'localeOptions'], // row || table mode AND data == {newrowdata: actualData, row: this.data, mode: 'row'}
   created () {
   },
   data () {
@@ -79,7 +88,8 @@ export default {
       confirmText: '',
       backendSelect: config.AVAILABLE_BACKENDS,
       backendSelectVal: config.DEFAULT_BACKEND,
-      throbber: false
+      throbber: false,
+      localeVal: this.currentLocale
     }
   },
   watch: {
@@ -94,6 +104,9 @@ export default {
     emptyHandler () {},
     ok () {
       console.log(this.data)
+      if (this.mode === 'options') {
+        this.$emit('setNewLocale', this.localeVal)
+      }
       this.$emit('closeModalControlsDialog')
     },
     cancel () {

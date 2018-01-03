@@ -12,5 +12,7 @@ export default {
   // XHR_PATH: "",
   // DROPBOX_KEY: null
   AVAILABLE_BACKENDS: ['php-mysql', 'php-file'],
-  DEFAULT_BACKEND: 'php-mysql'
+  DEFAULT_BACKEND: 'php-mysql',
+  AVAILABLE_LOCALES: ['ar', 'cs', 'de', 'el', 'en', 'eo', 'es', 'fr', 'hu', 'it', 'ja', 'ko', 'nl', 'pl', 'pt_BR', 'ro', 'ru', 'sv', 'zh'],
+  DEFAULT_LOCALE: 'en'
 }

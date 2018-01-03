@@ -9,12 +9,12 @@
       <!-- <path stroke="#000" stroke-width="2" fill="none" d="M 562 104 C 586 104 586 232 610 232"></path> -->
     </svg>
     <template v-for="table in tables">
-      <db-table @dblclickrow="expandRow" @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"  @updaterowdata="updateRowData" @openModalDialog="openModalDialog"></db-table>
+      <db-table :locale="locale" @dblclickrow="expandRow" @clickrow="selectRow" v-on:clicktable="clickTable" v-on:tablemove="move" :data="table" :selection="selection"  @updaterowdata="updateRowData" @openModalDialog="openModalDialog"></db-table>
     </template>
     <rubberband :data="rubberband"></rubberband>
-    <modal-keys-manager @saveDataFromModalKeysManager=saveDataFromModalKeysManager @closeModalKeysManager=closeModalKeysManager :visible="modalKeysManager.visible" :table="oneTableSelected"></modal-keys-manager>
-    <modal-dialog :visible="modalDialog.visible" :data="modalDialog.data" @closeModalDialog="closeModalDialog" @saveDataFromModalDialog=saveDataFromModalDialog></modal-dialog>
-    <modal-controls-dialog :visible="modalControlsDialog.visible" :data="modalControlsDialog.data" @loadXML="loadXML" @closeModalControlsDialog="closeModalControlsDialog"></modal-controls-dialog>
+    <modal-keys-manager :locale="locale" @saveDataFromModalKeysManager=saveDataFromModalKeysManager @closeModalKeysManager=closeModalKeysManager :visible="modalKeysManager.visible" :table="oneTableSelected"></modal-keys-manager>
+    <modal-dialog :locale="locale" :visible="modalDialog.visible" :data="modalDialog.data" @closeModalDialog="closeModalDialog" @saveDataFromModalDialog=saveDataFromModalDialog></modal-dialog>
+    <modal-controls-dialog :localeOptions="localeOptions" :currentLocale="currentLocale" :locale="locale" :visible="modalControlsDialog.visible" :mode="modalControlsDialog.mode" :data="modalControlsDialog.data" @loadXML="loadXML" @setNewLocale="setNewLocale" @closeModalControlsDialog="closeModalControlsDialog"></modal-controls-dialog>
   </div>
   <div class="controls">
     <input class="btn btn-default" type="button" value="Save/Load" @click="openModalControlsDialog">
@@ -36,7 +36,7 @@
     <input class="btn btn-default" type="button" value="Edit table" @click="openTableModalDialogByButton" :disabled="!oneTableSelected"></input>
 
     <input class="btn btn-default" type="button" :value="dom.foreignconnect.value"  @click="foreignconnect" :disabled="!isUniqueRowSelected"></input>
-
+    <input class="btn btn-default" type="button" value="Options" @click="openModalOptionsDialog">
   </div>
 </div>
 </template>
@@ -55,6 +55,8 @@ import ModalControlsDialog from '@/components/ModalControlsDialog'
 import Relation from '@/components/Relation'
 import Fn from '@/functions.js'
 
+import config from '@/config.js'
+
 const API_BASE = 'http://websqldesignerserver'
 
 export default {
@@ -65,6 +67,9 @@ export default {
   //    console.log('HTTP response!!!')
   //    console.log(response)
   //  })
+    //  get locale
+    this.requestLanguage()
+
     axios({method: 'get', url: `${API_BASE}/corsbridge.php?db=mysql`}).then((xmlDoc) => {
       let xml = Fn.fromXMLText(xmlDoc.data)
       this.DATATYPES = xml.documentElement
@@ -73,11 +78,15 @@ export default {
   },
   data () {
     return {
+      currentLocale: config.DEFAULT_LOCALE, // 'en'
+      localeOptions: config.AVAILABLE_LOCALES,
+      locale: {},
       creating: false,
       connecting: false,
       modalControlsDialog: {
         visible: false,
-        data: this
+        data: this,
+        mode: '' // 'options' || 'controls'
       },
       modalDialog: {
         visible: false,
@@ -158,6 +167,35 @@ export default {
     }
   },
   methods: {
+    setNewLocale (val) {
+      this.currentLocale = val
+      this.requestLanguage()
+    },
+    requestLanguage () {
+      axios({method: 'get', url: `${API_BASE}/corsbridge.php?locale=${this.currentLocale}`}).then((xmlDoc) => {
+        if (xmlDoc) {
+          let xml = Fn.fromXMLText(xmlDoc.data)
+          let strings = xml.getElementsByTagName('string')
+          for (let i = 0; i < strings.length; i++) {
+            let n = strings[i].getAttribute('name')
+            let v = strings[i].firstChild.nodeValue
+            this.locale[n] = v
+          }
+        }
+        // let xml = Fn.fromXMLText(xmlDoc.data)
+        // this.DATATYPES = xml.documentElement
+        // this.buildTypeSelect()
+      })
+    },
+    getOption (name) {
+      // let c = this.getCookie()
+      // if (name in c) { return c[name] }
+      /* defaults */
+      switch (name) {
+        case 'locale': return config.DEFAULT_LOCALE
+        default: return null
+      }
+    },
     getTypeIndex (label) {
       if (!this.typeIndex) {
         this.typeIndex = {}
@@ -366,6 +404,11 @@ export default {
     },
     openModalControlsDialog () {
       this.modalControlsDialog.visible = true
+      this.modalControlsDialog.mode = 'controls'
+    },
+    openModalOptionsDialog () {
+      this.modalControlsDialog.visible = true
+      this.modalControlsDialog.mode = 'options'
     },
     keys () {
       console.log('keys')
