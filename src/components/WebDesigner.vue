@@ -209,6 +209,9 @@ export default {
           values: [this.locale['foreignconnect'], this.locale['foreignconnectpending']],
           value: this.locale['foreignconnect']
         }
+        this.dom.foreigndisconnect = {
+          value: this.locale['foreigndisconnect']
+        }
         // let xml = Fn.fromXMLText(xmlDoc.data)
         // this.DATATYPES = xml.documentElement
         // this.buildTypeSelect()

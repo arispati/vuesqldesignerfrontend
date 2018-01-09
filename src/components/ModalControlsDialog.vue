@@ -17,7 +17,8 @@
     </div>
     <div class="modal-window__wrapper">
       <div class="modal-window__title">
-        <p>Controls</p>
+        <p v-show="mode=='controls'">{{locale['saveload']}}</p>
+        <p v-show="mode=='options'">{{locale['options']}}</p>
         <div class="sk-fading-circle" v-show="throbber">
           <div class="sk-circle1 sk-circle"></div>
           <div class="sk-circle2 sk-circle"></div>
@@ -36,21 +37,22 @@
       <div class="modal-window__content">
         <div class="modal-controls">
           <div v-show="mode=='controls'">
-            <input class="btn btn-default" type="button" value="Save XML" @click="saveXML">
-            <input class="btn btn-default" type="button" value="Load XML" @click="loadXML">
-            <input class="btn btn-default" type="button" value="Generate SQL" @click="clientsql">
+            <input class="btn btn-default" type="button" :value="locale['clientsave']" @click="saveXML">
+            <input class="btn btn-default" type="button" :value="locale['clientload']" @click="loadXML">
+            <input class="btn btn-default" type="button" :value="locale['clientsql']"  @click="clientsql">
             <!-- local storage -->
-            <input class="btn btn-default" type="button" value="Save in Browser" @click="openConfirmInLocalSaveMode">
-            <input class="btn btn-default" type="button" value="Load from Browser" @click="openConfirmInLocalLoadMode">
-            <input class="btn btn-default" type="button" value="List from Browser" @click="clientlocallist">
+            <input class="btn btn-default" type="button" value="Save in Browser" :value="locale['clientlocalsave']" @click="openConfirmInLocalSaveMode">
+            <input class="btn btn-default" type="button" value="Load from Browser" :value="locale['clientlocalload']" @click="openConfirmInLocalLoadMode">
+            <input class="btn btn-default" type="button" value="List from Browser" :value="locale['clientlocallist']" @click="clientlocallist">
             <!-- server -->
-            <label>Server backend</label>
+            <label>{{locale['backendlabel']}}</label>
             <select v-model="backendSelectVal" class="form-control">
               <option v-for="option in backendSelect" :value="option">{{option}}</option>
             </select>
-            <input class="btn btn-default" type="button" value="List items" @click="serverlist">
-            <input class="btn btn-default" type="button" value="Load" @click="openConfirmInServerLoadMode">
-            <input class="btn btn-default" type="button" value="Save" @click="openConfirmInServerSaveMode">
+            <input class="btn btn-default" type="button" value="List items" :value="locale['serverlist']" @click="serverlist">
+            <input class="btn btn-default" type="button" value="Load" :value="locale['serverload']" @click="openConfirmInServerLoadMode">
+            <input class="btn btn-default" type="button" value="Save" :value="locale['serversave']" @click="openConfirmInServerSaveMode">
+            <label>{{locale['output']}}</label>
             <textarea v-model="io"></textarea>
           </div>
           <div v-show="mode=='options'">
@@ -59,8 +61,8 @@
               <option v-for="option in localeOptions" :value="option">{{option}}</option>
             </select>
           </div>
-          <input type="submit" value="ok" @click="ok">
-          <input type="submit" value="Отмена" @click="cancel">
+          <input type="submit" value="ok" :value="locale['windowok']" @click="ok">
+          <input type="submit" value="Отмена" :value="locale['windowcancel']" @click="cancel">
 
         </div>
       </div>
@@ -370,7 +372,8 @@ export default {
       height: 120px;
       width: 360px;
       border: 1px solid black;
-      padding: 5px 5px 5px 55px;
+      // padding: 5px 5px 5px 55px;
+      padding: 5px 5px 5px 5px;
       // background: url(https://js.cx/clipart/key.png) 3px 5px white no-repeat;
     }
   }
