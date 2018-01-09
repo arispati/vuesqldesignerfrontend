@@ -4,13 +4,16 @@
     </div>
     <div class="modal-window__wrapper">
       <div class="modal-window__title">
-        <p>Comment</p>
+        <p v-show="data.mode === 'table'">{{locale['edittable']}}</p>
+        <p v-show="data.mode !== 'table'">{{locale['commenttext']}}</p>
       </div>
       <div class="modal-window__content">
+        <label v-show="data.mode === 'table'">{{locale['tablenamelabel']}}</label>
         <input type="text" v-model="title" v-show="data.mode === 'table'"></input>
+        <label v-show="data.mode === 'table'">{{locale['tablecommentlabel']}}</label>
         <textarea v-model="comment"></textarea>
-        <input type="submit" value="ok" @click="ok">
-        <input type="submit" value="Отмена" @click="cancel">
+        <input type="submit" value="ok" :value="locale['windowok']" @click="ok">
+        <input type="submit" value="Отмена" :value="locale['windowcancel']" @click="cancel">
       </div>
     </div>
   </div>

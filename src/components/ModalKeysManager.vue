@@ -4,11 +4,11 @@
     </div>
     <div class="modal-window__wrapper">
       <div class="modal-window__title">
-        <p>Keys</p>
+        {{locale['tablekeys']}}
       </div>
       <div class="modal-window__content">
         <fieldset>
-          <legend>Keys in table ...</legend>
+          <legend>{{tablename}}</legend>
           <select :disabled="!keyExists" v-model="selectedKey">
             <!-- <option>1: PRIMARY</option> -->
             <option v-for="localKey in localKeys" v-bind:value="localKey">
@@ -16,21 +16,23 @@
             </option>
           </select>
           <!-- <span>Выбрано: {{ selectedKey }}</span> -->
-          <input type="button" value="Add key" @click="add"></input>
-          <input type="button" value="Remove key" :disabled="!keyExists" @click="remove"></input>
+          <input type="button" value="Add key" :value="locale['keyadd']" @click="add"></input>
+          <input type="button" value="Remove key" :value="locale['keyremove']" :disabled="!keyExists" @click="remove"></input>
         </fieldset>
         <fieldset>
-          <select v-model="selectedKey.type">
+          <legend>{{locale['keyedit']}}</legend>
+          <label>{{locale['keytypelabel']}}</label><select v-model="selectedKey.type">
             <!-- <option>1: PRIMARY</option> -->
             <option v-for="type in types" v-bind:value="type">
               {{type}}
             </option>
           </select>
-          <input type="text" v-model="selectedKey.name"></input>
+          <label>{{locale['keynamelabel']}}</label><input type="text" v-model="selectedKey.name"></input>
           <table>
             <tbody>
               <tr>
                 <td>
+                  <label>{{locale['keyfieldslabel']}}</label><br>
                   <select multiple v-model="selectedRowsInKey">
                     <option v-for="row in selectedKey.rows" v-bind:value="row">
                       {{ row.data.title }}
@@ -43,6 +45,7 @@
                   <input value=">>" type="button"  @click="removeRowFromKey">
                 </td>
                 <td>
+                  <label>{{locale['keyavaillabel']}}</label><br>
                  <select multiple v-model="selectedRows">
                    <!-- availableFields -->
                    <option v-for="localRow in availableFields" v-bind:value="localRow">
@@ -58,8 +61,8 @@
           <!-- <p>{{this.localKeys}}</p> -->
           <!-- <p>{{this.localRows}}</p> -->
         </div>
-        <input type="submit" value="ok" @click="ok">
-        <input type="submit" value="Отмена" @click="cancel">
+        <input type="submit" value="ok" :value="locale['windowok']" @click="ok">
+        <input type="submit" value="Отмена" :value="locale['windowcancel']" @click="cancel">
         <input type="submit" value="data" @click="showData">
       </div>
     </div>
@@ -127,6 +130,15 @@ export default {
     }
   },
   computed: {
+    tablename: function () {
+      let locale = this.locale
+      let table = this.table
+      if (locale && table) {
+        return locale['keyslistlabel'].replace(/%s/, table.getTitle())
+      }
+      return ''
+      // return this.table.getTitle()
+    },
     keyExists: function () {
       console.log('run computed')
       if (this.localKeys.length) {

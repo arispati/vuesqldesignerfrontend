@@ -4,12 +4,13 @@
       <div class="modal-confirm__inner"></div>
       <div class="modal-confirm__wrapper">
         <div class="modal-confirm__title">
-          <p>yes/no</p>
+          <p v-show="confirmMode == 'load'">{{locale['serverloadprompt']}}</p>
+          <p v-show="confirmMode == 'save'">{{locale['serversaveprompt']}}</p>
         </div>
         <div class="modal-confirm__content">
           <input type="text" v-model="confirmText"></input>
-          <input type="submit" value="ok" @click="confirmYes">
-          <input type="submit" value="Отмена" @click="confirmNo">
+          <input type="submit" value="ok" :value="locale['windowok']" @click="confirmYes">
+          <input type="submit" value="Отмена" :value="locale['windowcancel']" @click="confirmNo">
         </div>
       </div>
     </div>
