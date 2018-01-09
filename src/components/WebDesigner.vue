@@ -36,6 +36,7 @@
     <input class="btn btn-default" type="button" value="Keys" @click="keys" :value="locale['tablekeys']" :disabled="!oneTableSelected"></input>
 
     <input class="btn btn-default" type="button" :value="dom.foreignconnect.value"  @click="foreignconnect" :disabled="!isUniqueRowSelected"></input>
+    <input class="btn btn-default" type="button" :value="dom.foreigndisconnect.value"  @click="foreigndisconnect" :disabled="!allowDisconnect"></input>
     <input class="btn btn-default" type="button" :value="locale['options']" value="Options" @click="openModalOptionsDialog">
   </div>
 </div>
@@ -114,6 +115,9 @@ export default {
         foreignconnect: {
           values: ['Connect foreign key', 'Click target row'],
           value: 'Connect foreign key'
+        },
+        foreigndisconnect: {
+          value: 'Remove foreign key'
         }
       },
       // rubberband info
@@ -131,6 +135,18 @@ export default {
     }
   },
   computed: {
+    allowDisconnect: function () {
+      if (this.selectedRow) {
+        let rels = this.selectedRow.relations
+        for (let i = 0; i < rels.length; i++) {
+          let r = rels[i]
+          if (r.row2 === this.selectedRow) {
+            return true
+          }
+        }
+      }
+      return false
+    },
     isUniqueRowSelected: function () {
       if (this.selectedRow && this.selectedRow.isUnique()) {
         return true
@@ -327,6 +343,20 @@ export default {
         if (z > max) { max = z }
       }
       return max
+    },
+    foreigndisconnect () {
+      console.log('foreigndisconnect')
+      let rels = this.selectedRow.relations
+      for (let i = rels.length - 1; i >= 0; i--) {
+        let r = rels[i]
+        if (r.row2 === this.selectedRow) { this.removeRelation(r) }
+      }
+      // for (let i = 0; i < rels.length; i++) {
+      //   let r = rels[i]
+      //   if (r.row2 === this.selectedRow) {
+      //     return true
+      //   }
+      // }
     },
     foreignconnect () {
       console.log('foreignconnect')

@@ -69,7 +69,7 @@
 import KeyModel from '@/models/key.js'
 export default {
   name: 'db-row',
-  props: ['visible', 'table'],
+  props: ['visible', 'table', 'locale'],
   created () {
   },
   // updated () {
