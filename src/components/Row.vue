@@ -5,7 +5,7 @@
         <td>
           {{locale['name']}}:
         </td>
-        <td>
+        <td colspan="2">
           <input class="form-control" v-model="title" type="text"></input>
         </td>
       </tr>
@@ -13,7 +13,7 @@
         <td>
           {{locale['type']}}:
         </td>
-        <td>
+        <td colspan="2">
           <select v-model="type" class="form-control">
             <optgroup v-for="optgroup in data.owner.owner.selectDataTypes" :label=optgroup.label :style="{'background-color' : optgroup.backgroundColor}">
               <option v-for="(option, index) in optgroup.options" :value="index">{{option.innerHTML}}</option>
@@ -25,7 +25,7 @@
         <td>
           {{locale['size']}}:
         </td>
-        <td>
+        <td colspan="2">
           <input v-model="size" class="form-control" type="text"></input>
         </td>
       </tr>
@@ -33,7 +33,7 @@
         <td>
           {{locale['def']}}:
         </td>
-        <td>
+        <td colspan="2">
           <input class="form-control" v-model="def" type="text"></input>
         </td>
       </tr>
@@ -41,7 +41,7 @@
         <td>
           {{locale['ai']}}:
         </td>
-        <td>
+        <td colspan="2">
           <input type="checkbox" v-model="ai">
         </td>
       </tr>
@@ -49,7 +49,7 @@
         <td>
           {{locale['null']}}:
         </td>
-        <td>
+        <td colspan="2">
           <input type="checkbox" v-model="nll">
         </td>
       </tr>
@@ -57,8 +57,8 @@
         <td>
           {{data.data.comment}}
         </td>
-        <td>
-          <button @click.stop="editComment">{{locale['comment']}}</button>
+        <td colspan="2">
+          <button class="btn btn-default btn-sm" @click.stop="editComment">&#9998; {{locale['comment']}}</button>
         </td>
       </tr>
       <tr v-show="!data.expanded" @dblclick.stop="dblclickRow">

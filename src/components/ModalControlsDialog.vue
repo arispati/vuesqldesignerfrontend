@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-window" v-show="visible" @click.stop="emptyHandler" @mousedown.stop="emptyHandler" @mouseup.stop="emptyHandler">
+  <div class="modal-window modal-window--controls" v-show="visible" @click.stop="emptyHandler" @mousedown.stop="emptyHandler" @mouseup.stop="emptyHandler">
     <div class="modal-confirm" v-show="confirmClientMode || confirmServerMode">
       <div class="modal-confirm__inner"></div>
       <div class="modal-confirm__wrapper">
@@ -38,23 +38,52 @@
       <div class="modal-window__content">
         <div class="modal-controls">
           <div v-show="mode=='controls'">
-            <input class="btn btn-default" type="button" :value="locale['clientsave']" @click="saveXML">
-            <input class="btn btn-default" type="button" :value="locale['clientload']" @click="loadXML">
-            <input class="btn btn-default" type="button" :value="locale['clientsql']"  @click="clientsql">
-            <!-- local storage -->
-            <input class="btn btn-default" type="button" value="Save in Browser" :value="locale['clientlocalsave']" @click="openConfirmInLocalSaveMode">
-            <input class="btn btn-default" type="button" value="Load from Browser" :value="locale['clientlocalload']" @click="openConfirmInLocalLoadMode">
-            <input class="btn btn-default" type="button" value="List from Browser" :value="locale['clientlocallist']" @click="clientlocallist">
-            <!-- server -->
-            <label>{{locale['backendlabel']}}</label>
-            <select v-model="backendSelectVal" class="form-control">
-              <option v-for="option in backendSelect" :value="option">{{option}}</option>
-            </select>
-            <input class="btn btn-default" type="button" value="List items" :value="locale['serverlist']" @click="serverlist">
-            <input class="btn btn-default" type="button" value="Load" :value="locale['serverload']" @click="openConfirmInServerLoadMode">
-            <input class="btn btn-default" type="button" value="Save" :value="locale['serversave']" @click="openConfirmInServerSaveMode">
-            <label>{{locale['output']}}</label>
-            <textarea v-model="io"></textarea>
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                  <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">{{locale['client']}}</legend>
+                    <!-- XML & SQL Generation -->
+                    <div>
+                      <input class="btn btn-default btn-primary" type="button" :value="locale['clientsave']" @click="saveXML">
+                      <input class="btn btn-default btn-primary" type="button" :value="locale['clientload']" @click="loadXML">
+                    </div>
+                    <!-- local storage -->
+                    <div>
+                      <input class="btn btn-default btn-primary" type="button" value="Save in Browser" :value="locale['clientlocalsave']" @click="openConfirmInLocalSaveMode">
+                      <input class="btn btn-default btn-primary" type="button" value="Load from Browser" :value="locale['clientlocalload']" @click="openConfirmInLocalLoadMode">
+                      <input class="btn btn-default btn-primary" type="button" value="List from Browser" :value="locale['clientlocallist']" @click="clientlocallist">
+                    </div>
+                    <div>
+                      <input class="btn btn-default btn-primary" type="button" :value="locale['clientsql']"  @click="clientsql">
+                    </div>
+                  </fieldset>
+                  </td>
+                  <!-- server -->
+                  <td>
+                    <fieldset class="scheduler-border">
+                      <legend class="scheduler-border">{{locale['server']}}</legend>
+                    <label>{{locale['backendlabel']}}</label>
+                    <select v-model="backendSelectVal" class="form-control">
+                      <option v-for="option in backendSelect" :value="option">{{option}}</option>
+                    </select>
+                    <input class="btn btn-default btn-primary" type="button" value="List items" :value="locale['serverlist']" @click="serverlist">
+                    <input class="btn btn-default btn-primary" type="button" value="Load" :value="locale['serverload']" @click="openConfirmInServerLoadMode">
+                    <input class="btn btn-default btn-primary" type="button" value="Save" :value="locale['serversave']" @click="openConfirmInServerSaveMode">
+                    </fieldset>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <fieldset class="scheduler-border">
+                      <legend class="scheduler-border">{{locale['output']}}</legend>
+                      <textarea v-model="io"></textarea>
+                    </fieldset>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div v-show="mode=='options'">
             <label>Locale</label>
@@ -62,8 +91,8 @@
               <option v-for="option in localeOptions" :value="option">{{option}}</option>
             </select>
           </div>
-          <input type="submit" value="ok" :value="locale['windowok']" @click="ok">
-          <input type="submit" value="Отмена" :value="locale['windowcancel']" @click="cancel">
+          <input type="submit" class="btn btn-default btn-primary" value="ok" :value="locale['windowok']" @click="ok">
+          <input type="submit" class="btn btn-default" value="Отмена" :value="locale['windowcancel']" @click="cancel">
 
         </div>
       </div>
@@ -285,10 +314,6 @@ export default {
       console.log('clientsql')
       axios({method: 'get', url: `${API_BASE}/corsbridge.php?db=mysql&sql=true`}).then((xsl) => {
         let xslDoc = Fn.fromXMLText(xsl.data)
-        console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||')
-        console.log('xslDoc')
-        console.log(xslDoc)
-        console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||')
         let xml = this.data.toXML()
         let sql = ''
         try {
@@ -366,16 +391,49 @@ export default {
       right: 0;
       left: 0;
       /* центрирование */
-
       margin: auto;
       /* центрирование */
-
       height: 120px;
       width: 360px;
       border: 1px solid black;
       // padding: 5px 5px 5px 55px;
       padding: 5px 5px 5px 5px;
       // background: url(https://js.cx/clipart/key.png) 3px 5px white no-repeat;
+    }
+  }
+
+  .modal-window.modal-window--controls {
+    .modal-window__wrapper {
+        background-color: #ffffff;
+        width: 820px;
+        height: 450px;
+        border: none;
+        top: 50px;
+        bottom: auto;
+        border-radius: 10px;
+        border: 2px solid black;
+        box-shadow: 4px 4px 8px #888;
+    }
+  }
+
+  .modal-controls {
+    // width: 600px;
+    table {
+      width: 800px;
+      // border-spacing: 15px;
+      td {
+        vertical-align: top;
+        padding: 5px;
+        &:first-child {
+          width: 60%;
+        }
+        &:last-child {
+          width: 40%;
+        }
+      }
+    }
+    input, select {
+      margin-bottom: 3px;
     }
   }
 
@@ -388,7 +446,26 @@ export default {
   !!! временно !!!
   */
   .modal-controls textarea {
-    height: 50px;
+    height: 100px;
+  }
+
+  fieldset.scheduler-border {
+      border: 1px groove #ddd !important;
+      padding: 0 1.4em 1.4em 1.4em !important;
+      margin: 0 0 0.2em 0 !important;
+      // margin: 0 0 1.5em 0 !important;
+      -webkit-box-shadow:  0px 0px 0px 0px #000;
+              box-shadow:  0px 0px 0px 0px #000;
+  }
+
+  legend.scheduler-border {
+      // font-size: 1.2em !important;
+      font-size: 14px !important;
+      font-weight: bold !important;
+      text-align: left !important;
+      width:auto;
+      padding:0 10px;
+      border-bottom:none;
   }
 
   .sk-fading-circle {

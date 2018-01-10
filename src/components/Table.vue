@@ -3,7 +3,7 @@
   <table>
     <thead @mousedown.stop="mousedownTable" @dblclick="openTableModalDialog">
       <tr>
-        <td class="table__title" colspan="2">{{data.data.title}}</td>
+        <td class="table__title" colspan="3">{{data.data.title}}</td>
       </tr>
     </thead>
     <template v-for="row in data.rows">
@@ -178,7 +178,7 @@ export default {
   .table {
     width: auto; // overwrite bootstrap rule
     position: absolute;
-  	border: 1px solid #000;
+  	border: 2px solid #000;
   	background-color: #ddd;
   	cursor: pointer;
   	box-shadow: 4px 4px 8px #888; /* Opera 10.5, IE 9.0 */
@@ -186,10 +186,26 @@ export default {
   }
 
   .table table {
+    min-width: 120px;
 	  border-collapse: collapse;
+    thead {
+      td {
+          border-bottom: 1px solid #000;
+          background-color: #0A67A3;
+          color: #ffffff;
+      }
+    }
+    td {
+      padding: 5px;
+      background-color: #3E97D1;
+      color: #ffffff;
+    }
+    th {
+      padding: 5px;
+    }
   }
 
   .table--selected {
-    border: 2px solid #000;
+    border: 3px solid #000;
   }
 </style>

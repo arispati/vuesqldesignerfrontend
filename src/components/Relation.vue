@@ -1,5 +1,6 @@
 <template>
-    <path stroke="#000" stroke-width="2" fill="none" v-bind:d="curve2" v-bind:prop="curve2"></path>
+    <path stroke="#FF0000" stroke-width="2" fill="none" v-bind:d="curve2" v-bind:prop="curve2"></path>
+    <!-- #FF0000 #B40097 -->
 </template>
 <script>
 

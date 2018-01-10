@@ -17,7 +17,7 @@
     <modal-controls-dialog :localeOptions="localeOptions" :currentLocale="currentLocale" :locale="locale" :visible="modalControlsDialog.visible" :mode="modalControlsDialog.mode" :data="modalControlsDialog.data" @loadXML="loadXML" @setNewLocale="setNewLocale" @closeModalControlsDialog="closeModalControlsDialog"></modal-controls-dialog>
   </div>
   <div class="controls">
-    <input class="btn btn-default" type="button" :value="locale['saveload']" @click="openModalControlsDialog">
+    <input class="btn btn-default" type="button" :value="locale['saveload']" @click="openModalControlsDialog"></input>
     <input class="btn btn-default" type="button" value="Default value" @click="preAdd" :value="dom.addtable.value">
         <input class="btn btn-default" type="button" :value="locale['edittable']" @click="openTableModalDialogByButton" :disabled="!oneTableSelected"></input>
     <input class="btn btn-default" type="button" :value="locale['removetable']"  @click="removeTables" :disabled="!tablesSelected">
@@ -791,6 +791,8 @@ export default {
     width: 160px;
     padding: 0px 5px 5px;
     padding-top: 5px;
+    border: 1px solid #000;
+    box-shadow: -4px 4px 8px #888;
     input {
       width: 90%;
       margin: auto;
