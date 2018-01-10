@@ -8,9 +8,13 @@
           <p v-show="confirmMode == 'save'">{{locale['serversaveprompt']}}</p>
         </div>
         <div class="modal-confirm__content">
-          <input type="text" v-model="confirmText"></input>
-          <input type="submit" value="ok" :value="locale['windowok']" @click="confirmYes">
-          <input type="submit" value="Отмена" :value="locale['windowcancel']" @click="confirmNo">
+          <form class="form-inline">
+            <div class="form-group">
+              <input class="form-control" type="text" v-model="confirmText"></input>
+              <input type="submit" class="btn btn-default btn-primary" value="ok" :value="locale['windowok']" @click="confirmYes">
+              <input type="submit" class="btn btn-default" value="Отмена" :value="locale['windowcancel']" @click="confirmNo">
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -362,7 +366,15 @@ export default {
       height: 120px;
       width: 360px;
       border: 1px solid black;
-      padding: 5px 5px 5px 55px;
+      // padding: 5px 5px 5px 55px;
+      padding: 15px 5px 5px 15px;
+      background-color: #ffffff;
+
+      border-radius: 10px;
+      border: 2px solid black;
+      box-shadow: 4px 4px 8px #888;
+      background-color: #ccc;
+      background-color: #D3EAF2;
       background-color: #ffffff;
     }
   }

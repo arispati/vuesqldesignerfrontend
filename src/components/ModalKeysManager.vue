@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-window" v-show="visible" @click.stop="emptyHandler" @mousedown.stop="emptyHandler" @mouseup.stop="emptyHandler">
+  <div class="modal-window modal-window--keys" v-show="visible" @click.stop="emptyHandler" @mousedown.stop="emptyHandler" @mouseup.stop="emptyHandler">
     <div class="modal-window__inner">
     </div>
     <div class="modal-window__wrapper">
@@ -7,51 +7,81 @@
         {{locale['tablekeys']}}
       </div>
       <div class="modal-window__content">
-        <fieldset>
-          <legend>{{tablename}}</legend>
-          <select :disabled="!keyExists" v-model="selectedKey">
-            <!-- <option>1: PRIMARY</option> -->
-            <option v-for="localKey in localKeys" v-bind:value="localKey">
-              {{returnKeyName(localKey)}}
-            </option>
-          </select>
-          <!-- <span>Выбрано: {{ selectedKey }}</span> -->
-          <input type="button" value="Add key" :value="locale['keyadd']" @click="add"></input>
-          <input type="button" value="Remove key" :value="locale['keyremove']" :disabled="!keyExists" @click="remove"></input>
+        <div class="keys">
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">{{tablename}}</legend>
+          <form class="form-inline">
+              <div class="form-group">
+              <select class="form-control" :disabled="!keyExists" v-model="selectedKey">
+                <!-- <option>1: PRIMARY</option> -->
+                <option v-for="localKey in localKeys" v-bind:value="localKey">
+                  {{returnKeyName(localKey)}}
+                </option>
+              </select>
+              <!-- <span>Выбрано: {{ selectedKey }}</span> -->
+              <input type="button" class="btn btn-default" value="Add key" :value="locale['keyadd']" @click="add"></input>
+              <input type="button" class="btn btn-default" value="Remove key" :value="locale['keyremove']" :disabled="!keyExists" @click="remove"></input>
+            </div>
+          </form>
         </fieldset>
-        <fieldset>
-          <legend>{{locale['keyedit']}}</legend>
-          <label>{{locale['keytypelabel']}}</label><select v-model="selectedKey.type">
-            <!-- <option>1: PRIMARY</option> -->
-            <option v-for="type in types" v-bind:value="type">
-              {{type}}
-            </option>
-          </select>
-          <label>{{locale['keynamelabel']}}</label><input type="text" v-model="selectedKey.name"></input>
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">{{locale['keyedit']}}</legend>
           <table>
             <tbody>
               <tr>
                 <td>
-                  <label>{{locale['keyfieldslabel']}}</label><br>
-                  <select multiple v-model="selectedRowsInKey">
-                    <option v-for="row in selectedKey.rows" v-bind:value="row">
-                      {{ row.data.title }}
-                    </option>
-                  </select>
+                  <form class="form-inline">
+                    <div class="form-group">
+                    <label>{{locale['keytypelabel']}}</label>
+                    <select class="form-control" v-model="selectedKey.type">
+                        <!-- <option>1: PRIMARY</option> -->
+                        <option v-for="type in types" v-bind:value="type">
+                          {{type}}
+                        </option>
+                    </select>
+                    </div>
+                  </form>
+                </td>
+                <td></td>
+                <td>
+                  <form class="form-inline">
+                    <div class="form-group">
+                      <label>{{locale['keynamelabel']}}</label>
+                      <input class="form-control" type="text" v-model="selectedKey.name"></input>
+                    </div>
+                  </form>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <form class="form-inline">
+                    <div class="form-group">
+                    <label>{{locale['keyfieldslabel']}}</label><br>
+                    <select class="form-control" multiple v-model="selectedRowsInKey">
+                      <option v-for="row in selectedKey.rows" v-bind:value="row">
+                        {{ row.data.title }}
+                      </option>
+                    </select>
+                    </div>
+                  </form>
                 </td>
                 <td>
-                  <input value="<<" type="button" @click="addRowToKey">
-                  <br>
-                  <input value=">>" type="button"  @click="removeRowFromKey">
+                  <input value="<<" class="btn btn-default" type="button" @click="addRowToKey">
+                  <!-- <br> -->
+                  <input value=">>" class="btn btn-default" type="button"  @click="removeRowFromKey">
                 </td>
                 <td>
-                  <label>{{locale['keyavaillabel']}}</label><br>
-                 <select multiple v-model="selectedRows">
-                   <!-- availableFields -->
-                   <option v-for="localRow in availableFields" v-bind:value="localRow">
-                     {{ (localRow.row.data.title) }}
-                   </option>
-                  </select>
+                  <form class="form-inline">
+                    <div class="form-group">
+                      <label>{{locale['keyavaillabel']}}</label><br>
+                     <select class="form-control" multiple v-model="selectedRows">
+                       <!-- availableFields -->
+                       <option v-for="localRow in availableFields" v-bind:value="localRow">
+                         {{ (localRow.row.data.title) }}
+                       </option>
+                      </select>
+                    </div>
+                  </form>
                 </td>
               </tr>
             </tbody>
@@ -61,9 +91,10 @@
           <!-- <p>{{this.localKeys}}</p> -->
           <!-- <p>{{this.localRows}}</p> -->
         </div>
-        <input type="submit" value="ok" :value="locale['windowok']" @click="ok">
-        <input type="submit" value="Отмена" :value="locale['windowcancel']" @click="cancel">
-        <input type="submit" value="data" @click="showData">
+        <input type="submit" class="btn btn-default" value="ok" :value="locale['windowok']" @click="ok">
+        <input type="submit" class="btn btn-default" value="Отмена" :value="locale['windowcancel']" @click="cancel">
+        <input type="submit" class="btn btn-default" value="data" @click="showData">
+        </div>
       </div>
     </div>
   </div>
@@ -343,6 +374,29 @@ export default {
       border: 1px solid black;
       padding: 5px 5px 5px 55px;
       // background: url(https://js.cx/clipart/key.png) 3px 5px white no-repeat;
+    }
+  }
+
+  .modal-window.modal-window--keys {
+    .modal-window__wrapper {
+        background-color: #ffffff;
+        width: 600px;
+        // width: 820px;
+        height: 380px;
+        // border: none;
+        top: 50px;
+        bottom: auto;
+        border-radius: 10px;
+        border: 2px solid black;
+        box-shadow: 4px 4px 8px #888;
+    }
+  }
+
+  .keys {
+    table {
+      td {
+        text-align: center;
+      }
     }
   }
   // .row--selected {
