@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-window" v-show="visible" @click.stop="emptyHandler" @mousedown.stop="emptyHandler" @mouseup.stop="emptyHandler">
+  <div class="modal-window modal-window--simple" :class="{ 'modal-window--edittablecomment': data.mode === 'table', 'modal-window--editfieldcomment': data.mode !== 'table' }" v-show="visible" @click.stop="emptyHandler" @mousedown.stop="emptyHandler" @mouseup.stop="emptyHandler">
     <div class="modal-window__inner">
     </div>
     <div class="modal-window__wrapper">
@@ -8,12 +8,20 @@
         <p v-show="data.mode !== 'table'">{{locale['commenttext']}}</p>
       </div>
       <div class="modal-window__content">
-        <label v-show="data.mode === 'table'">{{locale['tablenamelabel']}}</label>
-        <input type="text" v-model="title" v-show="data.mode === 'table'"></input>
-        <label v-show="data.mode === 'table'">{{locale['tablecommentlabel']}}</label>
-        <textarea v-model="comment"></textarea>
-        <input type="submit" value="ok" :value="locale['windowok']" @click="ok">
-        <input type="submit" value="Отмена" :value="locale['windowcancel']" @click="cancel">
+        <form class="form-inline">
+          <div class="form-group">
+            <label v-show="data.mode === 'table'">{{locale['tablenamelabel']}}</label>
+            <input class="form-control" type="text" v-model="title" v-show="data.mode === 'table'"></input>
+          </div>
+          <div class="form-group">
+            <label v-show="data.mode === 'table'">{{locale['tablecommentlabel']}}</label>
+            <textarea class="form-control" v-model="comment"></textarea>
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-default btn-primary" value="ok" :value="locale['windowok']" @click="ok">
+            <input type="submit" class="btn btn-default" value="Отмена" :value="locale['windowcancel']" @click="cancel">
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -102,6 +110,39 @@ export default {
       border: 1px solid black;
       padding: 5px 5px 5px 55px;
       // background: url(https://js.cx/clipart/key.png) 3px 5px white no-repeat;
+    }
+  }
+
+  .modal-window.modal-window--edittablecomment {
+    .modal-window__wrapper {
+      height: 180px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      border: 2px solid black;
+      box-shadow: 4px 4px 8px #888;
+      label {
+        width: 100px;
+      }
+      input, textarea {
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .modal-window.modal-window--editfieldcomment {
+    .modal-window__wrapper {
+      width: 250px;
+      height: 140px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      border: 2px solid black;
+      box-shadow: 4px 4px 8px #888;
+      label {
+        width: 100px;
+      }
+      input, textarea {
+        margin-bottom: 5px;
+      }
     }
   }
   // .row--selected {

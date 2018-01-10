@@ -15,8 +15,8 @@
         </td>
         <td colspan="2">
           <select v-model="type" class="form-control">
-            <optgroup v-for="optgroup in data.owner.owner.selectDataTypes" :label=optgroup.label :style="{'background-color' : optgroup.backgroundColor}">
-              <option v-for="(option, index) in optgroup.options" :value="index">{{option.innerHTML}}</option>
+            <optgroup v-for="(optgroup, outerindex) in data.owner.owner.selectDataTypes" :label=optgroup.label :style="{'background-color' : optgroup.backgroundColor}">
+              <option v-for="(option, index) in optgroup.options" :value="getSelectIndex(outerindex, index)">{{option.innerHTML}}</option>
             </optgroup>
           </select>
         </td>
@@ -79,8 +79,17 @@ export default {
   props: ['data', 'expanded', 'locale'],
   created () {
     // console.log('row component created')
-    console.log('localData')
-    console.log(this.localData)
+    // console.log('localData')
+    // console.log(this.localData)
+    console.log('compute here index array for select')
+    console.log(this.data.owner.owner.selectDataTypes)
+    let tempSelectArray = this.data.owner.owner.selectDataTypes
+    this.indexArrayForSelect = []
+    for (let i = 0; i < tempSelectArray.length; i++) {
+      let optgroup = tempSelectArray[i]
+      this.indexArrayForSelect.push(optgroup.options.length)
+    }
+    console.log(this.indexArrayForSelect)
   },
   mounted: function () {
     this.data.dom.container = this.$el
@@ -96,7 +105,8 @@ export default {
       def: this.data.data.def,
       nll: this.data.data.nll,
       ai: this.data.data.ai,
-      comment: this.data.data.comment
+      comment: this.data.data.comment,
+      indexArrayForSelect: []
     }
   },
   computed: {
@@ -154,6 +164,23 @@ export default {
     }
   },
   methods: {
+    getSelectIndex (outerindex, index) {
+      // console.log('oh oh oh')
+      // console.log(this.data.owner.owner.selectDataTypes)
+      console.log(this.indexArrayForSelect)
+      let resIndex = 0
+      for (let i = 0; i <= outerindex; i++) {
+        if (i < outerindex) {
+          resIndex += this.indexArrayForSelect[i]
+        }
+        if (i === outerindex) {
+          for (let j = 0; j < index; j++) {
+            resIndex += 1
+          }
+        }
+      }
+      return resIndex
+    },
     extractActualData () {
       let actualData = {}
       actualData.title = this.title
