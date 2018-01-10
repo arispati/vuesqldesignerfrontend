@@ -26,12 +26,11 @@
 
     <input class="btn btn-default" type="button" :value="locale['editrow']" :disabled="!selectedRow" @click="expandSelectedRow"></input>
 
-    <input class="btn btn-default" type="button" :value="locale['uprow']" :disabled="upDisabled" @click="up"></input>
-    <input class="btn btn-default" type="button" :value="locale['downrow']" :disabled="downDisabled" @click="down"></input>
+    <input class="btn btn-default small" type="button" :value="locale['uprow']" :disabled="upDisabled" @click="up"></input><input class="btn btn-default small" type="button" :value="locale['downrow']" :disabled="downDisabled" @click="down"></input>
 
     <input class="btn btn-default" type="button" :value="locale['removerow']" :disabled="!selectedRow" @click="deleteSelectedRow"></input>
 
-    <input class="btn btn-default" type="button" value="Show Component Data" @click="showComponentData"></input>
+    <!-- <input class="btn btn-default" type="button" value="Show Component Data" @click="showComponentData"></input> -->
     <hr>
     <input class="btn btn-default" type="button" value="Keys" @click="keys" :value="locale['tablekeys']" :disabled="!oneTableSelected"></input>
 
@@ -768,6 +767,10 @@ export default {
 </script>
 
 <style lang="less">
+  /*
+  * https://colorscheme.ru/#3v11Tw0w0w0w0
+  */
+
   .area {
     position: relative;
     background: transparent url(../assets/back.png);
@@ -785,7 +788,28 @@ export default {
     position: fixed;
     top: 0px;
     right: 0px;
-    width: 150px;
+    width: 160px;
     padding: 0px 5px 5px;
+    padding-top: 5px;
+    input {
+      width: 90%;
+      margin: auto;
+      // background-color: #0A67A3;
+      // color: #ffffff;
+      margin-bottom: 3px;
+    }
+    .small {
+      width: 44%;
+      &:nth-of-type(odd) {
+        margin-left: 1%;
+      }
+      &:nth-of-type(even) {
+        margin-right: 1%;
+      }
+    }
   }
+
+  // .controls__button {
+  //
+  // }
 </style>
