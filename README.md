@@ -25,7 +25,10 @@ Steps to run application:
   </VirtualHost>
   ```
   5.2 Add record into hosts file  
-    127.0.0.1 websqldesignerserver
+  ``` bash
+  127.0.0.1 websqldesignerserver
+  ```
+  5.3 run apache  
 ## Build Setup
 
 ``` bash
