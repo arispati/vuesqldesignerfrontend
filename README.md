@@ -35,7 +35,7 @@ Steps to run application:
   ``` bash
   const API_BASE = 'http://websqldesignerserver'  
   ```
-  in WebDesigner.vue file to your on your value
+  in WebDesigner.vue file to your value
 ## Build Setup
 
 ``` bash
