@@ -29,6 +29,13 @@ Steps to run application:
   127.0.0.1 websqldesignerserver
   ```
   5.3 run apache  
+
+  Note! - websqldesignerserver is a name of folder, which consists server code of project.
+  You can use any name for project, but you need to change string  
+  ``` bash
+  const API_BASE = 'http://websqldesignerserver'  
+  ```
+  in WebDesigner.vue file to your on your value
 ## Build Setup
 
 ``` bash
