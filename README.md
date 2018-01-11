@@ -13,7 +13,7 @@ Steps to run application:
 4. clone "vuesqldesignerserver" repository  
 5. run server part  
   Example for Apache:  
-  5.1 create virtual hosts  
+6. create virtual hosts  
   ``` bash
   # create virtual hosts
   <VirtualHost *:80>
@@ -24,11 +24,11 @@ Steps to run application:
     CustomLog "logs/dummy-host2.example.com-access.log" common
   </VirtualHost>
   ```
-  5.2 Add record into hosts file  
+7. Add record into hosts file  
   ``` bash
   127.0.0.1 websqldesignerserver
   ```
-  5.3 run apache  
+8. run apache  
 
   Note! - websqldesignerserver is a name of folder, which consists server code of project.
   You can use any name for project, but you need to change string  
