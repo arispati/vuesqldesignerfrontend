@@ -12,7 +12,8 @@ Steps to run application:
 3. run server for front-end part of application "npm run dev"  (serve with hot reload at localhost:8080)
 4. clone "vuesqldesignerserver" repository  
 5. run server part  
-  For Apache:  
+  Example for Apache:  
+  5.1 create virtual hosts  
   ``` bash
   # create virtual hosts
   <VirtualHost *:80>
@@ -23,7 +24,8 @@ Steps to run application:
     CustomLog "logs/dummy-host2.example.com-access.log" common
   </VirtualHost>
   ```
-  
+  5.2 Add record into hosts file  
+    127.0.0.1 websqldesignerserver
 ## Build Setup
 
 ``` bash
