@@ -147,4 +147,9 @@ export default class Table {
       }
     }
   }
+  destroy () {
+    while (this.rows.length) {
+      this.removeRow(this.rows[0])
+    }
+  }
 }

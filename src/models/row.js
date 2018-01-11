@@ -2,6 +2,8 @@ import Fn from '@/functions.js'
 
 export default class Row {
   constructor (owner, title, data) {
+    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVV')
+    console.log(owner.owner)
     this.owner = owner
     this.selected = false
     this.expanded = false
@@ -74,6 +76,9 @@ export default class Row {
     this.keys.splice(idx, 1)
   }
   destroy () {
+    while (this.relations.length) {
+      this.owner.owner.removeRelation(this.relations[0])
+    }
     for (let i = 0; i < this.keys.length; i++) {
       this.keys[i].removeRow(this)
     }

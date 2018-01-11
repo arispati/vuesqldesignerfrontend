@@ -30,7 +30,7 @@
 
     <input class="btn btn-default" type="button" :value="locale['removerow']" :disabled="!selectedRow" @click="deleteSelectedRow"></input>
 
-    <!-- <input class="btn btn-default" type="button" value="Show Component Data" @click="showComponentData"></input> -->
+    <input class="btn btn-default" type="button" value="Show Component Data" @click="showComponentData"></input>
     <hr>
     <input class="btn btn-default" type="button" value="Keys" @click="keys" :value="locale['tablekeys']" :disabled="!oneTableSelected"></input>
 
@@ -571,8 +571,20 @@ export default {
       this.selection = []
     },
     clearTables () {
+      // this.selection = []
+      // this.tables = []
+      // this.relations = []
+      while (this.tables.length) {
+        this.removeTable(this.tables[0])
+      }
+    },
+    removeTable (t) {
       this.selection = []
-      this.tables = []
+      this.selectedRow = false
+      let idx = this.tables.indexOf(t)
+      if (idx === -1) { return }
+      t.destroy()
+      this.tables.splice(idx, 1)
     },
     up () {
       let table = this.selectedRow.owner
