@@ -2,6 +2,9 @@
 
 > A Vue.js project
 
+This project is a try to rewrite excellent application "wwwsqldesigner" created by ondras
+by using new framework "VUE"
+
 ## Build Setup
 
 ``` bash
