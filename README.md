@@ -5,7 +5,7 @@
 This project is a try to rewrite excellent application "wwwsqldesigner" created by ondras (https://github.com/ondras/wwwsqldesigner)
 by using new framework "VUE"
 Repository "vuesqldesignerfrontend" (https://github.com/shaci/vuesqldesignerfrontend) consists front-end part of application
-Server part is localed in repository named "vuesqldesignerserver" (https://github.com/shaci/vuesqldesignerserver)
+Server part is located in repository named "vuesqldesignerserver" (https://github.com/shaci/vuesqldesignerserver)
 ## Build Setup
 
 ``` bash
