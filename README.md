@@ -1,4 +1,4 @@
-# websqldesignerfrontend
+# vuesqldesignerfrontend
 
 > A Vue.js project
 
