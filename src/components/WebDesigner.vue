@@ -564,9 +564,11 @@ export default {
       this.select(table, multi)
     },
     removeTables () {
-      for (let i = 0; i < this.selection.length; i++) {
-        let index = this.tables.indexOf(this.selection[i])
-        this.tables.splice(index, 1)
+      let sel = this.selection.slice(0)
+      for (let i = 0; i < sel.length; i++) {
+        // let index = this.tables.indexOf(this.selection[i])
+        // this.tables.splice(index, 1)
+        this.removeTable(sel[i])
       }
       this.selection = []
     },
